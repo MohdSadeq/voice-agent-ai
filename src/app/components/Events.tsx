@@ -31,6 +31,9 @@ function Events({ isExpanded }: EventsProps) {
     setPrevEventLogs(loggedEvents);
   }, [loggedEvents, isExpanded]);
 
+  const isHidden = true;
+  if (isHidden) return null;
+
   return (
     <div
       className={

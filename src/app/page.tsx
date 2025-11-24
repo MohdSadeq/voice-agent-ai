@@ -2,7 +2,8 @@
 import { NetworkBackground } from "./components/NetworkBackground";
 import { Button } from "./components/ui/button";
 import { Card } from "./components/ui/card";
-import { Mic, Zap, Shield, Globe } from "lucide-react";
+import { Mic, Zap, Shield } from "lucide-react";
+import Link from "next/link";
 
 const Index = () => {
   return (
@@ -33,10 +34,10 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-              <Button size="lg" className="text-lg px-8 py-6 animate-pulse-glow">
+              <Link href="/voice/voice-agent"><Button size="lg" className="text-lg px-8 py-6 animate-pulse-glow">
                 <Mic className="w-5 h-5 mr-2" />
                 Try Demo
-              </Button>
+              </Button></Link>
             </div>
           </div>
         </section>
