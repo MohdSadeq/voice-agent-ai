@@ -24,11 +24,9 @@ import { customerServiceRetailScenario } from "@/app/agentConfigs/customerServic
 import { chatSupervisorScenario } from "@/app/agentConfigs/chatSupervisor";
 import { customerServiceRetailCompanyName } from "@/app/agentConfigs/customerServiceRetail";
 import { chatSupervisorCompanyName } from "@/app/agentConfigs/chatSupervisor";
-import { simpleHandoffScenario } from "@/app/agentConfigs/simpleHandoff";
 
 // Map used by connect logic for scenarios defined via the SDK.
 const sdkScenarioMap: Record<string, RealtimeAgent[]> = {
-  simpleHandoff: simpleHandoffScenario,
   customerServiceRetail: customerServiceRetailScenario,
   chatSupervisor: chatSupervisorScenario,
 };
@@ -437,11 +435,13 @@ function App() {
           className="flex items-center cursor-pointer"
           onClick={() => window.location.reload()}
         >
-          <div>
-           
+          <div className="flex flex-row items-center gap-2 justify-center">
+          <div className="text-lg font-semibold">
+            red<span className="text-red-500">ONE</span> Mobile
           </div>
-          <div>
-            redONE Mobile <span className="text-gray-500">Agents</span>
+          <div className="text-sm ">
+             Voice Agent
+          </div>
           </div>
         </div>
         <div className="flex items-center">
