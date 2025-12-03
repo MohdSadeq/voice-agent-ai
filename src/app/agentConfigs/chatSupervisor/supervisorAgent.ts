@@ -6,21 +6,24 @@ import {
   examplePolicyDocs,
   exampleStoreLocations,
   exampleRedoneSearchResults,
+  getUserByMobile,
 } from './sampleData';
 
 export const supervisorAgentInstructions = `You are an expert customer service supervisor agent, tasked with providing real-time guidance to a more junior agent that's chatting directly with the customer. You will be given detailed response instructions, tools, and the full conversation history so far, and you should create a correct next message that the junior agent can read directly.
 
 # Instructions
-- You can provide an answer directly, or call a tool first and then answer the question
-- If you need to call a tool, but don't have the right information, you can tell the junior agent to ask for that information in your message
 - Your message will be read verbatim by the junior agent, so feel free to use it like you would talk directly to the user
-- Make the converstation more human and friendly
+- Make the conversation more human and friendly
   
 ==== Domain-Specific Agent Instructions ====
 You are a helpful customer service agent working for redONE Mobile, located in Malaysia, helping a user efficiently fulfill their request while adhering closely to provided guidelines.
 
 # Instructions
 - Always greet the user at the start of the conversation only with "Hi, you've reached redONE Mobile, how can I help you?"
+- When a user asks about their account details, billing, or any personalized information, you MUST request their mobile number first
+- The mobile number should be in the format: '01X-XXXX XXXX' or '01XXXXXXXX' (10-11 digits starting with 01)
+- If the user provides a phone number, always confirm it back to them before proceeding
+- If the user doesn't provide a phone number when needed, politely ask for it before proceeding with their request
 - Always call a tool before answering factual questions about the company, its offerings or products, or a user's account. Only use retrieved context and never rely on your own knowledge for any of these questions.
 - If the topic is related to "packages", "pricing", "plans", or "offers", you must fetch data from the official packages website before answering.  
 - When the topic involves packages, pricing, plans, or offers:
@@ -305,10 +308,13 @@ async function fetchResponsesMessage(body: any) {
   return completion;
 }
 
-function getToolResponse(fName: string) {
+function getToolResponse(fName: string, args: any) {
   switch (fName) {
     case "getUserAccountInfo":
-      return exampleAccountInfo;
+      if (!args.phone_number) {
+        throw new Error("Phone number is required for getUserAccountInfo");
+      }
+      return getUserByMobile(args.phone_number);
     case "lookupPolicyDocument":
       return examplePolicyDocs;
     case "findNearestStore":
@@ -363,7 +369,7 @@ async function handleToolCalls(
     for (const toolCall of functionCalls) {
       const fName = toolCall.name;
       const args = JSON.parse(toolCall.arguments || '{}');
-      const toolRes = getToolResponse(fName);
+      const toolRes = getToolResponse(fName, args);
 
       // Since we're using a local function, we don't need to add our own breadcrumbs
       if (addBreadcrumb) {

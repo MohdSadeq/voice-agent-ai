@@ -1,28 +1,278 @@
-export const exampleAccountInfo = {
-  accountId: "RT-123456",
-  name: "Alex Johnson",
-  phone: "0123456789",
-  email: "alex.johnson@email.com",
-  plan: "Unlimited Plus",
-  balanceDue: "RM42.17",
-  lastBillDate: "2024-05-15",
-  lastPaymentDate: "2024-05-20",
-  lastPaymentAmount: "RM42.17",
-  status: "Active",
-  address: {
-    street: "1234 Pine St",
-    city: "Seattle",
-    state: "WA",
-    zip: "98101"
-  },
-  lastBillDetails: {
-    basePlan: "RM30.00",
-    internationalCalls: "RM8.00",
-    dataOverage: "RM4.00",
-    taxesAndFees: "RM0.17",
-    notes: "Higher than usual due to international calls and data overage."
-  }
+import users from './users.json';
+
+// Helper function to format currency in Malaysian Ringgit (RM)
+const formatCurrency = (amount?: number): string => {
+  if (amount === undefined || amount === null) return 'RM 0.00';
+  return `RM ${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 };
+
+interface VAS {
+  id: number;
+  name: string;
+  amount: number;
+  type?: string;
+}
+
+interface SubscribedVAS {
+  id: number;
+  subscribedDate: string;
+  vasId: number;
+  customerId: number;
+  vas: VAS;
+}
+
+interface MobilePlan {
+  id: number;
+  name: string;
+  amount: number;
+  planVas: VAS[];
+}
+
+interface PaymentHistory {
+  id: number;
+  amount: number;
+  transactionDate: string;
+  processedDate: string;
+  customerId: number;
+}
+
+interface Invoice {
+  id: number;
+  amount: number;
+  date: string;
+  customerId: number;
+}
+
+interface BarringHistory {
+  id: number;
+  date: string;
+  status: 'BARRED' | 'UNBARRED';
+  reason: string;
+  customerId: number;
+}
+
+interface User {
+  id: number;
+  callerId: string;
+  name: string;
+  email: string;
+  nric: string;
+  accountId: string;
+  phoneModel: string;
+  mobilePlanId: number;
+  commencementDate: string;
+  contractStart: string;
+  contractEnd: string;
+  suspensionDate: string;
+  barringDate: string;
+  roaming: boolean;
+  iddCall: boolean;
+  lte: boolean;
+  volte: boolean;
+  enable5g: boolean;
+  allDivert: boolean;
+  voiceMail: boolean;
+  masterAccountId: string;
+  creditLimit: number;
+  regType: string;
+  activationSource: string;
+  puk: string;
+  serial: string;
+  mobilePlan: MobilePlan;
+  subscribedVasses: SubscribedVAS[];
+  paymentHistories: PaymentHistory[];
+  invoices: Invoice[];
+  barringHistories: BarringHistory[];
+}
+
+export const getAccountInfo = (userId: number = 1) => {
+  const user = (users as User[]).find(u => u.id === userId);
+  if (!user) throw new Error(`User with ID ${userId} not found`);
+  
+  // Format dates
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-MY', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  // Calculate contract status
+  const now = new Date();
+  const contractEnd = new Date(user.contractEnd);
+  const suspensionDate = new Date(user.suspensionDate);
+  const barringDate = new Date(user.barringDate);
+  
+  let status = 'Active';
+  if (now > barringDate) status = 'Barred';
+  else if (now > suspensionDate) status = 'Suspended';
+  else if (now > contractEnd) status = 'Expired';
+
+  // Get active services
+  const activeServices = [
+    user.roaming && 'Roaming',
+    user.iddCall && 'IDD Calls',
+    user.volte && 'VoLTE',
+    user.enable5g && '5G',
+    user.allDivert && 'Call Divert',
+    user.voiceMail && 'Voicemail'
+  ].filter(Boolean);
+
+  // Get subscribed VAS
+  const subscribedServices = user.subscribedVasses?.map(sv => ({
+    name: sv.vas.name,
+    amount: sv.vas.amount,
+    subscribedDate: formatDate(sv.subscribedDate)
+  })) || [];
+
+  // Get available plan VAS
+  const availableVAS = user.mobilePlan?.planVas
+    .filter(v => v.type === 'AVAILABLE')
+    .map(v => ({
+      name: v.name,
+      amount: v.amount
+    })) || [];
+
+  // Get default plan VAS
+  const defaultVAS = user.mobilePlan?.planVas
+    .filter(v => v.type === 'DEFAULT')
+    .map(v => ({
+      name: v.name,
+      amount: v.amount
+    })) || [];
+
+  return {
+    // Basic Information
+    accountInfo: {
+      accountId: user.accountId,
+      masterAccountId: user.masterAccountId,
+      registrationType: user.regType,
+      activationSource: user.activationSource,
+      status,
+      creditLimit: formatCurrency(user.creditLimit),
+     // puk: user.puk,
+      // serial: user.serial
+    },
+    
+    // Personal Information
+    personalInfo: {
+      name: user.name,
+     // nric: user.nric,
+    //  email: user.email,
+    //  phone: user.callerId,
+      phoneModel: user.phoneModel
+    },
+    
+    // Plan Information
+    planInfo: {
+      planName: user.mobilePlan?.name || 'No Plan',
+      planAmount: formatCurrency(user.mobilePlan?.amount),
+      defaultServices: defaultVAS,
+      availableServices: availableVAS,
+      subscribedServices,
+      networkFeatures: {
+        lte: user.lte,
+        volte: user.volte,
+        enable5g: user.enable5g
+      }
+    },
+    
+    // Contract Information
+    contractInfo: {
+      commencementDate: formatDate(user.commencementDate),
+      contractStart: formatDate(user.contractStart),
+      contractEnd: formatDate(user.contractEnd),
+      suspensionDate: formatDate(user.suspensionDate),
+      barringDate: formatDate(user.barringDate),
+      daysRemaining: Math.ceil((contractEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+    },
+    
+    // Service Status
+    serviceStatus: {
+      roaming: user.roaming,
+      iddCall: user.iddCall,
+      allDivert: user.allDivert,
+      voiceMail: user.voiceMail,
+      activeServices
+    },
+    
+    // Billing Information
+    billingInfo: {
+      lastBillDate: formatDate(user.invoices?.[user.invoices.length - 1]?.date || new Date().toISOString()),
+      lastBillAmount: formatCurrency(user.invoices?.[user.invoices.length - 1]?.amount || 0),
+      nextBillDate: formatDate(new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString()),
+      outstandingBalance: formatCurrency(user.creditLimit * 0.8),
+      paymentHistory: (user.paymentHistories || [])
+        .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
+        .slice(0, 3)
+        .map(payment => ({
+          date: formatDate(payment.transactionDate),
+          amount: formatCurrency(payment.amount),
+          method: payment.amount > 100 ? 'Credit Card' : 'Online Banking',
+          status: 'Completed',
+          reference: `PAY${payment.id.toString().padStart(6, '0')}`
+        })),
+      barringHistory: (user.barringHistories || [])
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 3)
+        .map(barring => ({
+          date: formatDate(barring.date),
+          reason: barring.reason,
+          status: barring.status,
+          action: barring.status === 'BARRED' ? 'Barred' : 'Unbarred'
+        })),
+      invoices: (user.invoices || [])
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 3)
+        .map((invoice, index) => {
+          const invoiceDate = new Date(invoice.date);
+          const dueDate = new Date(invoice.date);
+          dueDate.setDate(21); // Set due date to 15th of the month
+          
+          return {
+            invoiceNumber: `INV${invoiceDate.getFullYear()}${(invoiceDate.getMonth() + 1).toString().padStart(2, '0')}-${(index + 1).toString().padStart(3, '0')}`,
+            date: formatDate(invoiceDate.toISOString()),
+            dueDate: formatDate(dueDate.toISOString()),
+            amount: formatCurrency(invoice.amount),
+            status: new Date() > dueDate ? 'Paid' : 'Pending',
+            items: [
+              { description: `Monthly Subscription - ${user.mobilePlan?.name}`, amount: formatCurrency(user.mobilePlan?.amount || 0) },
+              { description: 'Value Added Services', amount: formatCurrency(invoice.amount - (user.mobilePlan?.amount || 0) * 1.06) },
+              { description: 'Tax (6%)', amount: formatCurrency((user.mobilePlan?.amount || 0) * 0.06) }
+            ]
+          };
+        })
+    },
+    
+    // Additional Information
+    additionalInfo: {
+      notes: `Contract will be suspended on ${formatDate(user.suspensionDate)} if not renewed.`,
+      activationNotes: `Activated via ${user.activationSource} on ${formatDate(user.commencementDate)}`
+    }
+  };
+};
+
+export const getUserByMobile = (mobileNumber: string) => {
+  // Remove any non-digit characters and country code if present
+  const cleanNumber = mobileNumber.replace(/\D/g, '').replace(/^60?/, '');
+  
+  const user = (users as User[]).find(u => {
+    // Clean the stored number for comparison
+    const storedNumber = u.callerId.replace(/\D/g, '').replace(/^60?/, '');
+    return storedNumber === cleanNumber;
+  });
+  
+  if (!user) {
+    throw new Error(`No user found with mobile number: ${mobileNumber}`);
+  }
+  
+  return getAccountInfo(user.id);
+};
+
+//export const exampleAccountInfo = getUserByMobile("60123456789"); // Default to first user for backward compatibility
 
 export const examplePolicyDocs = [
   {
