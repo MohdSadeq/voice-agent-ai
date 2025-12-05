@@ -1,4 +1,4 @@
-import users from './users.json';
+import users from './fake.users.json';
 
 // Helper function to format currency in Malaysian Ringgit (RM)
 const formatCurrency = (amount?: number): string => {
@@ -256,8 +256,15 @@ export const getAccountInfo = (userId: number = 1) => {
 };
 
 export const getUserByMobile = (mobileNumber: string) => {
-  // Remove any non-digit characters and country code if present
-  const cleanNumber = mobileNumber.replace(/\D/g, '').replace(/^60?/, '');
+  // Remove any non-digit characters
+  const digitsOnly = mobileNumber.replace(/\D/g, '');
+  
+  // Check if the number starts with 60 (country code for Malaysia)
+  // If not, add it
+  const normalizedNumber = digitsOnly.startsWith('60') ? digitsOnly : `60${digitsOnly}`;
+  
+  // Remove the leading 60 for comparison with stored numbers
+  const cleanNumber = normalizedNumber.replace(/^60?/, '');
   
   const user = (users as User[]).find(u => {
     // Clean the stored number for comparison

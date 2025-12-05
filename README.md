@@ -1,4 +1,4 @@
-# redONE Voice Agent AI
+# redONE Voice Bot
 
 A modern, real-time voice AI assistant built with Next.js and the latest AI technologies, designed to provide natural and intelligent voice interactions.
 

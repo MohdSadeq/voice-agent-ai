@@ -440,7 +440,7 @@ function App() {
             red<span className="text-red-500">ONE</span> Mobile
           </div>
           <div className="text-sm ">
-             Voice Agent
+             Voice Bot
           </div>
           </div>
         </div>

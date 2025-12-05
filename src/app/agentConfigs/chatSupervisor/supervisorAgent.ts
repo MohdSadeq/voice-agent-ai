@@ -2,7 +2,6 @@ import { RealtimeItem, tool } from '@openai/agents/realtime';
 
 
 import {
-  exampleAccountInfo,
   examplePolicyDocs,
   exampleStoreLocations,
   exampleRedoneSearchResults,

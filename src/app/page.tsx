@@ -23,7 +23,7 @@ const Index = () => {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-              Voice AI That
+              Voice Bot That
               <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-float">
                 Understands Everything
               </span>
