@@ -1,10 +1,11 @@
 import { chatSupervisorScenario } from './chatSupervisor';
+import { customerServiceScenario } from './customerService';
 
 import type { RealtimeAgent } from '@openai/agents/realtime';
 
 // Map of scenario key -> array of RealtimeAgent objects
 export const allAgentSets: Record<string, RealtimeAgent[]> = {
- // customerServiceRetail: customerServiceRetailScenario,
+  customerService: customerServiceScenario,
   chatSupervisor: chatSupervisorScenario,
 };
 

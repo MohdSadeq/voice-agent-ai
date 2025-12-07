@@ -785,14 +785,14 @@ export const exampleStoreLocations = [
   {
     name: "Redone Kuala Lumpur",
     address: "123 Jalan Bukit Bintang, Level 1, Pavilion Mall",
-    zip_code: "55100",
+    postcode: "55100",
     phone: "(03) 555-1234",
     hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
   },
   {
     name: "Redone Mid Valley",
     address: "456 Mid Valley Megamall, Ground Floor",
-    zip_code: "59200",
+    postcode: "59200",
     phone: "(03) 555-5678",
     hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
   },
@@ -801,14 +801,14 @@ export const exampleStoreLocations = [
   {
     name: "Redone Georgetown",
     address: "789 Lebuh Light, Suite 200, Gurney Plaza",
-    zip_code: "10200",
+    postcode: "10200",
     phone: "(04) 555-9101",
     hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
   },
   {
     name: "Redone Penang Times Square",
     address: "101 Jalan Datuk Keramat, Level 3, Penang Times Square",
-    zip_code: "10150",
+    postcode: "10150",
     phone: "(04) 555-1122",
     hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
   },
@@ -817,14 +817,14 @@ export const exampleStoreLocations = [
   {
     name: "Redone Johor Bahru",
     address: "202 Jalan Tebrau, Level 2, KSL City Mall",
-    zip_code: "81100",
+    postcode: "81100",
     phone: "(07) 555-3344",
     hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
   },
   {
     name: "Redone Aeon Tebrau City",
     address: "303 Jalan Pantai, Aeon Tebrau City, Ground Floor",
-    zip_code: "81750",
+    postcode: "81750",
     phone: "(07) 555-7788",
     hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
   },
@@ -833,7 +833,7 @@ export const exampleStoreLocations = [
   {
     name: "Redone Langkawi",
     address: "404 Jalan Pantai Cenang, Langkawi Mall",
-    zip_code: "07000",
+    postcode: "07000",
     phone: "(04) 555-2211",
     hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
   }

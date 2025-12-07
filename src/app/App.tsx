@@ -20,14 +20,14 @@ import { createModerationGuardrail } from "@/app/agentConfigs/guardrails";
 
 // Agent configs
 import { allAgentSets, defaultAgentSetKey } from "@/app/agentConfigs";
-import { customerServiceRetailScenario } from "@/app/agentConfigs/customerServiceRetail";
+import { customerServiceScenario } from "@/app/agentConfigs/customerService";
 import { chatSupervisorScenario } from "@/app/agentConfigs/chatSupervisor";
-import { customerServiceRetailCompanyName } from "@/app/agentConfigs/customerServiceRetail";
+import { customerServiceCompanyName } from "@/app/agentConfigs/customerService";
 import { chatSupervisorCompanyName } from "@/app/agentConfigs/chatSupervisor";
 
 // Map used by connect logic for scenarios defined via the SDK.
 const sdkScenarioMap: Record<string, RealtimeAgent[]> = {
-  customerServiceRetail: customerServiceRetailScenario,
+  customerService: customerServiceScenario,
   chatSupervisor: chatSupervisorScenario,
 };
 
@@ -208,8 +208,8 @@ function App() {
           reorderedAgents.unshift(agent);
         }
 
-        const companyName = agentSetKey === 'customerServiceRetail'
-          ? customerServiceRetailCompanyName
+        const companyName = agentSetKey === 'customerService'
+          ? customerServiceCompanyName
           : chatSupervisorCompanyName;
         const guardrail = createModerationGuardrail(companyName);
 
@@ -260,9 +260,9 @@ function App() {
       ? null
       : {
           type: 'server_vad',
-          threshold: 0.9,
+          threshold: 0.8,
           prefix_padding_ms: 300,
-          silence_duration_ms: 500,
+          silence_duration_ms: 2000,
           create_response: true,
         };
 
