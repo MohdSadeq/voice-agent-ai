@@ -1288,6 +1288,114 @@
         "reason": "Barred due to late payment",
         "customerId": 21
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1000,
+        "title": "No Network Coverage",
+        "summary": "Issues while roaming internationally",
+        "pendingFor": "Network maintenance required",
+        "nextAction": "Update system configuration",
+        "status": "in-progress",
+        "category": "network",
+        "createdAt": "2025-12-08T08:50:21.208Z",
+        "updatedAt": "2025-11-23T10:41:31.639Z"
+      },
+      {
+        "id": 1001,
+        "title": "Duplicate Charges",
+        "summary": "Service suspended despite payment",
+        "pendingFor": "Awaiting customer response",
+        "nextAction": "Process service change",
+        "status": "closed",
+        "category": "billing",
+        "createdAt": "2025-11-14T03:57:11.227Z",
+        "updatedAt": "2025-11-25T22:01:20.804Z"
+      },
+      {
+        "id": 1002,
+        "title": "Plan Information Update",
+        "summary": "Requesting additional services",
+        "pendingFor": "Network maintenance required",
+        "nextAction": "Process refund",
+        "status": "open",
+        "category": "service",
+        "createdAt": "2025-12-07T21:27:30.230Z",
+        "updatedAt": "2025-11-14T01:45:33.868Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "bc5f3838-54d6-438f-81c3-1d720fa075d1",
+        "timestamp": "2025-11-23T23:35:27.073Z",
+        "summary": "Plan change not processed correctly. Verified request and reprocessed with backdated changes.",
+        "category": "billing",
+        "status": "escalated",
+        "actions": [
+          "Generated service ticket",
+          "Checked service status",
+          "Processed payment"
+        ],
+        "agent": "Michael Brown",
+        "duration": 8,
+        "followUpRequired": false
+      },
+      {
+        "id": "506701d3-df3f-4dba-949e-22c8fe9bca19",
+        "timestamp": "2025-10-06T22:35:27.073Z",
+        "summary": "5G not working. Verified device compatibility and network settings. Escalated to network team.",
+        "category": "network",
+        "status": "pending",
+        "actions": [
+          "Processed payment"
+        ],
+        "agent": "Michael Brown",
+        "duration": 12,
+        "followUpRequired": true,
+        "followUpDate": "2025-10-13"
+      },
+      {
+        "id": "40429cf0-d69c-41c7-99f6-79ab80d703ae",
+        "timestamp": "2025-10-02T22:35:27.073Z",
+        "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Scheduled follow-up call"
+        ],
+        "agent": "Priya Patel",
+        "duration": 5,
+        "followUpRequired": false
+      },
+      {
+        "id": "c01b5d6e-091b-4bb7-90b5-06c7b1a60e5a",
+        "timestamp": "2025-07-19T22:35:27.073Z",
+        "summary": "Family plan management. Added new line and explained shared data usage.",
+        "category": "service",
+        "status": "pending",
+        "actions": [
+          "Issued service credit",
+          "Provided self-help instructions"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 15,
+        "followUpRequired": false
+      },
+      {
+        "id": "a5cbdbe3-e6bc-4cea-8aa5-714ec1b4d44c",
+        "timestamp": "2025-06-20T22:35:27.073Z",
+        "summary": "Number porting inquiry. Provided requirements and initiated porting process.",
+        "category": "service",
+        "status": "escalated",
+        "actions": [
+          "Scheduled follow-up call",
+          "Processed payment",
+          "Updated customer information"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 14,
+        "followUpRequired": false
+      }
     ]
   },
   {
@@ -2432,6 +2540,118 @@
         "reason": "Suspended due to barred for 7 days",
         "customerId": 22
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1003,
+        "title": "Slow Internet Speed",
+        "summary": "Issues while roaming internationally",
+        "pendingFor": "Technical team investigation",
+        "nextAction": "Schedule callback",
+        "status": "closed",
+        "category": "network",
+        "createdAt": "2025-12-03T20:34:24.658Z",
+        "updatedAt": "2025-12-02T06:29:06.348Z"
+      },
+      {
+        "id": 1004,
+        "title": "Late Fee Waiver",
+        "summary": "Requesting refund for overcharge",
+        "pendingFor": "System update in progress",
+        "nextAction": "Escalate to senior support",
+        "status": "closed",
+        "category": "billing",
+        "createdAt": "2025-11-25T16:50:25.119Z",
+        "updatedAt": "2025-12-02T03:50:01.254Z"
+      },
+      {
+        "id": 1005,
+        "title": "Data Top-up",
+        "summary": "Wants to cancel service",
+        "pendingFor": "Legal department review",
+        "nextAction": "Issue credit note",
+        "status": "resolved",
+        "category": "service",
+        "createdAt": "2025-11-29T07:58:08.373Z",
+        "updatedAt": "2025-11-26T02:42:22.479Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "11843d6d-7b0e-4bbc-a422-c69637c4f78e",
+        "timestamp": "2025-11-01T23:35:27.073Z",
+        "summary": "Customer disputing charges on latest bill. Explained charges and provided detailed breakdown. Issued partial credit for inconvenience.",
+        "category": "billing",
+        "status": "resolved",
+        "actions": [
+          "Generated service ticket",
+          "Updated customer information",
+          "Issued service credit"
+        ],
+        "agent": "Alex Johnson",
+        "duration": 5,
+        "followUpRequired": true,
+        "followUpDate": "2025-11-04"
+      },
+      {
+        "id": "c783aba9-b722-4255-86c7-134839da8e1b",
+        "timestamp": "2025-08-12T22:35:27.073Z",
+        "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
+        "category": "technical",
+        "status": "escalated",
+        "actions": [
+          "Updated customer information",
+          "Issued service credit",
+          "Checked service status"
+        ],
+        "agent": "Michael Brown",
+        "duration": 2,
+        "followUpRequired": true,
+        "followUpDate": "2025-08-13"
+      },
+      {
+        "id": "f43bfce0-b1ba-49fc-a7ad-a669d84efd0e",
+        "timestamp": "2025-07-07T22:35:27.073Z",
+        "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
+        "category": "billing",
+        "status": "closed",
+        "actions": [
+          "Escalated to technical team",
+          "Reset network settings",
+          "Scheduled follow-up call"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 6,
+        "followUpRequired": false
+      },
+      {
+        "id": "db30e8bc-00a8-4653-bf9c-fd3018f1703d",
+        "timestamp": "2025-07-06T22:35:27.073Z",
+        "summary": "Requested account ownership transfer. Explained process and documentation required.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Checked service status",
+          "Updated customer information",
+          "Reset network settings"
+        ],
+        "agent": "Priya Patel",
+        "duration": 11,
+        "followUpRequired": false
+      },
+      {
+        "id": "c33896c9-16c2-43cd-a53e-c7e960ec22a0",
+        "timestamp": "2025-07-02T22:35:27.073Z",
+        "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
+        "category": "general",
+        "status": "closed",
+        "actions": [
+          "Escalated to technical team"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 8,
+        "followUpRequired": false
+      }
     ]
   },
   {
@@ -3001,6 +3221,114 @@
         "status": "BARRED",
         "reason": "Barred due to exceed credit limit",
         "customerId": 23
+      }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1006,
+        "title": "WiFi Calling Not Available",
+        "summary": "WiFi calling feature not available",
+        "pendingFor": "Technical team investigation",
+        "nextAction": "Escalate to senior support",
+        "status": "in-progress",
+        "category": "network",
+        "createdAt": "2025-11-20T17:58:04.845Z",
+        "updatedAt": "2025-11-16T13:35:33.135Z"
+      },
+      {
+        "id": 1007,
+        "title": "Incorrect Charges",
+        "summary": "Incorrect plan charges applied",
+        "pendingFor": "Management approval pending",
+        "nextAction": "Update system configuration",
+        "status": "in-progress",
+        "category": "billing",
+        "createdAt": "2025-12-06T04:01:34.115Z",
+        "updatedAt": "2025-12-05T12:30:34.292Z"
+      },
+      {
+        "id": 1008,
+        "title": "Service Change Request",
+        "summary": "Need to enable international roaming",
+        "pendingFor": "Awaiting customer response",
+        "nextAction": "Process service change",
+        "status": "open",
+        "category": "service",
+        "createdAt": "2025-11-28T04:28:23.103Z",
+        "updatedAt": "2025-11-12T05:11:32.627Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "1a58977b-ac0b-4c21-923f-3f78d44f9792",
+        "timestamp": "2025-11-13T23:35:27.073Z",
+        "summary": "Requested account ownership transfer. Explained process and documentation required.",
+        "category": "general",
+        "status": "closed",
+        "actions": [
+          "Reset network settings",
+          "Processed payment"
+        ],
+        "agent": "James Wilson",
+        "duration": 9,
+        "followUpRequired": false
+      },
+      {
+        "id": "33f14208-603c-4ddc-b5e7-4f8f59f880fe",
+        "timestamp": "2025-11-02T23:35:27.073Z",
+        "summary": "Payment not reflected in account. Verified payment and processed manual update. Confirmed with customer.",
+        "category": "billing",
+        "status": "closed",
+        "actions": [
+          "Processed payment",
+          "Escalated to technical team"
+        ],
+        "agent": "Alex Johnson",
+        "duration": 5,
+        "followUpRequired": false
+      },
+      {
+        "id": "8738c53c-11a5-4c53-a110-9288fec0fd4d",
+        "timestamp": "2025-08-06T22:35:27.073Z",
+        "summary": "Customer reported no network coverage in their area. Checked coverage map and confirmed poor coverage. Suggested network settings reset.",
+        "category": "network",
+        "status": "escalated",
+        "actions": [
+          "Reset network settings",
+          "Provided self-help instructions"
+        ],
+        "agent": "James Wilson",
+        "duration": 8,
+        "followUpRequired": false
+      },
+      {
+        "id": "113fbec0-f631-45b9-b0de-6498cccfc3ee",
+        "timestamp": "2025-07-21T22:35:27.073Z",
+        "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
+        "category": "technical",
+        "status": "resolved",
+        "actions": [
+          "Scheduled follow-up call",
+          "Performed account verification",
+          "Updated customer information"
+        ],
+        "agent": "James Wilson",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "dd5176b4-e14c-4350-9afa-a0e771bad32f",
+        "timestamp": "2025-07-09T22:35:27.073Z",
+        "summary": "Question about contract terms. Explained terms and early termination fees.",
+        "category": "general",
+        "status": "resolved",
+        "actions": [
+          "Escalated to technical team",
+          "Checked service status"
+        ],
+        "agent": "Michael Brown",
+        "duration": 2,
+        "followUpRequired": false
       }
     ]
   },
@@ -4409,6 +4737,112 @@
         "reason": "Suspended due to barred for 7 days",
         "customerId": 24
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1009,
+        "title": "WiFi Calling Not Available",
+        "summary": "WiFi calling feature not available",
+        "pendingFor": "Technical team investigation",
+        "nextAction": "Escalate to senior support",
+        "status": "open",
+        "category": "network",
+        "createdAt": "2025-12-05T14:20:50.773Z",
+        "updatedAt": "2025-11-26T05:59:19.450Z"
+      },
+      {
+        "id": 1010,
+        "title": "Service Suspension Error",
+        "summary": "Incorrect plan charges applied",
+        "pendingFor": "Awaiting parts",
+        "nextAction": "Send confirmation email",
+        "status": "resolved",
+        "category": "billing",
+        "createdAt": "2025-11-24T01:58:50.711Z",
+        "updatedAt": "2025-11-24T17:28:07.801Z"
+      },
+      {
+        "id": 1011,
+        "title": "Number Porting",
+        "summary": "Need to manage family plan members",
+        "pendingFor": "Awaiting parts",
+        "nextAction": "Process service change",
+        "status": "open",
+        "category": "service",
+        "createdAt": "2025-11-14T04:38:09.664Z",
+        "updatedAt": "2025-11-26T17:28:07.297Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "d9ab5924-7b15-4382-8883-d2075f30745b",
+        "timestamp": "2025-11-27T23:35:27.073Z",
+        "summary": "Question about contract terms. Explained terms and early termination fees.",
+        "category": "general",
+        "status": "pending",
+        "actions": [
+          "Escalated to technical team",
+          "Scheduled follow-up call",
+          "Checked service status"
+        ],
+        "agent": "Alex Johnson",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "d1483ea5-6e7f-44ec-8c40-73ef1f352744",
+        "timestamp": "2025-11-07T23:35:27.073Z",
+        "summary": "Customer wants to change plan. Provided plan comparison and processed change effective next billing cycle.",
+        "category": "service",
+        "status": "pending",
+        "actions": [
+          "Updated customer about resolution"
+        ],
+        "agent": "Alex Johnson",
+        "duration": 5,
+        "followUpRequired": false
+      },
+      {
+        "id": "ff136c8c-7343-4166-876c-1644e9455a79",
+        "timestamp": "2025-08-26T22:35:27.073Z",
+        "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Explained service options",
+          "Checked service status"
+        ],
+        "agent": "Michael Brown",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "bdc8d371-674a-4772-b2e0-0b19c27039b9",
+        "timestamp": "2025-08-15T22:35:27.073Z",
+        "summary": "SMS not being received. Checked message center number and performed network refresh.",
+        "category": "technical",
+        "status": "resolved",
+        "actions": [
+          "Generated service ticket",
+          "Performed account verification"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 15,
+        "followUpRequired": false
+      },
+      {
+        "id": "3cc91a5f-10da-4b82-869b-549ac1fe3783",
+        "timestamp": "2025-08-05T22:35:27.073Z",
+        "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Generated service ticket"
+        ],
+        "agent": "David Kim",
+        "duration": 9,
+        "followUpRequired": false
+      }
     ]
   },
   {
@@ -5610,6 +6044,114 @@
         "reason": "Unbarred after full payment is made",
         "customerId": 25
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1012,
+        "title": "Data Connection Problems",
+        "summary": "No network coverage at customer location",
+        "pendingFor": "Management approval pending",
+        "nextAction": "Process service change",
+        "status": "closed",
+        "category": "network",
+        "createdAt": "2025-12-02T15:40:31.790Z",
+        "updatedAt": "2025-11-13T10:51:16.786Z"
+      },
+      {
+        "id": 1013,
+        "title": "Payment Processing Issue",
+        "summary": "Plan change not processed correctly",
+        "pendingFor": "Management approval pending",
+        "nextAction": "Close ticket",
+        "status": "resolved",
+        "category": "billing",
+        "createdAt": "2025-12-04T17:29:04.475Z",
+        "updatedAt": "2025-12-01T14:25:38.118Z"
+      },
+      {
+        "id": 1014,
+        "title": "Add-on Service Request",
+        "summary": "Requesting additional data package",
+        "pendingFor": "Customer confirmation needed",
+        "nextAction": "Close ticket",
+        "status": "resolved",
+        "category": "service",
+        "createdAt": "2025-11-11T04:50:23.651Z",
+        "updatedAt": "2025-11-25T21:55:24.772Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "d0ba8de9-c2a3-4103-b317-7edb2d51dc77",
+        "timestamp": "2025-11-26T23:35:27.074Z",
+        "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
+        "category": "general",
+        "status": "closed",
+        "actions": [
+          "Generated service ticket",
+          "Escalated to technical team",
+          "Updated customer information"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 3,
+        "followUpRequired": false
+      },
+      {
+        "id": "401634f5-e3c9-49a3-bc8a-aab6a44267e7",
+        "timestamp": "2025-11-16T23:35:27.074Z",
+        "summary": "VoLTE not working. Verified device compatibility and network settings. Reset VoLTE profile.",
+        "category": "technical",
+        "status": "pending",
+        "actions": [
+          "Issued service credit"
+        ],
+        "agent": "David Kim",
+        "duration": 5,
+        "followUpRequired": false
+      },
+      {
+        "id": "73516457-995a-4b44-8fb5-8d6853f1bacb",
+        "timestamp": "2025-10-29T23:35:27.074Z",
+        "summary": "Requested account ownership transfer. Explained process and documentation required.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Scheduled follow-up call",
+          "Processed payment"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 3,
+        "followUpRequired": false
+      },
+      {
+        "id": "adf0b3c2-f637-4a4d-b9df-94d1f72eaab1",
+        "timestamp": "2025-08-02T22:35:27.074Z",
+        "summary": "VoLTE not working. Verified device compatibility and network settings. Reset VoLTE profile.",
+        "category": "technical",
+        "status": "pending",
+        "actions": [
+          "Explained service options",
+          "Processed payment",
+          "Updated customer about resolution"
+        ],
+        "agent": "Alex Johnson",
+        "duration": 2,
+        "followUpRequired": false
+      },
+      {
+        "id": "ccf3907b-4834-42b0-a643-ec4909cc8add",
+        "timestamp": "2025-06-16T22:35:27.074Z",
+        "summary": "Requested account ownership transfer. Explained process and documentation required.",
+        "category": "general",
+        "status": "resolved",
+        "actions": [
+          "Issued service credit"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 10,
+        "followUpRequired": true,
+        "followUpDate": "2025-06-18"
+      }
     ]
   },
   {
@@ -6211,6 +6753,115 @@
         "status": "UNBARRED",
         "reason": "Unbarred after credit limit increased",
         "customerId": 26
+      }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1015,
+        "title": "WiFi Calling Not Available",
+        "summary": "5G service not working as expected",
+        "pendingFor": "Management approval pending",
+        "nextAction": "Process refund",
+        "status": "closed",
+        "category": "network",
+        "createdAt": "2025-11-18T10:58:07.237Z",
+        "updatedAt": "2025-11-18T21:14:14.016Z"
+      },
+      {
+        "id": 1016,
+        "title": "Late Fee Waiver",
+        "summary": "Asking for late fee to be waived",
+        "pendingFor": "Network maintenance required",
+        "nextAction": "Update system configuration",
+        "status": "open",
+        "category": "billing",
+        "createdAt": "2025-11-12T02:19:54.308Z",
+        "updatedAt": "2025-11-14T04:37:17.862Z"
+      },
+      {
+        "id": 1017,
+        "title": "Service Cancellation",
+        "summary": "Wants to cancel service",
+        "pendingFor": "Customer confirmation needed",
+        "nextAction": "Process refund",
+        "status": "resolved",
+        "category": "service",
+        "createdAt": "2025-11-20T10:04:56.521Z",
+        "updatedAt": "2025-11-24T15:56:33.248Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "ee7e4e23-7c70-4956-baf5-179d8072d1b8",
+        "timestamp": "2025-10-07T22:35:27.074Z",
+        "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Checked service status",
+          "Reset network settings",
+          "Explained service options"
+        ],
+        "agent": "Priya Patel",
+        "duration": 6,
+        "followUpRequired": false
+      },
+      {
+        "id": "7a400a7e-9cf5-4676-9fe6-5a889fb75fc0",
+        "timestamp": "2025-09-23T22:35:27.074Z",
+        "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
+        "category": "general",
+        "status": "closed",
+        "actions": [
+          "Processed payment",
+          "Updated customer information"
+        ],
+        "agent": "James Wilson",
+        "duration": 10,
+        "followUpRequired": true,
+        "followUpDate": "2025-09-27"
+      },
+      {
+        "id": "8fbd039c-9e9c-4a7f-b874-d8f9a50715e8",
+        "timestamp": "2025-08-01T22:35:27.074Z",
+        "summary": "General feedback about service. Thanked customer and noted feedback for management.",
+        "category": "general",
+        "status": "resolved",
+        "actions": [
+          "Explained service options",
+          "Processed payment",
+          "Reset network settings"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 5,
+        "followUpRequired": true,
+        "followUpDate": "2025-08-06"
+      },
+      {
+        "id": "e32bc754-9475-463c-8990-cfdf2e954532",
+        "timestamp": "2025-07-15T22:35:27.074Z",
+        "summary": "Question about contract terms. Explained terms and early termination fees.",
+        "category": "general",
+        "status": "pending",
+        "actions": [
+          "Checked service status"
+        ],
+        "agent": "Priya Patel",
+        "duration": 3,
+        "followUpRequired": false
+      },
+      {
+        "id": "80094367-0293-47f1-b2cc-f597b31edc22",
+        "timestamp": "2025-07-13T22:35:27.074Z",
+        "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
+        "category": "billing",
+        "status": "closed",
+        "actions": [
+          "Performed account verification"
+        ],
+        "agent": "Michael Brown",
+        "duration": 8,
+        "followUpRequired": false
       }
     ]
   },
@@ -7295,6 +7946,114 @@
         "reason": "Unbarred after credit limit increased",
         "customerId": 27
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1018,
+        "title": "Data Connection Problems",
+        "summary": "Very poor signal strength in home area",
+        "pendingFor": "Management approval pending",
+        "nextAction": "Process refund",
+        "status": "in-progress",
+        "category": "network",
+        "createdAt": "2025-12-04T00:18:02.118Z",
+        "updatedAt": "2025-11-18T05:02:07.690Z"
+      },
+      {
+        "id": 1019,
+        "title": "Payment Processing Issue",
+        "summary": "Plan change not processed correctly",
+        "pendingFor": "Customer confirmation needed",
+        "nextAction": "Process service change",
+        "status": "resolved",
+        "category": "billing",
+        "createdAt": "2025-11-23T20:15:35.451Z",
+        "updatedAt": "2025-11-22T00:06:18.283Z"
+      },
+      {
+        "id": 1020,
+        "title": "Data Top-up",
+        "summary": "Want to add international calling package",
+        "pendingFor": "Billing department review",
+        "nextAction": "Schedule callback",
+        "status": "open",
+        "category": "service",
+        "createdAt": "2025-11-13T23:44:02.977Z",
+        "updatedAt": "2025-12-04T16:49:49.076Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "8f35d0ba-3a26-4012-be24-47f7d7dbdb75",
+        "timestamp": "2025-10-10T22:35:27.074Z",
+        "summary": "5G not working. Verified device compatibility and network settings. Escalated to network team.",
+        "category": "network",
+        "status": "pending",
+        "actions": [
+          "Checked service status",
+          "Issued service credit"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 4,
+        "followUpRequired": false
+      },
+      {
+        "id": "57224797-27da-4a33-9e2b-18d4f5898d72",
+        "timestamp": "2025-10-07T22:35:27.074Z",
+        "summary": "Family plan management. Added new line and explained shared data usage.",
+        "category": "service",
+        "status": "escalated",
+        "actions": [
+          "Issued service credit",
+          "Escalated to technical team",
+          "Performed account verification"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 11,
+        "followUpRequired": false
+      },
+      {
+        "id": "24b3ce43-fd7c-40e1-b51d-3cc5f2394c8a",
+        "timestamp": "2025-08-16T22:35:27.074Z",
+        "summary": "Customer reported no network coverage in their area. Checked coverage map and confirmed poor coverage. Suggested network settings reset.",
+        "category": "network",
+        "status": "resolved",
+        "actions": [
+          "Updated customer about resolution",
+          "Issued service credit"
+        ],
+        "agent": "David Kim",
+        "duration": 11,
+        "followUpRequired": false
+      },
+      {
+        "id": "edf433c3-40f0-4e08-8c2a-3ef8eadf1d8a",
+        "timestamp": "2025-08-14T22:35:27.074Z",
+        "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
+        "category": "general",
+        "status": "pending",
+        "actions": [
+          "Escalated to technical team",
+          "Scheduled follow-up call"
+        ],
+        "agent": "James Wilson",
+        "duration": 5,
+        "followUpRequired": true,
+        "followUpDate": "2025-08-16"
+      },
+      {
+        "id": "f5664f68-d349-4cda-94ec-9532ad75fd20",
+        "timestamp": "2025-06-12T22:35:27.074Z",
+        "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
+        "category": "billing",
+        "status": "escalated",
+        "actions": [
+          "Explained service options"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 13,
+        "followUpRequired": false
+      }
     ]
   },
   {
@@ -8267,6 +9026,109 @@
         "reason": "Unbarred after full payment is made",
         "customerId": 28
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1021,
+        "title": "Network Connectivity Issue",
+        "summary": "Issues while roaming internationally",
+        "pendingFor": "Technical team investigation",
+        "nextAction": "Close ticket",
+        "status": "open",
+        "category": "network",
+        "createdAt": "2025-11-12T13:15:33.815Z",
+        "updatedAt": "2025-12-05T11:54:03.994Z"
+      },
+      {
+        "id": 1022,
+        "title": "Late Fee Waiver",
+        "summary": "Duplicate charges found on bill",
+        "pendingFor": "Customer confirmation needed",
+        "nextAction": "Send confirmation email",
+        "status": "in-progress",
+        "category": "billing",
+        "createdAt": "2025-11-13T18:08:57.273Z",
+        "updatedAt": "2025-11-20T04:32:39.537Z"
+      },
+      {
+        "id": 1023,
+        "title": "Plan Information Update",
+        "summary": "Need to update plan features",
+        "pendingFor": "Legal department review",
+        "nextAction": "Process service change",
+        "status": "closed",
+        "category": "service",
+        "createdAt": "2025-11-24T04:30:48.852Z",
+        "updatedAt": "2025-11-13T07:22:18.647Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "47a61785-1ff0-4090-8cdd-36a7bce11429",
+        "timestamp": "2025-11-11T23:35:27.074Z",
+        "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
+        "category": "technical",
+        "status": "resolved",
+        "actions": [
+          "Issued service credit"
+        ],
+        "agent": "Michael Brown",
+        "duration": 13,
+        "followUpRequired": false
+      },
+      {
+        "id": "d65cc4c2-95ad-4510-b71d-af29c4c738a1",
+        "timestamp": "2025-10-24T22:35:27.074Z",
+        "summary": "Intermittent call drops reported. Suggested toggling airplane mode and checking for software updates.",
+        "category": "network",
+        "status": "closed",
+        "actions": [
+          "Escalated to technical team",
+          "Generated service ticket"
+        ],
+        "agent": "Alex Johnson",
+        "duration": 13,
+        "followUpRequired": false
+      },
+      {
+        "id": "4cb240d9-a50f-4230-86b9-3044f9fad5d9",
+        "timestamp": "2025-10-10T22:35:27.074Z",
+        "summary": "SIM replacement requested. Verified account ownership and initiated replacement process.",
+        "category": "service",
+        "status": "escalated",
+        "actions": [
+          "Processed payment"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 10,
+        "followUpRequired": false
+      },
+      {
+        "id": "23861da1-2035-4c9b-83cf-b6b5cd4cece3",
+        "timestamp": "2025-07-25T22:35:27.074Z",
+        "summary": "VoLTE not working. Verified device compatibility and network settings. Reset VoLTE profile.",
+        "category": "technical",
+        "status": "pending",
+        "actions": [
+          "Processed payment"
+        ],
+        "agent": "Michael Brown",
+        "duration": 11,
+        "followUpRequired": false
+      },
+      {
+        "id": "18eef749-b250-48e7-ba60-b00fc92e78b1",
+        "timestamp": "2025-06-22T22:35:27.074Z",
+        "summary": "Roaming issues while traveling. Verified roaming is enabled and provided manual network selection instructions.",
+        "category": "network",
+        "status": "escalated",
+        "actions": [
+          "Generated service ticket"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 3,
+        "followUpRequired": false
+      }
     ]
   },
   {
@@ -8964,7 +9826,117 @@
         "customerId": 29
       }
     ],
-    "barringHistories": []
+    "barringHistories": [],
+    "ticketHistories": [
+      {
+        "id": 1024,
+        "title": "Roaming Issues",
+        "summary": "Very poor signal strength in home area",
+        "pendingFor": "Vendor escalation",
+        "nextAction": "Update system configuration",
+        "status": "open",
+        "category": "network",
+        "createdAt": "2025-11-19T18:53:48.380Z",
+        "updatedAt": "2025-11-20T13:42:41.878Z"
+      },
+      {
+        "id": 1025,
+        "title": "Incorrect Tax Calculation",
+        "summary": "Disputing charges on latest bill",
+        "pendingFor": "Billing department review",
+        "nextAction": "Update account",
+        "status": "open",
+        "category": "billing",
+        "createdAt": "2025-11-18T18:41:17.414Z",
+        "updatedAt": "2025-11-19T08:19:05.063Z"
+      },
+      {
+        "id": 1026,
+        "title": "Plan Upgrade/Downgrade",
+        "summary": "Interested in changing current plan",
+        "pendingFor": "Customer confirmation needed",
+        "nextAction": "Send confirmation email",
+        "status": "open",
+        "category": "service",
+        "createdAt": "2025-11-30T19:03:15.351Z",
+        "updatedAt": "2025-12-06T17:25:27.287Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "ee5f7ce3-bd8b-435d-ac9b-9420c1d6d0a2",
+        "timestamp": "2025-11-11T23:35:27.075Z",
+        "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
+        "category": "technical",
+        "status": "resolved",
+        "actions": [
+          "Checked service status",
+          "Updated customer information",
+          "Generated service ticket"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 6,
+        "followUpRequired": true,
+        "followUpDate": "2025-11-12"
+      },
+      {
+        "id": "578556bd-4364-4185-b7dc-00f32e22ab02",
+        "timestamp": "2025-08-24T22:35:27.074Z",
+        "summary": "SIM replacement requested. Verified account ownership and initiated replacement process.",
+        "category": "service",
+        "status": "resolved",
+        "actions": [
+          "Checked service status",
+          "Reset network settings"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "1542daef-ca19-4d7b-b8cf-b5c041870c35",
+        "timestamp": "2025-08-11T22:35:27.075Z",
+        "summary": "Payment not reflected in account. Verified payment and processed manual update. Confirmed with customer.",
+        "category": "billing",
+        "status": "resolved",
+        "actions": [
+          "Performed account verification"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 3,
+        "followUpRequired": false
+      },
+      {
+        "id": "36a7bfe9-32d5-4a92-af1b-96e04c435535",
+        "timestamp": "2025-07-13T22:35:27.075Z",
+        "summary": "General feedback about service. Thanked customer and noted feedback for management.",
+        "category": "general",
+        "status": "pending",
+        "actions": [
+          "Reset network settings",
+          "Updated customer about resolution",
+          "Issued service credit"
+        ],
+        "agent": "Michael Brown",
+        "duration": 12,
+        "followUpRequired": true,
+        "followUpDate": "2025-07-14"
+      },
+      {
+        "id": "84249249-1ae4-4ec4-a4b2-eff8a9f2ac52",
+        "timestamp": "2025-07-06T22:35:27.074Z",
+        "summary": "Customer disputing charges on latest bill. Explained charges and provided detailed breakdown. Issued partial credit for inconvenience.",
+        "category": "billing",
+        "status": "escalated",
+        "actions": [
+          "Performed account verification",
+          "Provided self-help instructions"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 8,
+        "followUpRequired": false
+      }
+    ]
   },
   {
     "id": 30,
@@ -10116,6 +11088,115 @@
         "reason": "Unsuspended after full payment is made",
         "customerId": 30
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1027,
+        "title": "Slow Internet Speed",
+        "summary": "Customer reports frequent network disconnections",
+        "pendingFor": "Billing department review",
+        "nextAction": "Process service change",
+        "status": "closed",
+        "category": "network",
+        "createdAt": "2025-11-15T02:42:21.409Z",
+        "updatedAt": "2025-11-30T10:33:22.973Z"
+      },
+      {
+        "id": 1028,
+        "title": "Incorrect Charges",
+        "summary": "Disputing charges on latest bill",
+        "pendingFor": "Network maintenance required",
+        "nextAction": "Issue credit note",
+        "status": "resolved",
+        "category": "billing",
+        "createdAt": "2025-11-14T09:26:50.622Z",
+        "updatedAt": "2025-12-07T20:49:13.929Z"
+      },
+      {
+        "id": 1029,
+        "title": "Plan Information Update",
+        "summary": "Requesting replacement SIM card",
+        "pendingFor": "Customer confirmation needed",
+        "nextAction": "Update account",
+        "status": "closed",
+        "category": "service",
+        "createdAt": "2025-11-12T23:16:33.300Z",
+        "updatedAt": "2025-11-10T05:55:39.707Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "3198e65b-77bb-40a1-b98d-2234969a435e",
+        "timestamp": "2025-11-30T23:35:27.075Z",
+        "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Escalated to technical team",
+          "Scheduled follow-up call",
+          "Provided self-help instructions"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 11,
+        "followUpRequired": false
+      },
+      {
+        "id": "14191dbb-11cc-414e-8a03-72f76d2e2931",
+        "timestamp": "2025-10-26T23:35:27.075Z",
+        "summary": "General feedback about service. Thanked customer and noted feedback for management.",
+        "category": "general",
+        "status": "closed",
+        "actions": [
+          "Explained service options",
+          "Scheduled follow-up call",
+          "Updated customer information"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 15,
+        "followUpRequired": false
+      },
+      {
+        "id": "a6d6515e-b19e-487b-9813-c6ad6c75dc20",
+        "timestamp": "2025-10-02T22:35:27.075Z",
+        "summary": "General feedback about service. Thanked customer and noted feedback for management.",
+        "category": "general",
+        "status": "pending",
+        "actions": [
+          "Generated service ticket",
+          "Scheduled follow-up call",
+          "Processed payment"
+        ],
+        "agent": "David Kim",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "ad209399-1c50-4db1-89d8-ab6aba7fa9d4",
+        "timestamp": "2025-08-22T22:35:27.075Z",
+        "summary": "Roaming issues while traveling. Verified roaming is enabled and provided manual network selection instructions.",
+        "category": "network",
+        "status": "resolved",
+        "actions": [
+          "Explained service options",
+          "Generated service ticket"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 14,
+        "followUpRequired": false
+      },
+      {
+        "id": "dc456e4a-f2bc-47d2-b995-74c8f9cf2111",
+        "timestamp": "2025-07-24T22:35:27.075Z",
+        "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
+        "category": "general",
+        "status": "closed",
+        "actions": [
+          "Scheduled follow-up call"
+        ],
+        "agent": "James Wilson",
+        "duration": 3,
+        "followUpRequired": false
+      }
     ]
   },
   {
@@ -11236,6 +12317,113 @@
         "status": "UNSUSPENDED",
         "reason": "Unsuspended after full payment is made",
         "customerId": 31
+      }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1030,
+        "title": "Frequent Call Drops",
+        "summary": "No network coverage at customer location",
+        "pendingFor": "Awaiting parts",
+        "nextAction": "Close ticket",
+        "status": "closed",
+        "category": "network",
+        "createdAt": "2025-11-25T08:58:12.120Z",
+        "updatedAt": "2025-11-16T06:14:41.102Z"
+      },
+      {
+        "id": 1031,
+        "title": "Billing Dispute",
+        "summary": "Incorrect plan charges applied",
+        "pendingFor": "Technical team investigation",
+        "nextAction": "Schedule technician visit",
+        "status": "closed",
+        "category": "billing",
+        "createdAt": "2025-12-02T02:13:16.511Z",
+        "updatedAt": "2025-11-10T10:17:50.769Z"
+      },
+      {
+        "id": 1032,
+        "title": "International Roaming Enable",
+        "summary": "Interested in changing current plan",
+        "pendingFor": "Awaiting customer response",
+        "nextAction": "Schedule callback",
+        "status": "closed",
+        "category": "service",
+        "createdAt": "2025-11-11T11:55:14.859Z",
+        "updatedAt": "2025-11-18T21:02:57.805Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "a4f465fd-047c-4111-a2a1-9787cdc842d1",
+        "timestamp": "2025-11-18T23:35:27.075Z",
+        "summary": "Number porting inquiry. Provided requirements and initiated porting process.",
+        "category": "service",
+        "status": "escalated",
+        "actions": [
+          "Performed account verification"
+        ],
+        "agent": "Michael Brown",
+        "duration": 11,
+        "followUpRequired": false
+      },
+      {
+        "id": "17eafb19-a7d2-465a-84bd-cee9f0105b17",
+        "timestamp": "2025-10-16T22:35:27.075Z",
+        "summary": "Mobile hotspot not working. Verified plan includes hotspot and reset data settings.",
+        "category": "technical",
+        "status": "closed",
+        "actions": [
+          "Scheduled follow-up call"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 4,
+        "followUpRequired": false
+      },
+      {
+        "id": "80cbf605-1547-4a84-9b77-8b87c32272df",
+        "timestamp": "2025-08-28T22:35:27.075Z",
+        "summary": "Roaming issues while traveling. Verified roaming is enabled and provided manual network selection instructions.",
+        "category": "network",
+        "status": "resolved",
+        "actions": [
+          "Provided self-help instructions"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 10,
+        "followUpRequired": false
+      },
+      {
+        "id": "39df481f-f57d-4939-9785-50fbcfc79061",
+        "timestamp": "2025-06-24T22:35:27.075Z",
+        "summary": "Request to enable international roaming. Verified ID and enabled service with rate explanation.",
+        "category": "service",
+        "status": "resolved",
+        "actions": [
+          "Reset network settings",
+          "Updated customer about resolution",
+          "Processed payment"
+        ],
+        "agent": "James Wilson",
+        "duration": 11,
+        "followUpRequired": true,
+        "followUpDate": "2025-06-26"
+      },
+      {
+        "id": "b91e5ad7-95a9-4d53-9fbc-49a50b95fc49",
+        "timestamp": "2025-06-14T22:35:27.075Z",
+        "summary": "VoLTE not working. Verified device compatibility and network settings. Reset VoLTE profile.",
+        "category": "technical",
+        "status": "closed",
+        "actions": [
+          "Checked service status",
+          "Explained service options"
+        ],
+        "agent": "Michael Brown",
+        "duration": 5,
+        "followUpRequired": true,
+        "followUpDate": "2025-06-19"
       }
     ]
   },
@@ -12676,6 +13864,119 @@
         "reason": "Unsuspended after full payment is made",
         "customerId": 32
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1033,
+        "title": "No Network Coverage",
+        "summary": "No network coverage at customer location",
+        "pendingFor": "Vendor escalation",
+        "nextAction": "Process refund",
+        "status": "in-progress",
+        "category": "network",
+        "createdAt": "2025-11-29T02:52:16.522Z",
+        "updatedAt": "2025-11-24T05:39:26.892Z"
+      },
+      {
+        "id": 1034,
+        "title": "Billing Dispute",
+        "summary": "Promotional discount not applied",
+        "pendingFor": "Technical team investigation",
+        "nextAction": "Send confirmation email",
+        "status": "open",
+        "category": "billing",
+        "createdAt": "2025-11-13T15:14:09.028Z",
+        "updatedAt": "2025-11-24T10:59:16.222Z"
+      },
+      {
+        "id": 1035,
+        "title": "International Roaming Enable",
+        "summary": "Requesting additional data package",
+        "pendingFor": "Technical team investigation",
+        "nextAction": "Issue credit note",
+        "status": "closed",
+        "category": "service",
+        "createdAt": "2025-11-23T08:24:30.132Z",
+        "updatedAt": "2025-12-06T03:01:45.855Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "c71d29ff-740d-4910-ae00-3846d9de7b6e",
+        "timestamp": "2025-10-10T22:35:27.075Z",
+        "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
+        "category": "general",
+        "status": "resolved",
+        "actions": [
+          "Processed payment",
+          "Issued service credit",
+          "Updated customer information"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 4,
+        "followUpRequired": true,
+        "followUpDate": "2025-10-12"
+      },
+      {
+        "id": "b1e3bc88-b0b5-40e2-8e9b-fad6bb27903d",
+        "timestamp": "2025-10-06T22:35:27.075Z",
+        "summary": "Customer reported no network coverage in their area. Checked coverage map and confirmed poor coverage. Suggested network settings reset.",
+        "category": "network",
+        "status": "resolved",
+        "actions": [
+          "Provided self-help instructions",
+          "Checked service status",
+          "Updated customer about resolution"
+        ],
+        "agent": "Alex Johnson",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "cb89168b-ee34-4faf-8c13-5520cf1b8ac4",
+        "timestamp": "2025-08-29T22:35:27.075Z",
+        "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
+        "category": "billing",
+        "status": "resolved",
+        "actions": [
+          "Escalated to technical team",
+          "Scheduled follow-up call",
+          "Explained service options"
+        ],
+        "agent": "Priya Patel",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "4fd81c54-3950-46e7-825b-9f3bbbbd3641",
+        "timestamp": "2025-07-11T22:35:27.075Z",
+        "summary": "SIM replacement requested. Verified account ownership and initiated replacement process.",
+        "category": "service",
+        "status": "pending",
+        "actions": [
+          "Reset network settings",
+          "Processed payment",
+          "Generated service ticket"
+        ],
+        "agent": "Michael Brown",
+        "duration": 8,
+        "followUpRequired": false
+      },
+      {
+        "id": "eca9c8be-c954-4337-bae8-472ec774312f",
+        "timestamp": "2025-06-18T22:35:27.075Z",
+        "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
+        "category": "network",
+        "status": "escalated",
+        "actions": [
+          "Issued service credit",
+          "Reset network settings",
+          "Processed payment"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 7,
+        "followUpRequired": false
+      }
     ]
   },
   {
@@ -13533,7 +14834,118 @@
         "customerId": 33
       }
     ],
-    "barringHistories": []
+    "barringHistories": [],
+    "ticketHistories": [
+      {
+        "id": 1036,
+        "title": "Roaming Issues",
+        "summary": "Calls are dropping frequently",
+        "pendingFor": "Billing department review",
+        "nextAction": "Process service change",
+        "status": "closed",
+        "category": "network",
+        "createdAt": "2025-11-16T10:21:12.354Z",
+        "updatedAt": "2025-11-27T17:17:22.614Z"
+      },
+      {
+        "id": 1037,
+        "title": "Late Fee Waiver",
+        "summary": "Promotional discount not applied",
+        "pendingFor": "System update in progress",
+        "nextAction": "Process service change",
+        "status": "in-progress",
+        "category": "billing",
+        "createdAt": "2025-11-26T09:50:09.557Z",
+        "updatedAt": "2025-11-27T16:19:21.194Z"
+      },
+      {
+        "id": 1038,
+        "title": "Service Change Request",
+        "summary": "Interested in changing current plan",
+        "pendingFor": "Network maintenance required",
+        "nextAction": "Schedule technician visit",
+        "status": "in-progress",
+        "category": "service",
+        "createdAt": "2025-11-21T13:06:37.489Z",
+        "updatedAt": "2025-11-24T02:00:22.233Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "009d2c61-d3e5-4b7e-b946-f9394b820967",
+        "timestamp": "2025-10-10T22:35:27.075Z",
+        "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
+        "category": "billing",
+        "status": "closed",
+        "actions": [
+          "Generated service ticket",
+          "Explained service options"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 15,
+        "followUpRequired": true,
+        "followUpDate": "2025-10-17"
+      },
+      {
+        "id": "2b0aa1c9-c48d-4773-b387-3d1821d53bb7",
+        "timestamp": "2025-09-22T22:35:27.075Z",
+        "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Provided self-help instructions",
+          "Performed account verification",
+          "Reset network settings"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 11,
+        "followUpRequired": true,
+        "followUpDate": "2025-09-27"
+      },
+      {
+        "id": "ec2cce7a-fdc7-494b-b502-456c705fa8cd",
+        "timestamp": "2025-09-21T22:35:27.075Z",
+        "summary": "Question about contract terms. Explained terms and early termination fees.",
+        "category": "general",
+        "status": "pending",
+        "actions": [
+          "Updated customer information",
+          "Reset network settings"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 4,
+        "followUpRequired": false
+      },
+      {
+        "id": "f01e6a6d-ef00-4fb4-b616-879375839baf",
+        "timestamp": "2025-09-15T22:35:27.075Z",
+        "summary": "Plan change not processed correctly. Verified request and reprocessed with backdated changes.",
+        "category": "billing",
+        "status": "resolved",
+        "actions": [
+          "Explained service options"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 9,
+        "followUpRequired": false
+      },
+      {
+        "id": "f31c6932-1150-4263-84c9-558c7f75bec1",
+        "timestamp": "2025-07-02T22:35:27.075Z",
+        "summary": "5G not working. Verified device compatibility and network settings. Escalated to network team.",
+        "category": "network",
+        "status": "closed",
+        "actions": [
+          "Explained service options",
+          "Updated customer about resolution",
+          "Reset network settings"
+        ],
+        "agent": "Priya Patel",
+        "duration": 9,
+        "followUpRequired": true,
+        "followUpDate": "2025-07-03"
+      }
+    ]
   },
   {
     "id": 34,
@@ -14251,6 +15663,116 @@
         "reason": "Unbarred after full payment is made",
         "customerId": 34
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1039,
+        "title": "Network Connectivity Issue",
+        "summary": "WiFi calling feature not available",
+        "pendingFor": "Awaiting parts",
+        "nextAction": "Schedule callback",
+        "status": "closed",
+        "category": "network",
+        "createdAt": "2025-12-03T09:13:48.745Z",
+        "updatedAt": "2025-11-26T10:21:00.879Z"
+      },
+      {
+        "id": 1040,
+        "title": "Billing Dispute",
+        "summary": "Asking for late fee to be waived",
+        "pendingFor": "System update in progress",
+        "nextAction": "Update account",
+        "status": "open",
+        "category": "billing",
+        "createdAt": "2025-12-08T14:36:59.876Z",
+        "updatedAt": "2025-11-23T04:30:04.032Z"
+      },
+      {
+        "id": 1041,
+        "title": "Data Top-up",
+        "summary": "Requesting additional services",
+        "pendingFor": "Awaiting parts",
+        "nextAction": "Update account",
+        "status": "resolved",
+        "category": "service",
+        "createdAt": "2025-12-06T07:21:00.488Z",
+        "updatedAt": "2025-11-30T07:05:00.498Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "5baef6f6-9442-4132-873e-ea547d445d36",
+        "timestamp": "2025-11-27T23:35:27.075Z",
+        "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
+        "category": "network",
+        "status": "pending",
+        "actions": [
+          "Performed account verification",
+          "Scheduled follow-up call"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 14,
+        "followUpRequired": false
+      },
+      {
+        "id": "7b90e74c-d615-4b02-9cb9-d9eff8d2a54c",
+        "timestamp": "2025-10-03T22:35:27.075Z",
+        "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
+        "category": "general",
+        "status": "resolved",
+        "actions": [
+          "Provided self-help instructions",
+          "Generated service ticket",
+          "Explained service options"
+        ],
+        "agent": "Priya Patel",
+        "duration": 8,
+        "followUpRequired": false
+      },
+      {
+        "id": "0e24da60-4d1e-4b97-a13d-842fea9139f2",
+        "timestamp": "2025-10-03T22:35:27.075Z",
+        "summary": "5G not working. Verified device compatibility and network settings. Escalated to network team.",
+        "category": "network",
+        "status": "resolved",
+        "actions": [
+          "Processed payment",
+          "Updated customer about resolution",
+          "Reset network settings"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 2,
+        "followUpRequired": false
+      },
+      {
+        "id": "e2181469-a841-4867-b601-97093fb7822d",
+        "timestamp": "2025-08-12T22:35:27.075Z",
+        "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
+        "category": "technical",
+        "status": "closed",
+        "actions": [
+          "Updated customer information",
+          "Issued service credit",
+          "Updated customer about resolution"
+        ],
+        "agent": "James Wilson",
+        "duration": 10,
+        "followUpRequired": false
+      },
+      {
+        "id": "47c67696-2b97-4e4e-896b-4fab26054db1",
+        "timestamp": "2025-07-15T22:35:27.075Z",
+        "summary": "General feedback about service. Thanked customer and noted feedback for management.",
+        "category": "general",
+        "status": "pending",
+        "actions": [
+          "Issued service credit",
+          "Updated customer about resolution"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 12,
+        "followUpRequired": false
+      }
     ]
   },
   {
@@ -14821,7 +16343,114 @@
         "customerId": 35
       }
     ],
-    "barringHistories": []
+    "barringHistories": [],
+    "ticketHistories": [
+      {
+        "id": 1042,
+        "title": "Roaming Issues",
+        "summary": "Customer reports frequent network disconnections",
+        "pendingFor": "Legal department review",
+        "nextAction": "Issue credit note",
+        "status": "open",
+        "category": "network",
+        "createdAt": "2025-12-05T05:37:05.325Z",
+        "updatedAt": "2025-11-30T12:37:44.799Z"
+      },
+      {
+        "id": 1043,
+        "title": "Promotion Not Applied",
+        "summary": "Incorrect tax calculation on invoice",
+        "pendingFor": "Management approval pending",
+        "nextAction": "Issue credit note",
+        "status": "in-progress",
+        "category": "billing",
+        "createdAt": "2025-11-10T06:50:34.969Z",
+        "updatedAt": "2025-11-18T00:09:00.931Z"
+      },
+      {
+        "id": 1044,
+        "title": "SIM Replacement",
+        "summary": "Need to update plan features",
+        "pendingFor": "Legal department review",
+        "nextAction": "Escalate to senior support",
+        "status": "closed",
+        "category": "service",
+        "createdAt": "2025-11-15T12:26:09.642Z",
+        "updatedAt": "2025-11-14T12:41:03.388Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "3b8c9ade-9f3d-40b5-ad21-d6c116b60c6f",
+        "timestamp": "2025-11-25T23:35:27.076Z",
+        "summary": "Roaming issues while traveling. Verified roaming is enabled and provided manual network selection instructions.",
+        "category": "network",
+        "status": "closed",
+        "actions": [
+          "Checked service status"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 8,
+        "followUpRequired": true,
+        "followUpDate": "2025-11-27"
+      },
+      {
+        "id": "8453705f-0496-4d2e-b70d-ade549885c79",
+        "timestamp": "2025-09-26T22:35:27.076Z",
+        "summary": "Requested account ownership transfer. Explained process and documentation required.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Escalated to technical team",
+          "Generated service ticket"
+        ],
+        "agent": "David Kim",
+        "duration": 10,
+        "followUpRequired": true,
+        "followUpDate": "2025-09-27"
+      },
+      {
+        "id": "c1db0df2-1133-495f-9d0f-208ee9518889",
+        "timestamp": "2025-08-08T22:35:27.076Z",
+        "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
+        "category": "network",
+        "status": "closed",
+        "actions": [
+          "Escalated to technical team",
+          "Updated customer information"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 13,
+        "followUpRequired": false
+      },
+      {
+        "id": "ce09b803-76ba-48a8-94f6-30e93dfad814",
+        "timestamp": "2025-07-07T22:35:27.076Z",
+        "summary": "Customer disputing charges on latest bill. Explained charges and provided detailed breakdown. Issued partial credit for inconvenience.",
+        "category": "billing",
+        "status": "closed",
+        "actions": [
+          "Processed payment"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 8,
+        "followUpRequired": false
+      },
+      {
+        "id": "4fc3df98-5b02-41c3-a2fe-5ad1c7eee750",
+        "timestamp": "2025-06-27T22:35:27.075Z",
+        "summary": "Payment not reflected in account. Verified payment and processed manual update. Confirmed with customer.",
+        "category": "billing",
+        "status": "escalated",
+        "actions": [
+          "Issued service credit",
+          "Updated customer information"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 6,
+        "followUpRequired": false
+      }
+    ]
   },
   {
     "id": 36,
@@ -15521,6 +17150,112 @@
         "status": "UNBARRED",
         "reason": "Unbarred after full payment is made",
         "customerId": 36
+      }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1045,
+        "title": "Data Connection Problems",
+        "summary": "Voice over LTE not functioning",
+        "pendingFor": "Legal department review",
+        "nextAction": "Update system configuration",
+        "status": "resolved",
+        "category": "network",
+        "createdAt": "2025-11-12T09:37:16.050Z",
+        "updatedAt": "2025-12-01T01:45:41.245Z"
+      },
+      {
+        "id": 1046,
+        "title": "Promotion Not Applied",
+        "summary": "Incorrect plan charges applied",
+        "pendingFor": "Network maintenance required",
+        "nextAction": "Process refund",
+        "status": "resolved",
+        "category": "billing",
+        "createdAt": "2025-11-27T21:11:17.783Z",
+        "updatedAt": "2025-11-26T03:21:13.864Z"
+      },
+      {
+        "id": 1047,
+        "title": "Service Change Request",
+        "summary": "Need to manage family plan members",
+        "pendingFor": "Network maintenance required",
+        "nextAction": "Schedule technician visit",
+        "status": "resolved",
+        "category": "service",
+        "createdAt": "2025-11-09T06:26:27.945Z",
+        "updatedAt": "2025-11-09T09:34:17.307Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "8ede3d92-b3ca-4938-b3ab-cb806e81831f",
+        "timestamp": "2025-11-17T23:35:27.076Z",
+        "summary": "5G not working. Verified device compatibility and network settings. Escalated to network team.",
+        "category": "network",
+        "status": "resolved",
+        "actions": [
+          "Updated customer information"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 10,
+        "followUpRequired": true,
+        "followUpDate": "2025-11-20"
+      },
+      {
+        "id": "a9640eb3-8acb-4b08-bc1a-86b1da7efc5f",
+        "timestamp": "2025-10-23T22:35:27.076Z",
+        "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
+        "category": "network",
+        "status": "escalated",
+        "actions": [
+          "Issued service credit"
+        ],
+        "agent": "James Wilson",
+        "duration": 15,
+        "followUpRequired": false
+      },
+      {
+        "id": "2491de66-dcb0-4c61-aac8-7f7469f1f7b1",
+        "timestamp": "2025-08-12T22:35:27.076Z",
+        "summary": "Payment not reflected in account. Verified payment and processed manual update. Confirmed with customer.",
+        "category": "billing",
+        "status": "closed",
+        "actions": [
+          "Generated service ticket",
+          "Reset network settings"
+        ],
+        "agent": "Aisha Khan",
+        "duration": 8,
+        "followUpRequired": false
+      },
+      {
+        "id": "d5fcd6d8-3b64-4f6f-86df-83e08d1325ef",
+        "timestamp": "2025-07-29T22:35:27.076Z",
+        "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
+        "category": "network",
+        "status": "closed",
+        "actions": [
+          "Generated service ticket",
+          "Issued service credit"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 10,
+        "followUpRequired": false
+      },
+      {
+        "id": "9b6368a3-0773-40b4-9bef-51c757edcac4",
+        "timestamp": "2025-07-20T22:35:27.076Z",
+        "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
+        "category": "general",
+        "status": "pending",
+        "actions": [
+          "Updated customer about resolution",
+          "Updated customer information"
+        ],
+        "agent": "Michael Brown",
+        "duration": 10,
+        "followUpRequired": false
       }
     ]
   },
@@ -16958,6 +18693,115 @@
         "status": "UNSUSPENDED",
         "reason": "Unsuspended after full payment is made",
         "customerId": 37
+      }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1048,
+        "title": "Network Connectivity Issue",
+        "summary": "Customer reports frequent network disconnections",
+        "pendingFor": "System update in progress",
+        "nextAction": "Escalate to senior support",
+        "status": "open",
+        "category": "network",
+        "createdAt": "2025-12-03T18:29:06.103Z",
+        "updatedAt": "2025-11-11T07:08:14.248Z"
+      },
+      {
+        "id": 1049,
+        "title": "Plan Change Error",
+        "summary": "Promotional discount not applied",
+        "pendingFor": "Awaiting customer response",
+        "nextAction": "Escalate to senior support",
+        "status": "in-progress",
+        "category": "billing",
+        "createdAt": "2025-11-17T02:38:36.035Z",
+        "updatedAt": "2025-11-19T16:51:38.018Z"
+      },
+      {
+        "id": 1050,
+        "title": "Family Plan Management",
+        "summary": "Want to add international calling package",
+        "pendingFor": "Network maintenance required",
+        "nextAction": "Send confirmation email",
+        "status": "resolved",
+        "category": "service",
+        "createdAt": "2025-11-20T10:08:02.733Z",
+        "updatedAt": "2025-11-27T02:14:22.983Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "51f43df0-95c6-4876-bdea-6911d1cee455",
+        "timestamp": "2025-11-02T23:35:27.076Z",
+        "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
+        "category": "network",
+        "status": "pending",
+        "actions": [
+          "Issued service credit"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 14,
+        "followUpRequired": false
+      },
+      {
+        "id": "643ab4e0-c7ab-4161-a405-4ea1526a0e18",
+        "timestamp": "2025-08-19T22:35:27.076Z",
+        "summary": "Requested account ownership transfer. Explained process and documentation required.",
+        "category": "general",
+        "status": "resolved",
+        "actions": [
+          "Generated service ticket",
+          "Reset network settings"
+        ],
+        "agent": "James Wilson",
+        "duration": 13,
+        "followUpRequired": true,
+        "followUpDate": "2025-08-24"
+      },
+      {
+        "id": "4666abc2-b918-4994-aada-c4cc8c020cf7",
+        "timestamp": "2025-08-09T22:35:27.076Z",
+        "summary": "WiFi calling issues. Verified WiFi network compatibility and re-provisioned service.",
+        "category": "technical",
+        "status": "resolved",
+        "actions": [
+          "Updated customer about resolution"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 14,
+        "followUpRequired": true,
+        "followUpDate": "2025-08-14"
+      },
+      {
+        "id": "071d9c87-3b79-475f-9c6b-e969163e7079",
+        "timestamp": "2025-07-28T22:35:27.076Z",
+        "summary": "SMS not being received. Checked message center number and performed network refresh.",
+        "category": "technical",
+        "status": "pending",
+        "actions": [
+          "Processed payment",
+          "Explained service options"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 3,
+        "followUpRequired": false
+      },
+      {
+        "id": "9ad01541-75b0-435e-849e-40a2f0627de5",
+        "timestamp": "2025-07-15T22:35:27.076Z",
+        "summary": "Request to enable international roaming. Verified ID and enabled service with rate explanation.",
+        "category": "service",
+        "status": "pending",
+        "actions": [
+          "Performed account verification",
+          "Generated service ticket",
+          "Reset network settings"
+        ],
+        "agent": "Michael Brown",
+        "duration": 10,
+        "followUpRequired": true,
+        "followUpDate": "2025-07-20"
       }
     ]
   },
@@ -18436,6 +20280,116 @@
         "reason": "Unbarred after full payment is made",
         "customerId": 38
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1051,
+        "title": "Poor Signal Strength",
+        "summary": "Experiencing slower than advertised speeds",
+        "pendingFor": "Vendor escalation",
+        "nextAction": "Update system configuration",
+        "status": "in-progress",
+        "category": "network",
+        "createdAt": "2025-11-27T00:58:39.597Z",
+        "updatedAt": "2025-11-10T16:10:25.466Z"
+      },
+      {
+        "id": 1052,
+        "title": "Late Fee Waiver",
+        "summary": "Payment not reflected in account",
+        "pendingFor": "Legal department review",
+        "nextAction": "Process refund",
+        "status": "resolved",
+        "category": "billing",
+        "createdAt": "2025-11-17T23:22:50.184Z",
+        "updatedAt": "2025-11-10T04:22:48.019Z"
+      },
+      {
+        "id": 1053,
+        "title": "Data Top-up",
+        "summary": "Need to enable international roaming",
+        "pendingFor": "Customer confirmation needed",
+        "nextAction": "Issue credit note",
+        "status": "in-progress",
+        "category": "service",
+        "createdAt": "2025-11-26T09:14:05.683Z",
+        "updatedAt": "2025-11-30T03:44:17.404Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "09ae07ab-d1d8-497f-8794-da66ead2bdb0",
+        "timestamp": "2025-12-03T23:35:27.076Z",
+        "summary": "Requested account ownership transfer. Explained process and documentation required.",
+        "category": "general",
+        "status": "pending",
+        "actions": [
+          "Processed payment",
+          "Escalated to technical team",
+          "Scheduled follow-up call"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 13,
+        "followUpRequired": false
+      },
+      {
+        "id": "4d4f206e-74c7-4190-8822-19d86f5b49e3",
+        "timestamp": "2025-11-20T23:35:27.076Z",
+        "summary": "Customer reported no network coverage in their area. Checked coverage map and confirmed poor coverage. Suggested network settings reset.",
+        "category": "network",
+        "status": "resolved",
+        "actions": [
+          "Issued service credit",
+          "Escalated to technical team",
+          "Generated service ticket"
+        ],
+        "agent": "Michael Brown",
+        "duration": 15,
+        "followUpRequired": false
+      },
+      {
+        "id": "70f01828-8e70-4964-af64-bd8ba6cabde1",
+        "timestamp": "2025-08-29T22:35:27.076Z",
+        "summary": "Requested account ownership transfer. Explained process and documentation required.",
+        "category": "general",
+        "status": "resolved",
+        "actions": [
+          "Performed account verification",
+          "Generated service ticket",
+          "Issued service credit"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "7327219e-9b58-4365-bea2-8265ae9be966",
+        "timestamp": "2025-08-01T22:35:27.076Z",
+        "summary": "Requested account ownership transfer. Explained process and documentation required.",
+        "category": "general",
+        "status": "pending",
+        "actions": [
+          "Explained service options",
+          "Checked service status",
+          "Performed account verification"
+        ],
+        "agent": "Priya Patel",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "c9dcb988-1666-48d5-9c20-c82fe820f66c",
+        "timestamp": "2025-07-25T22:35:27.076Z",
+        "summary": "WiFi calling issues. Verified WiFi network compatibility and re-provisioned service.",
+        "category": "technical",
+        "status": "pending",
+        "actions": [
+          "Explained service options"
+        ],
+        "agent": "Alex Johnson",
+        "duration": 9,
+        "followUpRequired": false
+      }
     ]
   },
   {
@@ -19630,6 +21584,114 @@
         "reason": "Unsuspended after full payment is made",
         "customerId": 39
       }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1054,
+        "title": "Roaming Issues",
+        "summary": "Very poor signal strength in home area",
+        "pendingFor": "Vendor escalation",
+        "nextAction": "Schedule technician visit",
+        "status": "open",
+        "category": "network",
+        "createdAt": "2025-12-02T20:53:37.637Z",
+        "updatedAt": "2025-11-26T10:50:08.466Z"
+      },
+      {
+        "id": 1055,
+        "title": "Duplicate Charges",
+        "summary": "Payment not reflected in account",
+        "pendingFor": "Customer confirmation needed",
+        "nextAction": "Send confirmation email",
+        "status": "in-progress",
+        "category": "billing",
+        "createdAt": "2025-11-19T07:18:46.196Z",
+        "updatedAt": "2025-11-13T02:55:47.440Z"
+      },
+      {
+        "id": 1056,
+        "title": "Number Porting",
+        "summary": "Requesting replacement SIM card",
+        "pendingFor": "Awaiting parts",
+        "nextAction": "Close ticket",
+        "status": "closed",
+        "category": "service",
+        "createdAt": "2025-11-18T09:14:38.927Z",
+        "updatedAt": "2025-12-08T19:24:50.803Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "8dd2214d-9d51-4d87-81f8-0901f2918ef6",
+        "timestamp": "2025-11-10T23:35:27.076Z",
+        "summary": "General feedback about service. Thanked customer and noted feedback for management.",
+        "category": "general",
+        "status": "closed",
+        "actions": [
+          "Explained service options",
+          "Scheduled follow-up call",
+          "Reset network settings"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 4,
+        "followUpRequired": false
+      },
+      {
+        "id": "28d4a275-8ed1-4b3a-91e6-8846d2a3f035",
+        "timestamp": "2025-10-26T23:35:27.076Z",
+        "summary": "Request to enable international roaming. Verified ID and enabled service with rate explanation.",
+        "category": "service",
+        "status": "escalated",
+        "actions": [
+          "Issued service credit",
+          "Processed payment",
+          "Updated customer information"
+        ],
+        "agent": "James Wilson",
+        "duration": 3,
+        "followUpRequired": false
+      },
+      {
+        "id": "a815c513-05e3-4df2-bc30-30377231468e",
+        "timestamp": "2025-09-09T22:35:27.076Z",
+        "summary": "Number porting inquiry. Provided requirements and initiated porting process.",
+        "category": "service",
+        "status": "pending",
+        "actions": [
+          "Explained service options",
+          "Escalated to technical team",
+          "Updated customer information"
+        ],
+        "agent": "David Kim",
+        "duration": 6,
+        "followUpRequired": false
+      },
+      {
+        "id": "a032a854-629f-43f2-8c70-3bffd28c43ff",
+        "timestamp": "2025-08-22T22:35:27.076Z",
+        "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Reset network settings"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 3,
+        "followUpRequired": false
+      },
+      {
+        "id": "bbb80a41-052d-4ba2-8379-8abf2f72c214",
+        "timestamp": "2025-08-18T22:35:27.076Z",
+        "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
+        "category": "technical",
+        "status": "resolved",
+        "actions": [
+          "Scheduled follow-up call"
+        ],
+        "agent": "Maria Garcia",
+        "duration": 8,
+        "followUpRequired": false
+      }
     ]
   },
   {
@@ -20391,6 +22453,115 @@
         "status": "UNBARRED",
         "reason": "Unbarred after full payment is made",
         "customerId": 40
+      }
+    ],
+    "ticketHistories": [
+      {
+        "id": 1057,
+        "title": "5G Not Working",
+        "summary": "Unable to establish data connection",
+        "pendingFor": "Network maintenance required",
+        "nextAction": "Update system configuration",
+        "status": "open",
+        "category": "network",
+        "createdAt": "2025-11-18T01:14:19.854Z",
+        "updatedAt": "2025-11-21T13:12:40.149Z"
+      },
+      {
+        "id": 1058,
+        "title": "Incorrect Charges",
+        "summary": "Duplicate charges found on bill",
+        "pendingFor": "Management approval pending",
+        "nextAction": "Escalate to senior support",
+        "status": "open",
+        "category": "billing",
+        "createdAt": "2025-11-23T12:23:05.575Z",
+        "updatedAt": "2025-12-05T14:06:05.189Z"
+      },
+      {
+        "id": 1059,
+        "title": "Data Top-up",
+        "summary": "Need to manage family plan members",
+        "pendingFor": "Legal department review",
+        "nextAction": "Update system configuration",
+        "status": "closed",
+        "category": "service",
+        "createdAt": "2025-11-30T11:35:32.658Z",
+        "updatedAt": "2025-11-28T13:13:36.286Z"
+      }
+    ],
+    "customerLogs": [
+      {
+        "id": "9c286b45-c610-4726-930f-22054c692763",
+        "timestamp": "2025-10-30T23:35:27.076Z",
+        "summary": "Plan change not processed correctly. Verified request and reprocessed with backdated changes.",
+        "category": "billing",
+        "status": "closed",
+        "actions": [
+          "Updated customer information",
+          "Checked service status",
+          "Reset network settings"
+        ],
+        "agent": "David Kim",
+        "duration": 6,
+        "followUpRequired": false
+      },
+      {
+        "id": "288c2d41-3e97-4045-9a2d-a3065b31b33d",
+        "timestamp": "2025-10-28T23:35:27.076Z",
+        "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
+        "category": "general",
+        "status": "escalated",
+        "actions": [
+          "Checked service status",
+          "Escalated to technical team"
+        ],
+        "agent": "Michael Brown",
+        "duration": 3,
+        "followUpRequired": false
+      },
+      {
+        "id": "1ec6072c-0956-4384-8607-166be8682cf0",
+        "timestamp": "2025-10-03T22:35:27.076Z",
+        "summary": "SMS not being received. Checked message center number and performed network refresh.",
+        "category": "technical",
+        "status": "pending",
+        "actions": [
+          "Reset network settings",
+          "Checked service status",
+          "Performed account verification"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "019dd9d6-186e-44b9-bc5f-dd96616e5b85",
+        "timestamp": "2025-06-24T22:35:27.076Z",
+        "summary": "WiFi calling issues. Verified WiFi network compatibility and re-provisioned service.",
+        "category": "technical",
+        "status": "closed",
+        "actions": [
+          "Processed payment",
+          "Updated customer information"
+        ],
+        "agent": "Sarah Lee",
+        "duration": 12,
+        "followUpRequired": false
+      },
+      {
+        "id": "2c83486f-7780-4930-9d87-707c17edd58b",
+        "timestamp": "2025-06-19T22:35:27.076Z",
+        "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
+        "category": "billing",
+        "status": "escalated",
+        "actions": [
+          "Updated customer information"
+        ],
+        "agent": "David Kim",
+        "duration": 6,
+        "followUpRequired": true,
+        "followUpDate": "2025-06-25"
       }
     ]
   }

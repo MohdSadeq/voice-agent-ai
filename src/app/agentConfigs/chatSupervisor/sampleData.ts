@@ -51,6 +51,31 @@ interface BarringHistory {
   customerId: number;
 }
 
+interface Ticket {
+  id: number;
+  title: string;
+  summary: string;
+  status: string;
+  category: string;
+  pendingFor: string;
+  nextAction: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface CustomerLog {
+  id: string;
+  timestamp: string;
+  summary: string;
+  category: 'network' | 'billing' | 'service' | 'technical' | 'general';
+  status: 'resolved' | 'escalated' | 'pending' | 'closed';
+  actions: string[];
+  agent: string;
+  duration: number;
+  followUpRequired: boolean;
+  followUpDate?: string;
+}
+
 interface User {
   id: number;
   callerId: string;
@@ -83,6 +108,8 @@ interface User {
   paymentHistories: PaymentHistory[];
   invoices: Invoice[];
   barringHistories: BarringHistory[];
+  ticketHistories: Ticket[];
+  customerLogs?: CustomerLog[];
 }
 
 export const getAccountInfo = (userId: number = 1) => {
@@ -212,7 +239,6 @@ export const getAccountInfo = (userId: number = 1) => {
           date: formatDate(payment.transactionDate),
           amount: formatCurrency(payment.amount),
           method: payment.amount > 100 ? 'Credit Card' : 'Online Banking',
-          status: 'Completed',
           reference: `PAY${payment.id.toString().padStart(6, '0')}`
         })),
       barringHistory: (user.barringHistories || [])
@@ -251,7 +277,30 @@ export const getAccountInfo = (userId: number = 1) => {
     additionalInfo: {
       notes: `Contract will be suspended on ${formatDate(user.suspensionDate)} if not renewed.`,
       activationNotes: `Activated via ${user.activationSource} on ${formatDate(user.commencementDate)}`
-    }
+    },
+    
+    // Ticket History
+    ticketHistory: (user.ticketHistories || [])
+      .sort((a: Ticket, b: Ticket) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .map((ticket: Ticket) => ({
+        id: ticket.id,
+        title: ticket.title,
+        summary: ticket.summary,
+        status: ticket.status,
+        category: ticket.category,
+        pendingFor: ticket.pendingFor,
+        nextAction: ticket.nextAction,
+        createdAt: formatDate(ticket.createdAt),
+        updatedAt: formatDate(ticket.updatedAt)
+      })),
+
+    // Customer Service Logs
+    customerLogs: (user.customerLogs || [])
+      .sort((a: CustomerLog, b: CustomerLog) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+      .map((log: CustomerLog) => ({
+        summary: log.summary,
+        category: log.category,
+      }))
   };
 };
 
@@ -778,60 +827,104 @@ export const exampleRedoneSearchResults = [
 ];
 
 export const exampleStoreLocations = [
-  // Kuala Lumpur
   {
-    name: "Redone Kuala Lumpur",
-    address: "123 Jalan Bukit Bintang, Level 1, Pavilion Mall",
-    postcode: "55100",
-    phone: "(03) 555-1234",
-    hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
+    name: "redONE Mobile Store Kuala Lumpur 1",
+    address: "189 Jalan Kuala Lumpur",
+    city: "Kuala Lumpur",
+    state: "WP Kuala Lumpur",
+    postcode: "50050",
+    phone: "03-3107989",
+    email: "store1@redone.my",
+    hours: "Mon-Sun 10am-10pm"
   },
   {
-    name: "Redone Mid Valley",
-    address: "456 Mid Valley Megamall, Ground Floor",
-    postcode: "59200",
-    phone: "(03) 555-5678",
-    hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
-  },
-
-  // Penang
-  {
-    name: "Redone Georgetown",
-    address: "789 Lebuh Light, Suite 200, Gurney Plaza",
-    postcode: "10200",
-    phone: "(04) 555-9101",
-    hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
+    name: "redONE Mobile Store Kuala Lumpur 2",
+    address: "9 Jalan Kuala Lumpur",
+    city: "Kuala Lumpur",
+    state: "WP Kuala Lumpur",
+    postcode: "50050",
+    phone: "03-9990220",
+    email: "store2@redone.my",
+    hours: "Mon-Sun 10am-10pm"
   },
   {
-    name: "Redone Penang Times Square",
-    address: "101 Jalan Datuk Keramat, Level 3, Penang Times Square",
-    postcode: "10150",
-    phone: "(04) 555-1122",
-    hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
-  },
-
-  // Johor Bahru
-  {
-    name: "Redone Johor Bahru",
-    address: "202 Jalan Tebrau, Level 2, KSL City Mall",
-    postcode: "81100",
-    phone: "(07) 555-3344",
-    hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
+    name: "redONE Mobile Store Sungai Petani 3",
+    address: "137 Jalan Sungai Petani",
+    city: "Sungai Petani",
+    state: "Kedah",
+    postcode: "08000",
+    phone: "04-8302823",
+    email: "store3@redone.my",
+    hours: "Mon-Sun 10am-10pm"
   },
   {
-    name: "Redone Aeon Tebrau City",
-    address: "303 Jalan Pantai, Aeon Tebrau City, Ground Floor",
-    postcode: "81750",
-    phone: "(07) 555-7788",
-    hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
+    name: "redONE Mobile Store Kuala Lumpur 4",
+    address: "74 Jalan Kuala Lumpur",
+    city: "Kuala Lumpur",
+    state: "WP Kuala Lumpur",
+    postcode: "50050",
+    phone: "03-5415349",
+    email: "store4@redone.my",
+    hours: "Mon-Sun 10am-10pm"
   },
-
-  // Langkawi
   {
-    name: "Redone Langkawi",
-    address: "404 Jalan Pantai Cenang, Langkawi Mall",
-    postcode: "07000",
-    phone: "(04) 555-2211",
-    hours: "Mon-Sat 10am-7pm, Sun 11am-5pm"
+    name: "redONE Mobile Store Taiping 5",
+    address: "187 Jalan Taiping",
+    city: "Taiping",
+    state: "Perak",
+    postcode: "34000",
+    phone: "05-2022670",
+    email: "store5@redone.my",
+    hours: "Mon-Sun 10am-10pm"
+  },
+  {
+    name: "redONE Mobile Store Tawau 6",
+    address: "46 Jalan Tawau",
+    city: "Tawau",
+    state: "Sabah",
+    postcode: "91000",
+    phone: "088-2988955",
+    email: "store6@redone.my",
+    hours: "Mon-Sun 10am-10pm"
+  },
+  {
+    name: "redONE Mobile Store Kuala Terengganu 7",
+    address: "2 Jalan Kuala Terengganu",
+    city: "Kuala Terengganu",
+    state: "Terengganu",
+    postcode: "20050",
+    phone: "09-2058665",
+    email: "store7@redone.my",
+    hours: "Mon-Sun 10am-10pm"
+  },
+  {
+    name: "redONE Mobile Store Subang Jaya 8",
+    address: "37 Jalan Subang Jaya",
+    city: "Subang Jaya",
+    state: "Selangor",
+    postcode: "47500",
+    phone: "03-6588557",
+    email: "store8@redone.my",
+    hours: "Mon-Sun 10am-10pm"
+  },
+  {
+    name: "redONE Mobile Store Kuching 9",
+    address: "47 Jalan Kuching",
+    city: "Kuching",
+    state: "Sarawak",
+    postcode: "93050",
+    phone: "082-3564109",
+    email: "store9@redone.my",
+    hours: "Mon-Sun 10am-10pm"
+  },
+  {
+    name: "redONE Mobile Store Melaka 10",
+    address: "110 Jalan Melaka",
+    city: "Melaka",
+    state: "Melaka",
+    postcode: "75000",
+    phone: "06-6885970",
+    email: "store10@redone.my",
+    hours: "Mon-Sun 10am-10pm"
   }
 ];
