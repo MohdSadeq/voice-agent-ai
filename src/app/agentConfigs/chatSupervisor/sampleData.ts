@@ -153,16 +153,16 @@ export const getAccountInfo = (userId: number = 1) => {
       activationSource: user.activationSource,
       status,
       creditLimit: formatCurrency(user.creditLimit),
-     // puk: user.puk,
-      // serial: user.serial
+      puk: user.puk,
+      serial: user.serial
     },
     
     // Personal Information
     personalInfo: {
       name: user.name,
-     // nric: user.nric,
-    //  email: user.email,
-    //  phone: user.callerId,
+      nric: user.nric,
+      email: user.email,
+      phone: user.callerId,
       phoneModel: user.phoneModel
     },
     
@@ -230,7 +230,7 @@ export const getAccountInfo = (userId: number = 1) => {
         .map((invoice, index) => {
           const invoiceDate = new Date(invoice.date);
           const dueDate = new Date(invoice.date);
-          dueDate.setDate(21); // Set due date to 15th of the month
+          dueDate.setDate(21);
           
           return {
             invoiceNumber: `INV${invoiceDate.getFullYear()}${(invoiceDate.getMonth() + 1).toString().padStart(2, '0')}-${(index + 1).toString().padStart(3, '0')}`,
@@ -256,20 +256,17 @@ export const getAccountInfo = (userId: number = 1) => {
 };
 
 export const getUserByMobile = (mobileNumber: string) => {
-  // Remove any non-digit characters
-  const digitsOnly = mobileNumber.replace(/\D/g, '');
+  // First, remove all non-digit characters including brackets
+  const digitsOnly = mobileNumber.replace(/[^\d]/g, '');
   
   // Check if the number starts with 60 (country code for Malaysia)
   // If not, add it
-  const normalizedNumber = digitsOnly.startsWith('60') ? digitsOnly : `60${digitsOnly}`;
-  
-  // Remove the leading 60 for comparison with stored numbers
-  const cleanNumber = normalizedNumber.replace(/^60?/, '');
+ 
   
   const user = (users as User[]).find(u => {
     // Clean the stored number for comparison
-    const storedNumber = u.callerId.replace(/\D/g, '').replace(/^60?/, '');
-    return storedNumber === cleanNumber;
+    const storedNumber = u.callerId.replace(/\D/g, '');
+    return storedNumber === digitsOnly;
   });
   
   if (!user) {
@@ -281,34 +278,34 @@ export const getUserByMobile = (mobileNumber: string) => {
 
 //export const exampleAccountInfo = getUserByMobile("60123456789"); // Default to first user for backward compatibility
 
-export const examplePolicyDocs = [
+export const exampleFAQQuestions = [
   {
     id: "ID-010",
     name: "Family Plan Policy",
     topic: "family plan options",
     content:
-      "The family plan allows up to 5 lines per account. All lines share a single data pool. Each additional line after the first receives a 10% discount. All lines must be on the same account.",
+      "",
   },
   {
     id: "ID-020",
     name: "Promotions and Discounts Policy",
     topic: "promotions and discounts",
     content:
-      "The Summer Unlimited Data Sale provides a 20% discount on the Unlimited Plus plan for the first 6 months for new activations completed by July 31, 2024. The Refer-a-Friend Bonus provides a $50 bill credit to both the referring customer and the new customer after 60 days of active service, for activations by August 31, 2024. A maximum of 5 referral credits may be earned per account. Discounts cannot be combined with other offers.",
+      "",
   },
   {
     id: "ID-030",
     name: "International Plans Policy",
     topic: "international plans",
     content:
-      "International plans are available and include discounted calling, texting, and data usage in over 100 countries.",
+      ""
   },
   {
     id: "ID-040",
     name: "Handset Offers Policy",
     topic: "new handsets",
     content:
-      "Handsets from brands such as iPhone and Google are available. The iPhone 16 is $200 and the Google Pixel 8 is available for $0, both with an additional 18-month commitment. These offers are valid while supplies last and may require eligible plans or trade-ins. For more details, visit one of our stores.",
+      "",
   },
 ];
 

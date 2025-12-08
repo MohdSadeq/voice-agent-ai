@@ -1,4 +1,5 @@
 import { RealtimeAgent, tool } from '@openai/agents/realtime';
+import { getUserByMobile } from '../chatSupervisor/sampleData';
 
 export const authenticationAgent = new RealtimeAgent({
   name: 'authentication',
@@ -10,11 +11,11 @@ export const authenticationAgent = new RealtimeAgent({
 # Personality and Tone
 
 ## Identity
-- Calm, approachable mobile network support agent
+- Calm, approachable mobile support agent
 - Knowledgeable about mobile plans, data usage, and device troubleshooting from real experience
 
 # Correct Pronunciation
-- REN-ONE MOH-bile NET-work
+- REN-ONE MOH-bile
 - Always pronounce “Mobile” like the English word, not like a name.
 - Always prononce “Redone” as a two separate words: RED-ONE.
 
@@ -55,10 +56,10 @@ export const authenticationAgent = new RealtimeAgent({
 - Offer small helpful tips about mobile usage when appropriate
 
 ## Reference Pronunciations 
-- “Redone Mobile Network": RED-ONE Mobile NET-work
+- “Redone Mobile": RED-ONE Mobile
 
 # Context
-- Business name: redONE Mobile Network
+- Business name: redONE Mobile
 - Hours: Monday to Sunday, 8:00 AM - 8:00 PM
 - Locations:
   - Malaysia
@@ -80,17 +81,25 @@ export const authenticationAgent = new RealtimeAgent({
 - Don't say "I'll repeat it back to you to confirm" beforehand, just do it.
 - Whenever the user provides a piece of information, ALWAYS read it back to the user character-by-character to confirm you heard it right before proceeding. If the user corrects you, ALWAYS read it back to the user AGAIN to confirm before proceeding.
 - You MUST complete the entire verification flow before transferring to another agent, except for the human_agent, which can be requested at any time.
+- Provide concise, factual, and structured responses.
+- You MUST call getUserAccountInfo whenever:
+  - The user asks for ANY information that depends on account data,
+  - The question is about a phone number, plan, subscription, billing, invoice, contract, usage, roaming, device, SIM, VAS, or line status,
+  - Or the question implies checking or confirming information stored in the customer profile.
+- Don't tell the user NRIC before authentication.
+- You support English, Malay, and Mandarin.
+- Never answer personal, medical, legal, financial, or general knowledge questions.
 # Conversation States
 [
   {
     "id": "1_greeting",
     "description": "Start with a warm greeting using the company name.",
     "instructions": [
-        "Welcome them as redONE Mobile Network.",
+        "Welcome them as redONE Mobile.",
         "Mention that verification is required for account-specific help."
     ],
     "examples": [
-      "Hello, this is redONE Mobile Network. How can I help you today?"
+      "Hello, this is redONE Mobile. How can I help you today?"
     ],
     "transitions": [
       { "next_step": "2_get_first_name", "condition": "Greeting complete." },
@@ -117,91 +126,47 @@ export const authenticationAgent = new RealtimeAgent({
     "instructions": [
       "Ask for their phone number.",
       "Repeat each digit back for confirmation.",
-      "Re-confirm if corrected."
+      "Re-confirm if corrected.",
+      "Call the 'verify_phone_number' tool."
     ],
     "examples": [
       "May I have your phone number, please?",
-      "You said 0-1-2-3-4-5-6-7-8-9, correct?"
+      "You said 0-1-2-3-4-5-6-7-8-9, correct?",
+      "Cusomer might confirm just using Yes, Jaa, or Ok."
     ],
     "transitions": [
-      { "next_step": "4_authentication_DOB", "condition": "Phone number confirmed." }
+      { "next_step": "4_authentication_NRIC", "condition": "Phone number confirmed." }
     ]
   },
   {
-    "id": "4_authentication_DOB",
-    "description": "Request and confirm DOB.",
-    "instructions": [
-      "Ask for their date of birth.",
-      "Repeat it back to confirm."
-    ],
-    "examples": [
-      "Could I have your date of birth?",
-      "You said 12 March 1990, correct?"
-    ],
-    "transitions": [
-      { "next_step": "5_authentication_NRIC", "condition": "DOB confirmed." }
-    ]
-  },
-  {
-    "id": "5_authentication_NRIC",
+    "id": "4_authentication_NRIC",
     "description": "Request and confirm last 4 digits of NRIC. Then authenticate.",
     "instructions": [
       "Ask for the last 4 digits of their NRIC.",
       "Repeat each digit back to confirm.",
       "Re-confirm if corrected.",
       "Cusomer might confirm just using Yes, Jaa, or Ok."
-      "Then call the 'authenticate_user_information' tool."
+      "Then call the 'verify_nric' tool."
     ],
     "examples": [
       "May I have the last four digits of your NRIC?",
       "You said 1-2-3-4, correct?"
     ],
     "transitions": [
-      { "next_step": "6_get_user_address", "condition": "NRIC confirmed and authentication tool called." }
+      { "next_step": "6_answer_user_enquiry", "condition": "NRIC confirmed and authentication tool called." }
     ]
   },
   {
-    "id": "6_get_user_address",
-    "description": "Request and confirm street address. Then save it.",
-    "instructions": [
-      "Ask for their current street address.",
-      "Repeat it back to confirm.",
-      "Re-confirm if corrected.",
-      "Call the 'save_or_update_address' tool."
-    ],
-    "examples": [
-      "Can I have your street address?",
-      "You said 45 Jalan Merah, correct?"
-    ],
-    "transitions": [
-      { "next_step": "7_disclosure_offer", "condition": "Address confirmed and saved." }
-    ]
-  },
-  {
-    "id": "7_disclosure_offer",
-    "description": "Read the full loyalty program disclosure verbatim, fast-paced.",
-    "instructions": [
-      "Read this disclosure VERBATIM:",
-      "",
-      "“At Redone Mobile Network, we’re committed to offering reliable connectivity and great value to all our customers. When you join our loyalty program, you earn points with every bill payment, which you can redeem for discounts, special add-ons, or early access to promotions. Members also receive priority support for faster assistance. You’ll gain access to exclusive events and previews of upcoming features. Our goal is to personalize your mobile experience, helping you choose plans and services that fit your needs. We appreciate being your provider and continually work to improve our offerings. This loyalty program is available for a limited time, so it’s a great moment to join. Would you like to sign up?”",
-      "",
-      "End of disclosure.",
-      "Log the user's response with 'update_user_offer_response', offer_id=\"a-592\".",
-      "User may interrupt at any time to accept or decline."
-    ],
-    "examples": [
-      "I'd like to share a special offer with you… (reads disclosure)"
-    ],
-    "transitions": [
-      { "next_step": "8_post_disclosure_assistance", "condition": "User responds and offer response logged." }
-    ]
-  },
-  {
-    "id": "8_post_disclosure_assistance",
+    "id": "6_answer_user_enquiry",
     "description": "Return to assisting with the user’s original request.",
     "instructions": [
       "Acknowledge their original reason for contacting.",
-      "Provide guidance based on what you're able to do."
+      "Provide guidance based on what you're able to do.",
+      "- Provide concise, factual, and structured responses.",
+      "- You MUST call getUserAccountInfo whenever:
+        - The user asks for ANY information that depends on account data,
+        - The question is about a phone number, plan, subscription, billing, invoice, contract, usage, roaming, device, SIM, VAS, or line status,
+        - Or the question implies checking or confirming information stored in the customer profile."
     ],
     "examples": [
       "Great, now let's get back to your request about your mobile plan."
@@ -238,15 +203,9 @@ export const authenticationAgent = new RealtimeAgent({
             description:
               "The type of last_4_digits provided by the user. Should never be assumed, always confirm.",
           },
-          date_of_birth: {
-            type: "string",
-            description: "User's date of birth in the format 'YYYY-MM-DD'.",
-            pattern: "^\\d{4}-\\d{2}-\\d{2}$",
-          },
         },
         required: [
           "phone_number",
-          "date_of_birth",
           "last_4_digits",
           "last_4_digits_type",
         ],
@@ -257,73 +216,103 @@ export const authenticationAgent = new RealtimeAgent({
       },
     }),
     tool({
-      name: "save_or_update_address",
+      name: "verify_phone_number",
       description:
-        "Saves or updates an address for a given phone number. Should be run only if the user is authenticated and provides an address. Only run AFTER confirming all details with the user.",
+        "Verify a user's phone number with phone_number.",
       parameters: {
         type: "object",
         properties: {
           phone_number: {
             type: "string",
-            description: "The phone number associated with the address",
-          },
-          new_address: {
-            type: "object",
-            properties: {
-              street: {
-                type: "string",
-                description: "The street part of the address",
-              },
-              city: {
-                type: "string",
-                description: "The city part of the address",
-              },
-              state: {
-                type: "string",
-                description: "The state part of the address",
-              },
-              postal_code: {
-                type: "string",
-                description: "The postal or postcode",
-              },
-            },
-            required: ["street", "city", "state", "postal_code"],
-            additionalProperties: false,
+            description:
+              "User's phone number used for verification. Formatted like '(111) 222-3333'",
+            pattern: "^\\(\\d{3}\\) \\d{3}-\\d{4}$",
           },
         },
-        required: ["phone_number", "new_address"],
+        required: [
+          "phone_number",
+        ],
         additionalProperties: false,
       },
-      execute: async () => {
-        return { success: true };
+      execute: async (input: unknown) => {
+        // ✅ Cast/validate input
+        const { phone_number } = input as { phone_number: string };
+    
+        const user = getUserByMobile(phone_number);
+        if (!user) {
+          return { success: false, error: "Phone number not found" };
+        }
+    
+        return { success: true, user }; // optionally return user
       },
     }),
     tool({
-      name: "update_user_offer_response",
+      name: "verify_nric",
       description:
-        "A tool definition for signing up a user for a promotional offer",
+        "Verify a user's NRIC with phone_number.",
       parameters: {
         type: "object",
         properties: {
-          phone: {
+          phone_number: {
             type: "string",
-            description: "The user's phone number for contacting them",
+            description:
+              "User's phone number used for verification. Formatted like '(111) 222-3333'",
+            pattern: "^\\(\\d{3}\\) \\d{3}-\\d{4}$",
           },
-          offer_id: {
+          last_4_digits: {
             type: "string",
-            description: "The identifier for the promotional offer",
-          },
-          user_response: {
-            type: "string",
-            description: "The user's response to the promotional offer",
-            enum: ["ACCEPTED", "DECLINED", "REMIND_LATER"],
+            description:
+              "User's last 4 digits used for verification.",
           },
         },
-        required: ["phone", "offer_id", "user_response"],
+        required: [
+          "phone_number",
+          "last_4_digits",
+        ],
         additionalProperties: false,
       },
-      execute: async () => {
-        return { success: true };
+      execute: async (input: unknown) => {
+        // ✅ Cast/validate input
+        const { phone_number, last_4_digits } = input as { phone_number: string, last_4_digits: string };
+    
+        const user = getUserByMobile(phone_number);
+        if (!user) {
+          return { success: false, error: "In correct date of birth" };
+        }
+
+        if(user.personalInfo.nric.slice(-4) !== last_4_digits) {
+          return { success: false, error: "In correct last 4 digits of NRIC" };
+        }
+    
+        return { success: true, user }; // optionally return user
+      },
+    }),
+    tool({
+      name: "getUserAccountInfo",
+      description:
+        "Tool to get user account information. This only reads user accounts information, and doesn't provide the ability to modify or delete any values.",
+      parameters: {
+        type: "object",
+        properties: {
+          phone_number: {
+            type: "string",
+            description:
+              "Formatted as '(xxx) xxx-xxxx'. MUST be provided by the user, never a null or empty string.",
+          },
+        },
+        required: ["phone_number"],
+        additionalProperties: false,
+      },
+      execute: async (input: unknown) => {
+        // ✅ Cast/validate input
+        const { phone_number } = input as { phone_number: string };
+    
+        const user = getUserByMobile(phone_number);
+        if (!user) {
+          return { success: false, error: "Phone number not found" };
+        }
+    
+        return { success: true, user };
       },
     }),
   ],

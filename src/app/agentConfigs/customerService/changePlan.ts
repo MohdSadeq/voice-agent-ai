@@ -1,99 +1,49 @@
 import { RealtimeAgent, tool } from '@openai/agents/realtime';
+import { getUserByMobile } from '../chatSupervisor/sampleData';
 
 export const changePlanAgent = new RealtimeAgent({
   name: 'changePlanAgent',
   voice: 'sage',
   handoffDescription:
-    "Handles sales-related inquiries, including new product details, recommendations, promotions, and purchase flows. Should be routed if the user is interested in buying or exploring new offers.",
+    "Handles account-related inquiries, including account details, billing, or any personalized information. Should be routed whenever the user is asking about their",
 
-  instructions:
-    "You are a helpful sales assistant. Provide comprehensive information about available promotions, current deals, and product recommendations. Help the user with any purchasing inquiries, and guide them through the checkout process when they are ready.",
-
-
+    instructions: `- Always reference fields directly from the JSON.
+    - If the answer involves dates (contract, suspension, billing, etc.), calculate timelines accurately.
+    - If the customer asks about subscriptions, list VAS, amounts, dates, or statuses clearly.
+    - If the customer asks about billing, refer to invoices and payment histories.
+    - If the customer asks about device, plan, roaming, or features (5G, VoLTE, IDD, etc.), check the relevant boolean flags and plan details.
+    - If information is missing, state that it is not available in the provided data.`,
+    
   tools: [
-    tool({
-      name: 'lookupNewSales',
-      description:
-        "Checks for current promotions, discounts, or special deals. Respond with available offers relevant to the user’s query.",
-      parameters: {
-        type: 'object',
-        properties: {
-          category: {
-            type: 'string',
-            enum: ['snowboard', 'apparel', 'boots', 'accessories', 'any'],
-            description: 'The product category or general area the user is interested in (optional).',
-          },
-        },
-        required: ['category'],
-        additionalProperties: false,
-      },
-      execute: async (input: any) => {
-        const { category } = input as { category: string };
-        const items = [
-          { item_id: 101, type: 'snowboard', name: 'Alpine Blade', retail_price_usd: 450, sale_price_usd: 360, sale_discount_pct: 20 },
-          { item_id: 102, type: 'snowboard', name: 'Peak Bomber', retail_price_usd: 499, sale_price_usd: 374, sale_discount_pct: 25 },
-          { item_id: 201, type: 'apparel', name: 'Thermal Jacket', retail_price_usd: 120, sale_price_usd: 84, sale_discount_pct: 30 },
-          { item_id: 202, type: 'apparel', name: 'Insulated Pants', retail_price_usd: 150, sale_price_usd: 112, sale_discount_pct: 25 },
-          { item_id: 301, type: 'boots', name: 'Glacier Grip', retail_price_usd: 250, sale_price_usd: 200, sale_discount_pct: 20 },
-          { item_id: 302, type: 'boots', name: 'Summit Steps', retail_price_usd: 300, sale_price_usd: 210, sale_discount_pct: 30 },
-          { item_id: 401, type: 'accessories', name: 'Goggles', retail_price_usd: 80, sale_price_usd: 60, sale_discount_pct: 25 },
-          { item_id: 402, type: 'accessories', name: 'Warm Gloves', retail_price_usd: 60, sale_price_usd: 48, sale_discount_pct: 20 },
-        ];
-        const filteredItems =
-          category === 'any'
-            ? items
-            : items.filter((item) => item.type === category);
-        filteredItems.sort((a, b) => b.sale_discount_pct - a.sale_discount_pct);
-        return {
-          sales: filteredItems,
-        };
-      },
-    }),
 
-    tool({
-      name: 'addToCart',
-      description: "Adds an item to the user's shopping cart.",
-      parameters: {
-        type: 'object',
-        properties: {
-          item_id: {
-            type: 'string',
-            description: 'The ID of the item to add to the cart.',
-          },
-        },
-        required: ['item_id'],
-        additionalProperties: false,
-      },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      execute: async (input: any) => ({ success: true }),
-    }),
-
-    tool({
-      name: 'checkout',
-      description:
-        "Initiates a checkout process with the user's selected items.",
-      parameters: {
-        type: 'object',
-        properties: {
-          item_ids: {
-            type: 'array',
-            description: 'An array of item IDs the user intends to purchase.',
-            items: {
-              type: 'string',
+        tool({
+          name: "getUserAccountInfo",
+          description:
+            "Tool to get user account information. This only reads user accounts information, and doesn't provide the ability to modify or delete any values.",
+          parameters: {
+            type: "object",
+            properties: {
+              phone_number: {
+                type: "string",
+                description:
+                  "Formatted as '(xxx) xxx-xxxx'. MUST be provided by the user, never a null or empty string.",
+              },
             },
+            required: ["phone_number"],
+            additionalProperties: false,
           },
-          phone_number: {
-            type: 'string',
-            description: "User's phone number used for verification. Formatted like '(111) 222-3333'",
-            pattern: '^\\(\\d{3}\\) \\d{3}-\\d{4}$',
+          execute: async (input: unknown) => {
+            // ✅ Cast/validate input
+            const { phone_number } = input as { phone_number: string };
+        
+            const user = getUserByMobile(phone_number);
+            if (!user) {
+              return { success: false, error: "Phone number not found" };
+            }
+        
+            return { success: true, user };
           },
-        },
-        required: ['item_ids', 'phone_number'],
-        additionalProperties: false,
-      },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      execute: async (input: any) => ({ checkoutUrl: 'https://example.com/checkout' }),
-    }),
+        }),
   ],
 
   handoffs: [],
