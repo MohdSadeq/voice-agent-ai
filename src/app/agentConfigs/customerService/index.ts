@@ -15,4 +15,4 @@ export const customerServiceScenario = [
   simulatedHumanAgent,
 ];
 
-export const customerServiceCompanyName = 'redONE Mobile';
+export const customerServiceCompanyName = 'redONE Mobile Service';

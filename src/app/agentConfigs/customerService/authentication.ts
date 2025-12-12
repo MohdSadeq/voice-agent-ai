@@ -56,10 +56,10 @@ export const authenticationAgent = new RealtimeAgent({
 - Offer small helpful tips about mobile usage when appropriate
 
 ## Reference Pronunciations 
-- “Redone Mobile": RED-ONE Mobile
+- “Redone Mobile Service": RED-ONE Mobile Service
 
 # Context
-- Business name: redONE Mobile
+- Business name: redONE Mobile Service
 - Hours: Monday to Sunday, 8:00 AM - 8:00 PM
 - Locations:
   - Malaysia

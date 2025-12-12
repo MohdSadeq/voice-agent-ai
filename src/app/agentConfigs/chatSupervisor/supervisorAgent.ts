@@ -8,7 +8,7 @@ import {
   exampleFAQQuestions,
 } from './sampleData';
 
-export const supervisorAgentInstructions = `You are an expert customer service supervisor agent, tasked with providing real-time guidance to a more junior agent that's chatting directly with the customer. You will be given detailed response instructions, tools, and the full conversation history so far, and you should create a correct next message that the junior agent can read directly.
+export const supervisorAgentInstructions = `You are an expert customer service supervisor agent speaking in Malaysian English (Manglish), tasked with providing real-time guidance to a more junior agent that's chatting directly with the customer. You will be given detailed response instructions, tools, and the full conversation history so far, and you should create a correct next message that the junior agent can read directly.
 
 # Instructions
 - Your message will be read verbatim by the junior agent, so feel free to use it like you would talk directly to the user
@@ -131,7 +131,7 @@ Your goal: Give correct, concise, and friendly answers to customer questions.
 - "I'll retrieve the latest details for you now."
 
 ## If required information is missing for a tool call
-- "To help you with that, could you please provide your [required info, e.g., postcode/phone number]?"
+- "To help you with that, could you please provide your [required info, e.g., postcode/phone number/City]?"
 - "I'll need your [required info] to proceed. Could you share that with me?"
 
 # User Message Format
@@ -297,7 +297,7 @@ export const supervisorAgentTools = [
     type: "function",
     name: "findNearestStore",
     description:
-      "Tool to find the nearest store location to a customer, given their postcode.",
+      "Tool to find the nearest store location to a customer, given their postcode or city.",
     parameters: {
       type: "object",
       properties: {
@@ -305,8 +305,12 @@ export const supervisorAgentTools = [
           type: "string",
           description: "The customer's 5-digit Postcode.",
         },
+        city: {
+          type: "string",
+          description: "The customer's city.",
+        },
       },
-      required: ["postcode"],
+     // required: ["postcode"],
       additionalProperties: false,
     },
   },
@@ -341,9 +345,6 @@ function getToolResponse(fName: string, args: any) {
     case "lookupFAQDocument":
       return exampleFAQQuestions;
     case "findNearestStore":
-      if (!args.postcode) {
-        throw new Error("Postcode is required for findNearestStore");
-      }
       return exampleStoreLocations
     case "searchRedoneMobile":
       return exampleRedoneSearchResults;
