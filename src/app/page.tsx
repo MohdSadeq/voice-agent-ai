@@ -2,7 +2,7 @@
 import { NetworkBackground } from "./components/NetworkBackground";
 import { Button } from "./components/ui/button";
 import { Card } from "./components/ui/card";
-import { Mic, Zap, Shield } from "lucide-react";
+import { Mic, Zap, Shield, MessageCircleHeartIcon, MessageCircleIcon } from "lucide-react";
 import Link from "next/link";
 
 const Index = () => {
@@ -23,7 +23,7 @@ const Index = () => {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-              Voice Bot That
+              Voice & Chat Bot That
               <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-float">
                 Understands Everything
               </span>
@@ -34,9 +34,13 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-              <Link href="/voice/voice-agent"><Button size="lg" className="text-lg px-8 py-6 animate-pulse-glow">
+              <Link href="/voice-agent"><Button size="lg" className="text-lg px-8 py-6 animate-pulse-glow">
                 <Mic className="w-5 h-5 mr-2" />
                 Try Demo
+              </Button></Link>
+              <Link href="/chat"><Button size="lg" className="text-lg px-8 py-6 animate-pulse-glow">
+                <MessageCircleIcon className="w-5 h-5 mr-2" />
+                Try Chat Demo
               </Button></Link>
             </div>
           </div>
