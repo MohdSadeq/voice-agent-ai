@@ -3,6 +3,9 @@ import { MessageCircle, X, Sparkles } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
 import { ChatInput } from "./ChatInput";
 import { cn } from "@/lib/utils";
+import { v4 as uuidv4 } from 'uuid';
+import { FaceIcon } from "@radix-ui/react-icons";
+import Image from "next/image";
 
 interface Message {
   role: "user" | "assistant";
@@ -26,6 +29,7 @@ export function ChatBot({
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: welcomeMessage },
   ]);
+  const [sessionId, setSessionId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -34,10 +38,20 @@ export function ChatBot({
   };
 
   useEffect(() => {
+    let existingSession = localStorage.getItem('chatSessionId');
+    if (!existingSession) {
+      existingSession = uuidv4();
+      localStorage.setItem('chatSessionId', existingSession);
+    }
+    setSessionId(existingSession);
+  }, []);
+  useEffect(() => {
     scrollToBottom();
   }, [messages, isLoading]);
 
   const sendMessage = async (content: string) => {
+    if (!sessionId) return; 
+
     const userMessage: Message = { role: "user", content };
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
@@ -46,7 +60,7 @@ export function ChatBot({
       const res = await fetch(apiEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: content }),
+        body: JSON.stringify({ message: content, sessionId}),
       });
       const data = await res.json();
 
@@ -95,12 +109,12 @@ export function ChatBot({
             ? "opacity-100 scale-100 translate-y-0"
             : "opacity-0 scale-95 translate-y-4 pointer-events-none"
         )}
-        style={{ height: "min(600px, calc(100vh - 10rem))" }}
+        style={{ height: "min(720px, calc(100vh - 6rem))" }}
       >
         {/* Header */}
         <div className="flex items-center gap-3 px-5 py-4 bg-chat-header border-b border-chat-border">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-chat-accent/10">
-            <Sparkles className="h-5 w-5 text-chat-accent" />
+          <Image src="/favicon.ico" alt="Logo" width={20} height={20}/>
           </div>
           <div className="flex-1">
             <h3 className="font-semibold text-chat-header-foreground">{title}</h3>

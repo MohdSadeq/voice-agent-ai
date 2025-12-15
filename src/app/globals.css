@@ -148,4 +148,33 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground antialiased;
   }
+
+}
+
+@layer components {
+  /* Reusable card for displaying mobile plans */
+  .plan-card {
+    @apply w-full bg-white dark:bg-gray-800 border border-red-600 rounded-xl shadow-sm p-4 sm:p-6 space-y-3;
+  }
+
+  .plan-card .plan-title { @apply text-lg font-semibold text-[hsl(var(--foreground))]; }
+  
+  .plan-card .plan-subtitle { @apply text-sm text-[hsl(var(--muted-foreground))]; }
+  
+  .plan-card .plan-price { @apply text-2xl font-bold text-red-600 flex items-baseline gap-2; }
+  
+  .plan-card .plan-price .original { @apply text-base line-through text-[hsl(var(--muted-foreground))]; }
+  
+  .plan-card .plan-section { @apply text-sm; }
+  
+  .plan-card .badge { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))]; }
+  
+  .plan-card .actions { @apply flex gap-2 pt-2; }
+  
+  .plan-card .btn-primary { @apply inline-flex items-center justify-center px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition; }
+  
+  .plan-card .btn-secondary { @apply inline-flex items-center justify-center px-4 py-2 rounded-md border border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--accent))] transition; }
+  
+  /* Space between cards when rendering lists */
+  .plan-card + .plan-card { @apply mt-4; }
 }

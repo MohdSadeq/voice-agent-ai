@@ -13,35 +13,7 @@ const Index = () => {
           <p className="text-lg text-muted-foreground">
            Try our chat bot
           </p>
-          <div className="bg-card rounded-xl border border-border p-6 text-left space-y-4">
-            <h2 className="font-semibold text-foreground">Features:</h2>
-            <ul className="space-y-2 text-muted-foreground">
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-chat-accent" />
-                Smooth open/close animations
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-chat-accent" />
-                Typing indicator with bouncing dots
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-chat-accent" />
-                Auto-expanding textarea input
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-chat-accent" />
-                Message animations with fade + slide
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-chat-accent" />
-                Fully themed with CSS variables
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-chat-accent" />
-                Dark mode support
-              </li>
-            </ul>
-          </div>
+     
         </div>
       </div>
 

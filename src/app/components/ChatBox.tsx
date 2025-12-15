@@ -1,9 +1,26 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ChatBox() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
+
+  // Load existing history on mount
+  useEffect(() => {
+    const loadHistory = async () => {
+      try {
+        const res = await fetch('/api/chat', { method: 'GET', credentials: 'include' });
+        const data = await res.json();
+        if (Array.isArray(data.history)) {
+          setMessages(data.history);
+        }
+      } catch (e) {
+        // non-fatal
+        console.warn('Failed to load history', e);
+      }
+    };
+    loadHistory();
+  }, []);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -17,11 +34,15 @@ export default function ChatBox() {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ message: userMessage }),
     });
     const data = await res.json();
 
-    if (data.reply) {
+    // Prefer server history to keep in sync across refreshes/tabs
+    if (Array.isArray(data.history)) {
+      setMessages(data.history);
+    } else if (data.reply) {
       setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }]);
     }
   };
