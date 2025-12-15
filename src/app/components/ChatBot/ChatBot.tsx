@@ -32,6 +32,7 @@ export function ChatBot({
   const [sessionId, setSessionId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -79,6 +80,8 @@ export function ChatBot({
       ]);
     } finally {
       setIsLoading(false);
+      // Ensure the input is focused after we finish processing
+      requestAnimationFrame(() => inputRef.current?.focus());
     }
   };
 
@@ -136,7 +139,7 @@ export function ChatBot({
         </div>
 
         {/* Input */}
-        <ChatInput onSend={sendMessage} disabled={isLoading} />
+        <ChatInput onSend={sendMessage} disabled={isLoading} inputRef={inputRef} />
       </div>
     </>
   );

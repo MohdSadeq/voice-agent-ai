@@ -6,9 +6,10 @@ interface ChatInputProps {
   onSend: (message: string) => void;
   disabled?: boolean;
   placeholder?: string;
+  inputRef?: React.RefObject<HTMLTextAreaElement | null>;
 }
 
-export function ChatInput({ onSend, disabled, placeholder = "Type a message..." }: ChatInputProps) {
+export function ChatInput({ onSend, disabled, placeholder = "Type a message...", inputRef }: ChatInputProps) {
   const [input, setInput] = useState("");
 
   const handleSend = () => {
@@ -27,6 +28,7 @@ export function ChatInput({ onSend, disabled, placeholder = "Type a message..." 
   return (
     <div className="flex items-end gap-2 p-4 border-t border-chat-border bg-chat-input-bg">
       <textarea
+        ref={inputRef}
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}

@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const Index = () => {
   return (
-    <div className="relative min-h-screen bg-background text-foreground overflow-hidden">
+    <div className="voice-ai-theme relative min-h-screen bg-background text-foreground overflow-hidden">
       <NetworkBackground />
       
       {/* Content */}

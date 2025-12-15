@@ -3,7 +3,7 @@ import { ChatBot } from "@/components/ChatBot";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="chat-red min-h-screen bg-background">
       {/* Demo page content */}
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-2xl mx-auto text-center space-y-6">

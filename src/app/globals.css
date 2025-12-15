@@ -64,6 +64,11 @@ All colors MUST be HSL.
     
     --chat-input-bg: 0 0% 100%;
 
+    /* Voice AI theme tokens */
+    --glow-red: 0 100% 60%;
+    --glow-red-dim: 0 100% 40%;
+    --particle-red: 0 84% 65%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5% 26%;
     --sidebar-primary: 240 6% 10%;
@@ -129,6 +134,11 @@ All colors MUST be HSL.
     
     --chat-input-bg: 222 47% 8%;
 
+    /* Voice AI theme tokens - dark mode */
+    --glow-red: 0 100% 65%;
+    --glow-red-dim: 0 100% 45%;
+    --particle-red: 0 88% 70%;
+
     --sidebar-background: 240 6% 10%;
     --sidebar-foreground: 240 5% 96%;
     --sidebar-primary: 224 76% 48%;
@@ -138,6 +148,43 @@ All colors MUST be HSL.
     --sidebar-border: 240 4% 16%;
     --sidebar-ring: 217 91% 60%;
   }
+
+  /* Voice AI page specific theme */
+  .voice-ai-theme {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 84% 55%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 0 72% 51%;
+    --accent-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 84% 55%;
+  }
+
+  /* Chat page: red accent for button and user avatar; user bubble white */
+  .chat-red {
+    /* Toggle button (uses chat-accent tokens) */
+    --chat-accent: 0 84% 55%;
+    --chat-accent-hover: 0 72% 51%;
+    --chat-accent-foreground: 0 0% 100%;
+
+    /* User identity colors */
+    --chat-user-avatar: 0 84% 55%;
+    --chat-user-avatar-foreground: 0 0% 100%;
+
+    /* Make user message bubble white with readable text */
+    --chat-user: 0 0% 100%;
+    --chat-user-foreground: 222 47% 11%;
+  }
 }
 
 @layer base {
@@ -146,35 +193,6 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground;
   }
-
-}
-
-@layer components {
-  /* Reusable card for displaying mobile plans */
-  .plan-card {
-    @apply w-full bg-white dark:bg-gray-800 border border-red-600 rounded-xl shadow-sm p-4 sm:p-6 space-y-3;
-  }
-
-  .plan-card .plan-title { @apply text-lg font-semibold text-[hsl(var(--foreground))]; }
-  
-  .plan-card .plan-subtitle { @apply text-sm text-[hsl(var(--muted-foreground))]; }
-  
-  .plan-card .plan-price { @apply text-2xl font-bold text-red-600 flex items-baseline gap-2; }
-  
-  .plan-card .plan-price .original { @apply text-base line-through text-[hsl(var(--muted-foreground))]; }
-  
-  .plan-card .plan-section { @apply text-sm; }
-  
-  .plan-card .badge { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))]; }
-  
-  .plan-card .actions { @apply flex gap-2 pt-2; }
-  
-  .plan-card .btn-primary { @apply inline-flex items-center justify-center px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition; }
-  
-  .plan-card .btn-secondary { @apply inline-flex items-center justify-center px-4 py-2 rounded-md border border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--accent))] transition; }
-  
-  /* Space between cards when rendering lists */
-  .plan-card + .plan-card { @apply mt-4; }
 }

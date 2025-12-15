@@ -47,6 +47,31 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Chat-specific color tokens mapped to CSS variables
+        "chat-accent": "hsl(var(--chat-accent))",
+        "chat-accent-hover": "hsl(var(--chat-accent-hover))",
+        "chat-accent-foreground": "hsl(var(--chat-accent-foreground))",
+
+        "chat-window": "hsl(var(--chat-window))",
+        "chat-border": "hsl(var(--chat-border))",
+
+        "chat-header": "hsl(var(--chat-header))",
+        "chat-header-foreground": "hsl(var(--chat-header-foreground))",
+        "chat-header-muted": "hsl(var(--chat-header-muted))",
+
+        "chat-messages": "hsl(var(--chat-messages))",
+
+        "chat-user": "hsl(var(--chat-user))",
+        "chat-user-foreground": "hsl(var(--chat-user-foreground))",
+        "chat-user-avatar": "hsl(var(--chat-user-avatar))",
+        "chat-user-avatar-foreground": "hsl(var(--chat-user-avatar-foreground))",
+
+        "chat-bot": "hsl(var(--chat-bot))",
+        "chat-bot-foreground": "hsl(var(--chat-bot-foreground))",
+        "chat-bot-avatar": "hsl(var(--chat-bot-avatar))",
+        "chat-bot-avatar-foreground": "hsl(var(--chat-bot-avatar-foreground))",
+
+        "chat-input-bg": "hsl(var(--chat-input-bg))",
         glow: {
           red: "hsl(var(--glow-red))",
           "red-dim": "hsl(var(--glow-red-dim))",
