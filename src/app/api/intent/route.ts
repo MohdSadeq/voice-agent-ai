@@ -10,14 +10,17 @@ export async function POST(req: NextRequest) {
     }
 
     const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+     const supervisorAgentInstructions = `Extract the user intent in a concise sentence. Only return the intent, no greetings or extra text. - You support English, Malay, and Mandarin Language. If user ask in Malay or Mandarin, you should reply in Malay or Mandarin.
+     - You must reply in the language that the user asked in last message or messages before if last messages are numbers or input.
+     - You are a Redone Mobile Support Agent for a telecommunications company.
+     - Please focus on which language the user asked in last message or messages before if last messages are numbers. `;
 
     const intentResponse = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
-          content:
-            'Extract the user intent in a concise sentence. Only return the intent, no greetings or extra text.',
+          content: supervisorAgentInstructions,
         },
         { role: 'user', content: userMessage },
       ],
@@ -26,6 +29,7 @@ export async function POST(req: NextRequest) {
     });
 
     const userIntent = intentResponse.choices[0]?.message?.content?.trim() || '';
+    console.log('userIntent', userIntent);
 
     return NextResponse.json({ userIntent });
   } catch (err: any) {

@@ -51,9 +51,6 @@ console.log(this.context.history);
     }
 */
     // Call supervisor agent
-    const fillerPhrases = ['Just a second.', 'Let me check.', 'One moment.', 'Let me look into that.', 'Give me a moment.', 'Let me see.'];
-    const filler = fillerPhrases[Math.floor(Math.random() * fillerPhrases.length)];
-    this.addMessage('assistant', filler);
 
     // Build chat history
     const relevantContextFromLastUserMessage = this.getHistory();
@@ -64,23 +61,23 @@ console.log(this.context.history);
     // 1) Extract user intent from the latest user message via our API
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     let userIntent = '';
-    try {
+    /*try {
       const intentRes = await fetch(`${baseUrl}/api/intent`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userMessage }),
       });
       if (intentRes.ok) {
-        const intentJson = await intentRes.json();
+       const intentJson = await intentRes.json();
         userIntent = intentJson?.userIntent || '';
       }
     } catch (e) {
       // Non-fatal: proceed without intent
       console.warn('intent API failed', e);
-    }
+    }*/
 
     // 2) Pass intent + history to supervisor in ChatSupervisor-style format
-    const supervisorInput = `==== Conversation History ====\n${chatHistory}\n\n==== Relevant Context From Last User Message ===\n${userIntent || this.getLastUserMessage()}`;
+    const supervisorInput = `==== Conversation History ====\n${chatHistory}\n\n==== Relevant Context From Last User Message ===\n${this.getLastUserMessage()}`;
     const supervisorResponse = await getNextResponseFromSupervisor(supervisorInput);
     const finalResponse = supervisorResponse.nextResponse || "Sorry, something went wrong.";
 
