@@ -9,7 +9,6 @@ import { audioFormatForCodec, applyCodecPreferences } from '../lib/codecUtils';
 import { useEvent } from '../contexts/EventContext';
 import { useHandleSessionHistory } from './useHandleSessionHistory';
 import { SessionStatus } from '../types';
-import { applyNoiseSuppression } from '../lib/noiseSuppression';
 
 export interface RealtimeSessionCallbacks {
   onConnectionChange?: (status: SessionStatus) => void;
@@ -134,13 +133,11 @@ export function useRealtimeSession(callbacks: RealtimeSessionCallbacks = {}) {
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
+
           channelCount: 1,
           sampleRate: 48000,
         },
       });
-
-      // Apply RNNoise noise suppression
-      stream = await applyNoiseSuppression(stream);
 
       sessionRef.current = new RealtimeSession(rootAgent, {
         transport: new OpenAIRealtimeWebRTC({

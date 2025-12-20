@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { convertWebMBlobToWav } from "../lib/audioUtils";
-import { applyNoiseSuppression } from "../lib/noiseSuppression";
 
 function useAudioDownload() {
   // Ref to store the MediaRecorder instance.
@@ -26,8 +25,6 @@ function useAudioDownload() {
         }
       });
 
-      // Apply RNNoise noise suppression
-      micStream = await applyNoiseSuppression(micStream);
     } catch (err) {
       console.error("Error getting microphone stream:", err);
       // Fallback to an empty MediaStream if microphone access fails.

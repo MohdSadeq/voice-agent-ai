@@ -137,6 +137,11 @@ Your goal: Give correct, concise, and friendly answers to customer questions.
 - Always include your final response to the user.
 - Only provide information about this company, its policies, its products, or the customer's account, and only if it is based on information provided in context. Do not answer questions outside this scope.
 
+# User Context
+- You will be provided with the current user context (Mobile, NRIC, Name) if available.
+- Use this information to avoid asking the user for details they have already provided.
+- If the context is empty or missing required details for a tool call, ask the user politely.
+
 # Example (tool call)
 - User: Can you tell me about your family plan options?
 - Supervisor Assistant: lookup_faq_document(topic="How to do payment online?")
@@ -256,7 +261,7 @@ export const supervisorAgentTools = [
       additionalProperties: false
     }
   },
- { 
+  {
     type: "function",
     name: "lookupFAQDocument",
     description:
@@ -309,7 +314,7 @@ export const supervisorAgentTools = [
           description: "The customer's city.",
         },
       },
-     // required: ["postcode"],
+      // required: ["postcode"],
       additionalProperties: false,
     },
   },
@@ -359,9 +364,15 @@ function getToolResponse(fName: string, args: any) {
 async function handleToolCalls(
   body: any,
   response: any,
-  addBreadcrumb?: (title: string, data?: any) => void,
+  details?: any,
 ) {
   let currentResponse = response;
+  const addBreadcrumb = (details?.context as any)?.addTranscriptBreadcrumb as
+    | ((title: string, data?: any) => void)
+    | undefined;
+  const updateUserContext = (details?.context as any)?.updateUserContext as
+    | ((updates: any) => void)
+    | undefined;
 
   while (true) {
     if (currentResponse?.error) {
@@ -403,6 +414,15 @@ async function handleToolCalls(
       }
       if (addBreadcrumb) {
         addBreadcrumb(`[supervisorAgent] function call result: ${fName}`, toolRes);
+      }
+
+      // If we got user account info, update the user context
+      if (fName === "getUserAccountInfo" && (toolRes as any).personalInfo && updateUserContext) {
+        updateUserContext({
+          mobile: (toolRes as any).personalInfo.phone,
+          nric: (toolRes as any).personalInfo.nric,
+          name: (toolRes as any).personalInfo.name,
+        });
       }
 
       // Add function call and result to the request body to send back to realtime
@@ -447,9 +467,11 @@ export const getNextResponseFromSupervisor = tool({
       relevantContextFromLastUserMessage: string;
     };
 
-    const addBreadcrumb = (details?.context as any)?.addTranscriptBreadcrumb as
-      | ((title: string, data?: any) => void)
-      | undefined;
+    const userContext = (details?.context as any)?.userContext ?? {
+      mobile: "",
+      nric: "",
+      name: "",
+    };
 
     const history: RealtimeItem[] = (details?.context as any)?.history ?? [];
     const filteredLogs = history.filter((log) => log.type === 'message');
@@ -465,7 +487,10 @@ export const getNextResponseFromSupervisor = tool({
         {
           type: 'message',
           role: 'user',
-          content: `==== Conversation History ====
+          content: `==== User Context ====
+          ${JSON.stringify(userContext, null, 2)}
+
+          ==== Conversation History ====
           ${JSON.stringify(filteredLogs, null, 2)}
           
           ==== Relevant Context From Last User Message ===
@@ -481,7 +506,7 @@ export const getNextResponseFromSupervisor = tool({
       return { error: 'Something went wrong.' };
     }
 
-    const finalText = await handleToolCalls(body, response, addBreadcrumb);
+    const finalText = await handleToolCalls(body, response, details);
     if ((finalText as any)?.error) {
       return { error: 'Something went wrong.' };
     }
@@ -489,4 +514,3 @@ export const getNextResponseFromSupervisor = tool({
     return { nextResponse: finalText as string };
   },
 });
-  

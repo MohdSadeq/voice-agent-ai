@@ -17,7 +17,6 @@ import { useTranscript } from "@/app/contexts/TranscriptContext";
 import { useEvent } from "@/app/contexts/EventContext";
 import { useRealtimeSession } from "./hooks/useRealtimeSession";
 import { createModerationGuardrail } from "@/app/agentConfigs/guardrails";
-
 // Agent configs
 import { allAgentSets, defaultAgentSetKey } from "@/app/agentConfigs";
 import { customerServiceScenario } from "@/app/agentConfigs/customerService";
@@ -35,6 +34,7 @@ import useAudioDownload from "./hooks/useAudioDownload";
 import { useHandleSessionHistory } from "./hooks/useHandleSessionHistory";
 
 function App() {
+  console.log('[App] Render');
   const searchParams = useSearchParams()!;
 
   // ---------------------------------------------------------------------
@@ -103,6 +103,18 @@ function App() {
 
   const [isEventsPaneExpanded, setIsEventsPaneExpanded] =
     useState<boolean>(true);
+  const [userContext, setUserContext] = useState({
+    mobile: "",
+    nric: "",
+    name: "",
+  });
+
+
+
+  const updateUserContext = (updates: Partial<{ mobile: string; nric: string; name: string }>) => {
+    setUserContext((prev) => ({ ...prev, ...updates }));
+  };
+
   const [userText, setUserText] = useState<string>("");
   const [isPTTActive, setIsPTTActive] = useState<boolean>(false);
   const [isPTTUserSpeaking, setIsPTTUserSpeaking] = useState<boolean>(false);
@@ -192,9 +204,14 @@ function App() {
 
   const connectToRealtime = async () => {
     const agentSetKey = searchParams.get("agentConfig") || "default";
+    console.log('[App] connectToRealtime called. agentSetKey:', agentSetKey, 'sessionStatus:', sessionStatus);
     if (sdkScenarioMap[agentSetKey]) {
-      if (sessionStatus !== "DISCONNECTED") return;
+      if (sessionStatus !== "DISCONNECTED") {
+        console.log('[App] Skipping connect: sessionStatus is not DISCONNECTED');
+        return;
+      }
       setSessionStatus("CONNECTING");
+      console.log('[App] sessionStatus set to CONNECTING');
 
       try {
         const EPHEMERAL_KEY = await fetchEphemeralKey();
@@ -220,6 +237,8 @@ function App() {
           outputGuardrails: [guardrail],
           extraContext: {
             addTranscriptBreadcrumb,
+            userContext,
+            updateUserContext,
           },
         });
       } catch (err) {
@@ -259,12 +278,12 @@ function App() {
     const turnDetection = isPTTActive
       ? null
       : {
-          type: 'server_vad',
-          threshold: 0.8,
-          prefix_padding_ms: 300,
-          silence_duration_ms: 2000,
-          create_response: true,
-        };
+        type: 'server_vad',
+        threshold: 0.8,
+        prefix_padding_ms: 300,
+        silence_duration_ms: 2000,
+        create_response: true,
+      };
 
     sendEvent({
       type: 'session.update',
@@ -436,12 +455,12 @@ function App() {
           onClick={() => window.location.reload()}
         >
           <div className="flex flex-row items-center gap-2 justify-center">
-          <div className="text-lg font-semibold">
-            red<span className="text-red-500">ONE</span> Mobile
-          </div>
-          <div className="text-sm ">
-             Voice Bot
-          </div>
+            <div className="text-lg font-semibold">
+              red<span className="text-red-500">ONE</span> Mobile
+            </div>
+            <div className="text-sm ">
+              Voice Bot
+            </div>
           </div>
         </div>
         <div className="flex items-center">
@@ -533,6 +552,8 @@ function App() {
         setIsEventsPaneExpanded={setIsEventsPaneExpanded}
         isAudioPlaybackEnabled={isAudioPlaybackEnabled}
         setIsAudioPlaybackEnabled={setIsAudioPlaybackEnabled}
+        //noiseSuppressionMethod={noiseSuppressionMethod}
+        //onNoiseSuppressionMethodChange={setNoiseSuppressionMethod}
         codec={urlCodec}
         onCodecChange={handleCodecChange}
       />
