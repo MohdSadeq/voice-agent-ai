@@ -9,6 +9,7 @@ import { audioFormatForCodec, applyCodecPreferences } from '../lib/codecUtils';
 import { useEvent } from '../contexts/EventContext';
 import { useHandleSessionHistory } from './useHandleSessionHistory';
 import { SessionStatus } from '../types';
+import { applyNoiseSuppression } from '../lib/noiseSuppression';
 
 export interface RealtimeSessionCallbacks {
   onConnectionChange?: (status: SessionStatus) => void;
@@ -61,7 +62,7 @@ export function useRealtimeSession(callbacks: RealtimeSessionCallbacks = {}) {
       default: {
         logServerEvent(event);
         break;
-      } 
+      }
     }
   }
 
@@ -128,7 +129,7 @@ export function useRealtimeSession(callbacks: RealtimeSessionCallbacks = {}) {
       const codecParam = codecParamRef.current;
       const audioFormat = audioFormatForCodec(codecParam);
 
-      const stream = await navigator.mediaDevices.getUserMedia({
+      let stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
           noiseSuppression: true,
@@ -137,6 +138,9 @@ export function useRealtimeSession(callbacks: RealtimeSessionCallbacks = {}) {
           sampleRate: 48000,
         },
       });
+
+      // Apply RNNoise noise suppression
+      stream = await applyNoiseSuppression(stream);
 
       sessionRef.current = new RealtimeSession(rootAgent, {
         transport: new OpenAIRealtimeWebRTC({
@@ -181,7 +185,7 @@ export function useRealtimeSession(callbacks: RealtimeSessionCallbacks = {}) {
   const interrupt = useCallback(() => {
     sessionRef.current?.interrupt();
   }, []);
-  
+
   const sendUserText = useCallback((text: string) => {
     assertconnected();
     sessionRef.current!.sendMessage(text);

@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { convertWebMBlobToWav } from "../lib/audioUtils";
+import { applyNoiseSuppression } from "../lib/noiseSuppression";
 
 function useAudioDownload() {
   // Ref to store the MediaRecorder instance.
@@ -15,13 +16,18 @@ function useAudioDownload() {
   const startRecording = async (remoteStream: MediaStream) => {
     let micStream: MediaStream;
     try {
-      micStream = await navigator.mediaDevices.getUserMedia({ audio: {
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true,
-        channelCount: 1,
-        sampleRate: 48000,
-      } });
+      micStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+          channelCount: 1,
+          sampleRate: 48000,
+        }
+      });
+
+      // Apply RNNoise noise suppression
+      micStream = await applyNoiseSuppression(micStream);
     } catch (err) {
       console.error("Error getting microphone stream:", err);
       // Fallback to an empty MediaStream if microphone access fails.
@@ -93,7 +99,7 @@ function useAudioDownload() {
       console.warn("No recorded chunks found to download.");
       return;
     }
-    
+
     // Combine the recorded chunks into a single WebM blob.
     const webmBlob = new Blob(recordedChunksRef.current, { type: "audio/webm" });
 

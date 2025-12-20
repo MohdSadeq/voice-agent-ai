@@ -12,6 +12,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@openai/agents": "^0.0.5",
     "@radix-ui/react-icons": "^1.3.2",
+    "@timephy/rnnoise-wasm": "^1.0.0",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.1.1",
     "dotenv": "^16.4.7",
