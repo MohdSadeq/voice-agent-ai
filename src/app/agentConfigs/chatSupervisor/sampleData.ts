@@ -236,7 +236,9 @@ export const getAccountInfo = (userId: number = 1) => {
       suspensionDate: formatDateOrNA(user.suspensionDate),
       barringDate: formatDateOrNA(user.barringDate),
       daysRemaining: user.contractEnd 
-        ? Math.ceil((new Date(user.contractEnd).getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+        ? (now > new Date(user.contractEnd) 
+            ? 'Expired' 
+            : Math.ceil((new Date(user.contractEnd).getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
         : 'N/A'
     },
 
