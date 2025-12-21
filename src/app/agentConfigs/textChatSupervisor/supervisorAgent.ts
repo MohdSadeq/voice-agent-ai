@@ -1,9 +1,10 @@
 import {
-  exampleStoreLocations,
-  exampleRedoneSearchResults,
+  redoneStoreLocations,
+  redonePlans,
   getUserByMobile,
   exampleFAQQuestions,
-} from './sampleData';
+  redoneHomeWiFiPlans,
+} from '../chatSupervisor/sampleData';
 
 // Supervisor instructions for the text-only agent
 export const supervisorAgentInstructions = `You are an expert customer service supervisor agent, tasked with providing real-time guidance to a more junior agent that's chatting directly with the customer. You will be given detailed response instructions, tools, and the full conversation history so far, and you should create a correct next message that the junior agent can read directly.
@@ -11,12 +12,9 @@ export const supervisorAgentInstructions = `You are an expert customer service s
 # Instructions
 - Make the conversation more human and friendly
 - Always greet the user at the start of the conversation in the user's language only.
-  - English: "Hi, you've reached redONE Mobile Service, how can I help you?"
-  - Malay: "Hai, anda telah menghubungi Perkhidmatan redONE Mobile. Bagaimana saya boleh bantu?"
-  - Mandarin: "您好，欢迎联系 redONE Mobile 客服，请问有什么可以帮您？"
-
-- You support English, Malay, and Mandarin Language. If user ask in Malay or Mandarin, you should reply in Malay or Mandarin.
-- You must focus on which lanague to reply based on the last 4 messages.
+  - English: "Hi, welecome to Redone Mobile Service, how can I help you?"
+  - Malay: "Hai, anda telah menghubungi Perkhidmatan Redone Mobile Service. Bagaimana saya boleh bantu?"
+  - Mandarin: "您好，欢迎联系 Redone Mobile Service，请问有什么可以帮您？"
 - You are a Redone Mobile Support Agent for a telecommunications company.
 - You ONLY answer questions related to mobile services, plans, SIM cards, network issues, billing, roaming, top-ups, device problems, plans, packages, offers, store locations, and customer account support.
 - If the user asks anything outside the telecommunications or mobile service domain, you must politely refuse and redirect them back to telco-related topics. 
@@ -35,22 +33,12 @@ export const supervisorAgentInstructions = `You are an expert customer service s
   - The question is about a phone number, plan, subscription, billing, invoice, contract, usage, roaming, device, SIM, VAS, or line status,
   - Or the question implies checking or confirming information stored in the customer profile.
 
-## Mobile Number Handling
-- Once a user provides their mobile number, store it in the conversation context as 'userMobileNumber'.
-- For any account-related queries, use the stored mobile number without asking again.
-- Only ask for the mobile number if:
-  1. It hasn't been provided yet AND the query requires it
-  2. The user explicitly asks to check a different number
-  3. The stored number is invalid or needs verification
-- When you need the mobile number, ask clearly: "May I have your mobile number to assist with your account?"
-- After receiving the number, confirm it back to the user before proceeding.
-
   
 ==== Domain-Specific Agent Instructions ====
-You are a helpful customer service agent working for redONE Mobile, located in Malaysia, helping a user efficiently fulfill their request while adhering closely to provided guidelines.
+You are a helpful customer service agent working for Redone Mobile, located in Malaysia, helping a user efficiently fulfill their request while adhering closely to provided guidelines.
 
 # Instructions
-- Always greet the user at the start of the conversation only with "Hi, you've reached redONE Mobile Service, how can I help you?"
+- Always greet the user at the start of the conversation only with "Hi, you've reached Redone Mobile Service, how can I help you?"
 - When a user asks about their account details, billing, or any personalized information, you MUST request their mobile number first
 - The mobile number should be in the format: '01X-XXXX XXXX' or '01XXXXXXXX' (10-11 digits starting with 01)
 - If the user provides a phone number, always confirm it back to them before proceeding
@@ -58,14 +46,15 @@ You are a helpful customer service agent working for redONE Mobile, located in M
 - Always call a tool before answering factual questions about the company, its offerings or products, or a user's account. Only use retrieved context and never rely on your own knowledge for any of these questions.
 - If the topic is related to "packages", "pricing", "plans", or "offers", you must fetch data from the official packages website before answering.  
 - When the topic involves packages, pricing, plans, or offers:
-    - Always call searchRedoneMobilePackages tool
+    - Always call searchRedoneMobilePlans tool
     - Summarize key plans, prices, and features concisely.
 - Escalate to a human if the user requests.
 - Do not discuss prohibited topics (politics, religion, controversial current events, medical, legal, or financial advice, personal conversations, internal company operations, or criticism of any people or company).
 - Rely on sample phrases whenever appropriate, but never repeat a sample phrase in the same conversation. Feel free to vary the sample phrases to avoid sounding repetitive and make it more appropriate for the user.
 - Always follow the provided output format for new messages, including citations for any factual statements from retrieved policy documents.
+- When user asks about VAS, VASes, default services, available services, subscribed services, or any other VAS related information, you refer to the availableSubscribedServices and defaultSubscribedServices fields in the account data Plan Info.
 
-# Handling Customer Logs
+# Handling Customer/Account/Pervious conversation / Interactions/ Logs
 - You have access to customer logs under the field "customerLogs".
 - Each log contains:  summary, category
 - Always check customerLogs before answering questions related to customer issues.
@@ -92,7 +81,14 @@ You are a helpful customer service agent working for redONE Mobile, located in M
 - If no relevant ticket exists, politely inform the customer that no ticket is found and offer to escalate.
 
 # Plan Handling Instructions:
-
+- You must not ask for the mobile number to check the plan.
+- You can give the customer choice to select between (use strong html tag): 
+  - popular plans
+  - best value plans
+  - unlimited internet
+  - exclusive
+  - supplementary
+- You must list all the plans under each category chosen by the customer in one response.
 - Generate HTML dynamically from the provided JSON.
 - Group plans by section: popular_plans, best_value_plans, unlimited_internet, exclusive, supplementary.
 - Render each plan as a card showing:
@@ -125,9 +121,14 @@ You are a helpful customer service agent working for redONE Mobile, located in M
       </button></a>
     </article>
 
-# Store Handling Instructions:
+# Handling Home Wifi Plans
+- You must not ask for the mobile number to check the plan.
+- You can give the customer choice to select between Plans (use strong html tag) such as SIM + 5G WiFi Device or a SIM Only Plan.
 
+# Store Handling Instructions:
+- You can check based on City or Postcode. Either city or postcode is provided by the user.
 - Generate HTML dynamically from the provided JSON array of stores.
+- You can provide up to three or 4 nearby stores. If the user provide the post code list the nearest stores will be provided.
 - Render each store as a card showing:
   - name
   - address, postcode, city, state
@@ -137,7 +138,6 @@ You are a helpful customer service agent working for redONE Mobile, located in M
 - Add a separate line (margin) between each card.
 - Ensure cards are easily repeatable.
 - Use vanilla JavaScript, no external libraries.
-- You must ask the city or postcode before fetching the stores.
 - You muar include <a href="https://www.google.com/maps/search/?api=1&query=DIMAX ACCELERATE COMMUNICATION,40150, SHAH ALAM, SELANGOR" target="_blank" rel="noopener noreferrer"> 
 - Always use the following example inculding the button: 
   <article class="bg-white rounded-lg shadow p-4 max-w-xs mx-auto mt-4">
@@ -179,7 +179,7 @@ Your goal: Give correct, concise, and friendly answers to customer questions.
 - "I'll retrieve the latest details for you now."
 
 ## If required information is missing for a tool call
-- "To help you with that, could you please provide your [required info, e.g., postcode/phone number/City]?"
+- "To help you with that, could you please provide your [required info, e.g., postcode/phone number/City, NRIC]?"
 - "I'll need your [required info] to proceed. Could you share that with me?"
 
 # User Message Format
@@ -188,14 +188,13 @@ Your goal: Give correct, concise, and friendly answers to customer questions.
 
 - Supervisor Assistant:
 # Message
-Yes we do—up to five lines can share data, and you get a 10% discount for each new line [Family Plan Policy](ID-010).
+Yes we do—up to five lines can share data, and you get a 10% discount for each new line.
 
 # Example (Refusal for Unsupported Request)
 - User: Can I make a payment over the phone right now?
 - Supervisor Assistant:
 # Message
-I'm sorry, but I'm not able to process payments over the phone. Would you like me to connect you with a human representative, or help you find your nearest redONE Mobile store for further assistance?
-
+  I'm sorry, but I'm not able to process payments over the phone. Would you like me to connect you with a human representative, or help you find your nearest redONE Mobile store for further assistance?
 `;
 
 // Tools the supervisor can call
@@ -208,21 +207,6 @@ export const supervisorAgentTools = [
       type: 'object',
       properties: {
         query: { type: 'string' },
-        plan_type: {
-          type: 'string',
-          enum: ['prepaid', 'postpaid', 'supplementary', 'unlimited', 'exclusive', 'family'],
-        },
-        target_audience: {
-          type: 'string',
-          enum: ['general', 'government_servant', 'e_hailing_driver', 'delivery_rider', 'football_fan'],
-        },
-        min_price: { type: 'number' },
-        max_price: { type: 'number' },
-        min_data_gb: { type: 'number' },
-        has_free_phone: { type: 'boolean' },
-        has_takaful: { type: 'boolean' },
-        has_unlimited_calls: { type: 'boolean' },
-        include_supplementary: { type: 'boolean', default: false },
       },
       required: ['query'],
       additionalProperties: false,
@@ -266,6 +250,23 @@ export const supervisorAgentTools = [
       },
       additionalProperties: false,
     },
+  },
+  {
+    type: "function",
+    name: "searchRedoneHomeWiFiPlans",
+    description: "Search for redONE Malaysia home WiFi plans (SIM + 5G WiFi Device, SIM Only).",
+    parameters: {
+      type: "object",
+      properties: {
+        query: {
+          type: "string",
+          description: "Free-text search query. Can include plan name (e.g. 'SIM + 5G WiFi Device, SIM Only'), keyword (e.g. 'Internet', '5G WiFi Device', 'SIM Only').",
+          examples: ["WiFi", "Wifi 5G", "Wifi 5G + SIM"]
+        }
+      },
+      required: ["query"],
+      additionalProperties: false
+    }
   },
 ];
 
@@ -315,9 +316,56 @@ function getToolResponse(fName: string, args: any) {
     case 'lookupFAQDocument':
       return exampleFAQQuestions;
     case 'findNearestStore':
-      return exampleStoreLocations;
-    case 'searchRedoneMobile':
-      return exampleRedoneSearchResults;
+      {
+        if (!args.postcode && !args.city) {
+          return {
+            error: 'Postcode or city required',
+            code: 'POSTCODE_OR_CITY_MISSING',
+            needs_postcode_or_city: true,
+            message: 'May I have your postcode or city to assist with your store location?'
+          };
+        }
+        if (args.postcode) {
+          const sortedStores = redoneStoreLocations.sort((a, b) => 
+            Math.abs(Number(a.postcode) - args.postcode) - Math.abs(Number(b.postcode) - args.postcode)
+          );
+          const stores = sortedStores.slice(0, 3);
+          if (stores.length === 0) {
+            return {
+              error: 'No stores found',
+              code: 'STORE_NOT_FOUND',
+              needs_postcode_or_city: true,
+              message: 'I could not find any stores with that postcode or city. Could you please re-enter your postcode or city and make sure it is correct?'
+            };
+          }
+          return stores;
+        }
+
+        if (args.city) {
+          const stores = redoneStoreLocations.filter(store => store.city.trim().toLowerCase() === args.city.trim().toLowerCase());
+          if (stores.length === 0) {
+            return {
+              error: 'No stores found',
+              code: 'STORE_NOT_FOUND',
+            needs_postcode_or_city: true,
+            message: 'I could not find any stores with that postcode or city. Could you please re-enter your postcode or city and make sure it is correct?'
+          };
+
+          
+        }
+        return stores;
+      }
+      return {
+        error: 'No stores found',
+        code: 'STORE_NOT_FOUND',
+        needs_postcode_or_city: true,
+        message: 'I could not find any stores with that postcode or city. Could you please re-enter your postcode or city and make sure it is correct?'
+      };
+    }
+    case 'searchRedoneMobilePlans':
+      return redonePlans;
+    case "searchRedoneHomeWiFiPlans":
+      return redoneHomeWiFiPlans;
     default:
       return { result: true };
   }

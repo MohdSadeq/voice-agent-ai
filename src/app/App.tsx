@@ -107,11 +107,12 @@ function App() {
     mobile: "",
     nric: "",
     name: "",
+    nricNotYetRequestedToBeVerified: false,
   });
 
 
 
-  const updateUserContext = (updates: Partial<{ mobile: string; nric: string; name: string }>) => {
+  const updateUserContext = (updates: Partial<{ mobile: string; nric: string; name: string; nricNotYetRequestedToBeVerified: boolean }>) => {
     setUserContext((prev) => ({ ...prev, ...updates }));
   };
 

@@ -28,7 +28,7 @@ export class ChatAgent {
 
   public async handleUserMessage(userMessage: string) {
     this.addMessage('user', userMessage);
-console.log(this.context.history);
+
     // Local greeting handling
     const greetings = ['hi', 'hello', 'hey', 'hiya'];
     if (greetings.includes(userMessage.toLowerCase().trim())) {

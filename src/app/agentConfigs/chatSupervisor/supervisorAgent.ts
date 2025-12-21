@@ -2,10 +2,11 @@ import { RealtimeItem, tool } from '@openai/agents/realtime';
 
 
 import {
-  exampleStoreLocations,
-  exampleRedoneSearchResults,
+  redoneStoreLocations,
+  redonePlans,
   getUserByMobile,
   exampleFAQQuestions,
+  redoneHomeWiFiPlans,
 } from './sampleData';
 
 export const supervisorAgentInstructions = `You are an expert customer service supervisor agent, tasked with providing real-time guidance to a more junior agent that's chatting directly with the customer. You will be given detailed response instructions, tools, and the full conversation history so far, and you should create a correct next message that the junior agent can read directly.
@@ -14,12 +15,13 @@ export const supervisorAgentInstructions = `You are an expert customer service s
 - Your message will be read verbatim by the junior agent, so feel free to use it like you would talk directly to the user
 - Make the conversation more human and friendly
 - You support English, Malay, and Mandarin.
-- You are a Redone Mobile Support Agent for a telecommunications company.
+- You are a Redone Mobile Service Support Agent for a telecommunications company.
 - You ONLY answer questions related to mobile services, plans, SIM cards, network issues, billing, roaming, top-ups, device problems, and customer account support.
 - If the user asks anything outside the telecommunications or mobile service domain, you must politely refuse and redirect them back to telco-related topics. 
 - Never provide information unrelated to mobile networks, telco services, devices, data plans, billing, customer support, or technical troubleshooting.
 - Never answer personal, medical, legal, financial, or general knowledge questions.
 - Always reference fields directly from the JSON.
+- Use ONLY the provided JSON. When asked for account details, respond briefly and clearly, covering: account status, plan name and price, active services (5G, roaming, IDD), outstanding balance and next bill date, contract end date, and any open tickets, customer logs.
 - If the answer involves dates (contract, suspension, billing, etc.), calculate timelines accurately.
 - If the customer asks about subscriptions, list VAS, amounts, dates, or statuses clearly.
 - If the customer asks about billing, refer to invoices and payment histories.
@@ -27,28 +29,35 @@ export const supervisorAgentInstructions = `You are an expert customer service s
 - If information is missing, state that it is not available in the provided data.
 - Never assume anything not explicitly in the JSON.
 - Provide concise, factual, and structured responses.
-- You MUST call getUserAccountInfo whenever:
-  - The user asks for ANY information that depends on account data,
-  - The question is about a phone number, plan, subscription, billing, invoice, contract, usage, roaming, device, SIM, VAS, or line status,
-  - Or the question implies checking or confirming information stored in the customer profile.
 
-## Mobile Number Handling
-- Once a user provides their mobile number, store it in the conversation context as 'userMobileNumber'.
-- For any account-related queries, use the stored mobile number without asking again.
-- Only ask for the mobile number if:
-  1. It hasn't been provided yet AND the query requires it
-  2. The user explicitly asks to check a different number
-  3. The stored number is invalid or needs verification
-- When you need the mobile number, ask clearly: "May I have your mobile number to assist with your account?"
-- After receiving the number, confirm it back to the user before proceeding.
 
+# Handling Subscriptions & VAS
+- List plan name, price, VAS names, amounts, and subscription dates clearly.
+- Use JSON data only, do not assume extra info.
+- If VAS info is missing, say it is unavailable.
+
+# Billing & Payments
+- Refer to invoices, payment history, and barring history.
+- Give last bill, outstanding balance, next bill date, and due date, invoice status, invoice amount, invoice items, invoice date, invoice number, invoice description.
+- Summarize payment issues concisely.
+
+# Contract & Services
+- Provide contract start, end, suspension date, days remaining.
+- Mention active services like Roaming, IDD, 5G.
+- Summarize network features (LTE, VoLTE, 5G) from JSON.
+
+# Ticket & Customer Logs
+- Reference ticketHistory for ongoing/open tickets.
+- Focus on pendingFor and nextAction for open tickets.
+- Summarize customerLogs to provide relevant context concisely.
+- Closed tickets or logs can be used for historical reference only.
+
+ 
   
 ==== Domain-Specific Agent Instructions ====
 You are a helpful customer service agent working for redONE Mobile, located in Malaysia, helping a user efficiently fulfill their request while adhering closely to provided guidelines.
 
 # Instructions
-- Always greet the user at the start of the conversation only with "Hi, you've reached redONE Mobile, how can I help you?"
-- When a user asks about their account details, billing, or any personalized information, you MUST request their mobile number first
 - The mobile number should be in the format: '01X-XXXX XXXX' or '01XXXXXXXX' (10-11 digits starting with 01)
 - If the user provides a phone number, always confirm it back to them before proceeding
 - If the user doesn't provide a phone number when needed, politely ask for it before proceeding with their request
@@ -63,32 +72,16 @@ You are a helpful customer service agent working for redONE Mobile, located in M
 - Do not discuss prohibited topics (politics, religion, controversial current events, medical, legal, or financial advice, personal conversations, internal company operations, or criticism of any people or company).
 - Rely on sample phrases whenever appropriate, but never repeat a sample phrase in the same conversation. Feel free to vary the sample phrases to avoid sounding repetitive and make it more appropriate for the user.
 - Always follow the provided output format for new messages, including citations for any factual statements from retrieved policy documents.
+- Do NOT request a mobile number for general enquiries.
+- General enquiries include, but are not limited to:
+  - Store locations or operating hours
+  - Promotions, offers, or campaigns, redone plans
+  - General plan information
+  - Coverage or network availability
+  - Device availability
+- Only request a mobile number when the user’s request explicitly requires account-level access
+  (e.g., billing, plan details, charges, line status, account verification).
 
-# Handling Customer Logs
-- You have access to customer logs under the field "customerLogs".
-- Each log contains:  summary, category
-- Always check customerLogs before answering questions related to customer issues.
-- Use the summary to understand what the customer reported.
-- Summarize the relevant log information in a friendly, human, and concise manner.
-- Example response:
-  - User asks: Why was my network not working last week?
-  - Agent reply: Last week, you reported poor network coverage in your area. Our agent Maria Garcia performed account verification and reset your network settings. The issue was resolved, and no further follow-up is needed.
-- If no matching log exists, politely inform the customer and offer to investigate or escalate.
-
-# Handling Account Ticket History
-- You have access to the customer's ticket history under the field "ticketHistories".
-- Each ticket includes: id, title, summary, pendingFor, nextAction, status, category, createdAt, updatedAt.
-- Always prioritize open tickets when answering questions about ongoing issues.
-- Reference pendingFor to explain why a ticket may be delayed or awaiting action.
-- Reference nextAction to advise the customer on next steps.
-- Use closed tickets only to provide historical context or patterns.
-- Always mention the category if it helps clarify the type of issue.
-- Do not speculate or provide solutions not included in ticketHistories.
-- Always summarize the ticket information concisely and in a friendly, human manner.
-- When multiple tickets match the user's question, focus on the most relevant or recent ones.
-- Example response when user asks about an issue:
-  - "Your 5G issue is currently open. The ticket notes: 'Unable to establish data connection'. The pending action is network maintenance, and the next step is to update the system configuration."
-- If no relevant ticket exists, politely inform the customer that no ticket is found and offer to escalate.
 
 
 # Correct Pronunciation
@@ -137,10 +130,6 @@ Your goal: Give correct, concise, and friendly answers to customer questions.
 - Always include your final response to the user.
 - Only provide information about this company, its policies, its products, or the customer's account, and only if it is based on information provided in context. Do not answer questions outside this scope.
 
-# User Context
-- You will be provided with the current user context (Mobile, NRIC, Name) if available.
-- Use this information to avoid asking the user for details they have already provided.
-- If the context is empty or missing required details for a tool call, ask the user politely.
 
 # Example (tool call)
 - User: Can you tell me about your family plan options?
@@ -205,56 +194,19 @@ export const supervisorAgentTools = [
   {
     type: "function",
     name: "searchRedoneMobile",
-    description: "Search for redONE Malaysia mobile plans (prepaid, postpaid, supplementary, exclusive, or unlimited). Filter by plan name, type, target audience, price, data quota, or special benefits like free phone, takaful, or petrol voucher.",
+    description: "Search for redONE Malaysia mobile plans (prepaid, postpaid, supplementary, exclusive, or unlimited). Filter by plan name, type, target audience, price, data quota, or special benefits like free phone, takaful.",
     parameters: {
       type: "object",
       properties: {
         query: {
           type: "string",
-          description: "Free-text search query. Can include plan name (e.g. 'Mukmin58'), keyword (e.g. 'unlimited', '5G phone'), or target group (e.g. 'government servant', 'driver').",
+          description: "Free-text search query. Can include plan name (e.g. 'Mukmin58'), keyword (e.g. 'unlimited', '5G phone'), ",
           examples: ["Mukmin", "free phone", "unlimited internet", "Sabah FC"]
         },
         plan_type: {
           type: "string",
           enum: ["prepaid", "postpaid", "supplementary", "unlimited", "exclusive", "family"],
           description: "Filter by plan category. Use 'exclusive' for special plans like Mukmin, redplanKM, or SFC."
-        },
-        target_audience: {
-          type: "string",
-          enum: ["general", "government_servant", "e_hailing_driver", "delivery_rider", "football_fan"],
-          description: "Filter plans designed for specific user groups."
-        },
-        min_price: {
-          type: "number",
-          minimum: 0,
-          description: "Minimum monthly price in RM (e.g. 30 for plans ≥ RM30/month)."
-        },
-        max_price: {
-          type: "number",
-          minimum: 0,
-          description: "Maximum monthly price in RM (e.g. 100 for plans ≤ RM100/month)."
-        },
-        min_data_gb: {
-          type: "number",
-          minimum: 0,
-          description: "Minimum total data in GB (e.g. 100 for plans with ≥100GB)."
-        },
-        has_free_phone: {
-          type: "boolean",
-          description: "Set to true to find plans that include a free 5G smartphone."
-        },
-        has_takaful: {
-          type: "boolean",
-          description: "Set to true to find plans with Takaful protection (typically for government servants)."
-        },
-        has_unlimited_calls: {
-          type: "boolean",
-          description: "Set to true to find plans with unlimited calls to all networks."
-        },
-        include_supplementary: {
-          type: "boolean",
-          default: false,
-          description: "Include supplementary/add-on family lines in results."
         }
       },
       required: ["query"],
@@ -318,6 +270,39 @@ export const supervisorAgentTools = [
       additionalProperties: false,
     },
   },
+  {
+    type: "function",
+    name: "verifyNRIC",
+    description: "Verify the user's identity by checking the last 4 digits of their NRIC. This tool should be called when the user provides the last 4 digits of their NRIC.",
+    parameters: {
+      type: "object",
+      properties: {
+        last_4_digits: {
+          type: "string",
+          description: "The last 4 digits of the user's NRIC provided by the user.",
+        },
+      },
+      required: ["last_4_digits"],
+      additionalProperties: false,
+    },
+  },
+  {
+    type: "function",
+    name: "searchRedoneHomeWiFiPlans",
+    description: "Search for redONE Malaysia home WiFi plans (SIM + 5G WiFi Device, SIM Only).",
+    parameters: {
+      type: "object",
+      properties: {
+        query: {
+          type: "string",
+          description: "Free-text search query. Can include plan name (e.g. 'SIM + 5G WiFi Device, SIM Only'), keyword (e.g. 'Internet', '5G WiFi Device', 'SIM Only').",
+          examples: ["WiFi", "Wifi 5G", "Wifi 5G + SIM"]
+        }
+      },
+      required: ["query"],
+      additionalProperties: false
+    }
+  },
 ];
 
 async function fetchResponsesMessage(body: any) {
@@ -339,19 +324,63 @@ async function fetchResponsesMessage(body: any) {
   return completion;
 }
 
-function getToolResponse(fName: string, args: any) {
+function getToolResponse(fName: string, args: any, details?: any): any {
+  const context = (details?.context as any);
+  const updateUserContext = context?.updateUserContext;
+  const userContext = context?.userContext;
+
   switch (fName) {
     case "getUserAccountInfo":
       if (!args.phone_number) {
         throw new Error("Phone number is required for getUserAccountInfo");
       }
-      return getUserByMobile(args.phone_number);
+      const accountInfo = getUserByMobile(args.phone_number);
+      if (accountInfo.personalInfo && updateUserContext) {
+        const updates = {
+          mobile: accountInfo.personalInfo.phone,
+          nric: accountInfo.personalInfo.nric,
+          name: accountInfo.personalInfo.name,
+        };
+        updateUserContext(updates);
+        if (userContext) {
+          Object.assign(userContext, updates);
+        }
+      }
+
+      if (!userContext?.nricNotYetRequestedToBeVerified) {
+        return {
+          nricNotYetRequestedToBeVerified: false, 
+          message: "Request last 4 digits of NRIC from user"
+        };
+      }
+
+      return accountInfo;
     case "lookupFAQDocument":
       return exampleFAQQuestions;
     case "findNearestStore":
-      return exampleStoreLocations
+      return redoneStoreLocations
     case "searchRedoneMobile":
-      return exampleRedoneSearchResults;
+      return redonePlans;
+    case "verifyNRIC":
+      if (!args.last_4_digits || args.last_4_digits.length !== 4) {
+        return { verified: false };
+      }
+
+      const userNRIC = userContext?.nric;
+      if (!userNRIC) {
+        return { verified: false };
+      }
+
+      const isVerified = !!(userNRIC && userNRIC.endsWith(args.last_4_digits));
+      if (isVerified && updateUserContext) {
+        updateUserContext({ nricNotYetRequestedToBeVerified: true });
+        if (userContext) {
+          userContext.nricNotYetRequestedToBeVerified = true;
+        }
+      }
+      return { verified: isVerified };
+    case "searchRedoneHomeWiFiPlans":
+      return redoneHomeWiFiPlans;
     default:
       return { result: true };
   }
@@ -406,7 +435,8 @@ async function handleToolCalls(
     for (const toolCall of functionCalls) {
       const fName = toolCall.name;
       const args = JSON.parse(toolCall.arguments || '{}');
-      const toolRes = getToolResponse(fName, args);
+      const toolRes = getToolResponse(fName, args, details);
+
 
       // Since we're using a local function, we don't need to add our own breadcrumbs
       if (addBreadcrumb) {
@@ -416,14 +446,6 @@ async function handleToolCalls(
         addBreadcrumb(`[supervisorAgent] function call result: ${fName}`, toolRes);
       }
 
-      // If we got user account info, update the user context
-      if (fName === "getUserAccountInfo" && (toolRes as any).personalInfo && updateUserContext) {
-        updateUserContext({
-          mobile: (toolRes as any).personalInfo.phone,
-          nric: (toolRes as any).personalInfo.nric,
-          name: (toolRes as any).personalInfo.name,
-        });
-      }
 
       // Add function call and result to the request body to send back to realtime
       body.input.push(
@@ -468,6 +490,7 @@ export const getNextResponseFromSupervisor = tool({
     };
 
     const userContext = (details?.context as any)?.userContext ?? {
+      userMobileNumber: "",
       mobile: "",
       nric: "",
       name: "",

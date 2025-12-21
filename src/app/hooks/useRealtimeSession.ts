@@ -135,7 +135,7 @@ export function useRealtimeSession(callbacks: RealtimeSessionCallbacks = {}) {
           autoGainControl: true,
 
           channelCount: 1,
-          sampleRate: 48000,
+          sampleRate: 16000,
         },
       });
 
@@ -156,7 +156,14 @@ export function useRealtimeSession(callbacks: RealtimeSessionCallbacks = {}) {
           inputAudioTranscription: {
             model: 'gpt-4o-transcribe',
           },
-        },
+          audio: {
+            input: {
+              noise_reduction: {
+                type: "near_field"  // or "far_field" for distant mics
+              }
+            }
+          }
+        } as any,
         outputGuardrails: outputGuardrails ?? [],
         context: extraContext ?? {},
       });

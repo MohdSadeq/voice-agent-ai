@@ -1,7 +1,7 @@
 import { RealtimeAgent, tool, RealtimeItem } from '@openai/agents/realtime';
 import {
-  exampleStoreLocations,
-  exampleRedoneSearchResults,
+  redoneStoreLocations,
+  redonePlans,
   getUserByMobile,
   exampleFAQQuestions,
 } from '../chatSupervisor/sampleData';
@@ -16,9 +16,9 @@ function getToolResponse(fName: string, args: any) {
       return exampleFAQQuestions;
     case 'findNearestStore':
       if (!args.postcode) throw new Error('Postcode is required');
-      return exampleStoreLocations;
+      return redoneStoreLocations;
     case 'searchRedoneMobile':
-      return exampleRedoneSearchResults;
+      return redonePlans;
     default:
       return { result: true };
   }

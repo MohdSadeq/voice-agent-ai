@@ -21,7 +21,7 @@ function useAudioDownload() {
           noiseSuppression: true,
           autoGainControl: true,
           channelCount: 1,
-          sampleRate: 48000,
+          sampleRate: 16000,
         }
       });
 
