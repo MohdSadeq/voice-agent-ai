@@ -1,26 +1,45 @@
 import users from './fake.users.json';
 
-// Helper function to format date or return 'N/A' if null/undefined
-const formatDateOrNA = (dateString: string | null | undefined): string => {
-  if (!dateString) return 'N/A';
+// Helper function to format date in ISO 8601 format with Malaysia timezone (+08:00)
+const formatDate = (dateString: string | null | undefined): string | null => {
+  if (!dateString) return null;
   try {
     const date = new Date(dateString);
-    return isNaN(date.getTime()) ? 'N/A' : date.toLocaleDateString('en-MY', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    if (isNaN(date.getTime())) return null;
+    
+    // If the date string already contains timezone info, just return it as-is
+    // (dates from JSON are already in ISO 8601 format with +08:00)
+    if (dateString.includes('+') || dateString.includes('Z')) {
+      return dateString;
+    }
+    
+    // For dates without timezone, convert to Malaysia timezone (UTC+8)
+    const malaysiaOffset = 8 * 60; // 8 hours in minutes
+    const localTime = new Date(date.getTime() + malaysiaOffset * 60 * 1000);
+    
+    // Format as ISO 8601 with +08:00 timezone
+    const year = localTime.getUTCFullYear();
+    const month = String(localTime.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(localTime.getUTCDate()).padStart(2, '0');
+    const hours = String(localTime.getUTCHours()).padStart(2, '0');
+    const minutes = String(localTime.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(localTime.getUTCSeconds()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}+08:00`;
   } catch (e) {
-    return 'N/A';
+    return null;
   }
 };
 
-// Helper function to format currency in Malaysian Ringgit (RM)
-const formatCurrency = (amount?: number): string => {
-  if (amount === undefined || amount === null) return 'RM 0.00';
-  return `RM ${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+// Helper function to format currency as object with value and currency
+const formatCurrency = (amount?: number): { value: number; currency: string } => {
+  if (amount === undefined || amount === null) {
+    return { value: 0, currency: 'MYR' };
+  }
+  return { 
+    value: parseFloat(amount.toFixed(2)), 
+    currency: 'MYR' 
+  };
 };
 
 export interface VAS {
@@ -134,17 +153,6 @@ export const getAccountInfo = (userId: number = 1) => {
   const user = (users as User[]).find(u => u.id === userId);
   if (!user) throw new Error(`User with ID ${userId} not found`);
 
-  // Format dates
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-MY', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
   // Calculate contract status
   const now = new Date();
   const contractEnd = new Date(user.contractEnd);
@@ -194,19 +202,17 @@ export const getAccountInfo = (userId: number = 1) => {
     .slice(0, 3);
   return {
     // Basic Information
-    accountInfo: {
+    account: {
       accountId: user.accountId,
       masterAccountId: user.masterAccountId,
       registrationType: user.regType,
       activationSource: user.activationSource,
       status,
       creditLimit: formatCurrency(user.creditLimit),
-      puk: user.puk,
-      serial: user.serial
     },
 
     // Personal Information
-    personalInfo: {
+    customer: {
       name: user.name,
       nric: user.nric,
       email: user.email,
@@ -215,7 +221,7 @@ export const getAccountInfo = (userId: number = 1) => {
     },
 
     // Plan Information
-    planInfo: {
+    plan: {
       planName: user.mobilePlan?.name || 'No Plan',
       planAmount: formatCurrency(user.mobilePlan?.amount),
       defaultSubscribedServices: defaultVAS,
@@ -229,12 +235,12 @@ export const getAccountInfo = (userId: number = 1) => {
     },
 
     // Contract Information
-    contractInfo: {
-      commencementDate: formatDateOrNA(user.commencementDate),
-      contractStart: formatDateOrNA(user.contractStart),
-      contractEnd: formatDateOrNA(user.contractEnd),
-      suspensionDate: formatDateOrNA(user.suspensionDate),
-      barringDate: formatDateOrNA(user.barringDate),
+    contract: {
+      commencementDate: formatDate(user.commencementDate),
+      contractStart: formatDate(user.contractStart),
+      contractEnd: formatDate(user.contractEnd),
+      suspensionDate: formatDate(user.suspensionDate),
+      barringDate: formatDate(user.barringDate),
       daysRemaining: user.contractEnd 
         ? (now > new Date(user.contractEnd) 
             ? 'Expired' 
@@ -243,7 +249,7 @@ export const getAccountInfo = (userId: number = 1) => {
     },
 
     // Service Status
-    serviceStatus: {
+    service: {
       roaming: user.roaming,
       iddCall: user.iddCall,
       allDivert: user.allDivert,
@@ -252,14 +258,14 @@ export const getAccountInfo = (userId: number = 1) => {
     },
 
     // Billing Information
-    billingInfo: {
+    billing: {
       lastBillDate: formatDate(invoices?.[0]?.date || new Date().toISOString()),
       lastBillAmount: formatCurrency(invoices?.[0]?.amount || 0),
       nextBillDate: formatDate(new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString()),
       outstandingBalance: formatCurrency(invoices
       .filter(invoice => invoice.status === 'Pending')
       .reduce((total, invoice) => total + invoice.amount, 0)),
-      paymentHistory: (user.paymentHistories || [])
+      payments: (user.paymentHistories || [])
         .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
         .slice(0, 3)
         .map(payment => ({
@@ -267,15 +273,6 @@ export const getAccountInfo = (userId: number = 1) => {
           amount: formatCurrency(payment.amount),
           method: payment.amount > 100 ? 'Credit Card' : 'Online Banking',
           reference: `PAY${payment.id.toString().padStart(6, '0')}`
-        })),
-      barringHistory: (user.barringHistories || [])
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .slice(0, 3)
-        .map(barring => ({
-          date: formatDate(barring.date),
-          reason: barring.reason,
-          status: barring.status,
-          action: barring.status === 'BARRED' ? 'Barred' : 'Unbarred'
         })),
       invoices: invoices
         .map((invoice, index) => {
@@ -298,6 +295,15 @@ export const getAccountInfo = (userId: number = 1) => {
         })
     },
 
+    barring: (user.barringHistories || [])
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3)
+    .map(barring => ({
+      date: formatDate(barring.date),
+      reason: barring.reason,
+      status: barring.status,
+      action: barring.status === 'BARRED' ? 'Barred' : 'Unbarred'
+    })),
     // Additional Information
     additionalInfo: {
       notes: `Contract will be suspended on ${formatDate(user.suspensionDate)} if not renewed.`,
@@ -305,7 +311,8 @@ export const getAccountInfo = (userId: number = 1) => {
     },
 
     // Ticket History
-    ticketHistory: (user.ticketHistories || [])
+   support: {
+    tickets: (user.ticketHistories || [])
       .sort((a: Ticket, b: Ticket) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .map((ticket: Ticket) => ({
         id: ticket.id,
@@ -320,13 +327,14 @@ export const getAccountInfo = (userId: number = 1) => {
       })),
 
     // Customer Service Logs
-    customerLogs: (user.customerLogs || [])
+    logs: (user.customerLogs || [])
       .sort((a: CustomerLog, b: CustomerLog) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
       .map((log: CustomerLog) => ({
         summary: log.summary,
         category: log.category,
       }))
-  };
+    }
+  }
 };
 
 export const getUserByMobile = (mobileNumber: string) => {

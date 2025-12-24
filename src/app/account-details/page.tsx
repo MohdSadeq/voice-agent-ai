@@ -44,16 +44,28 @@ const AccountDetailsPage = () => {
         </div>
     );
 
-    const formatDate = (dateString: string) => {
+    const formatDate = (dateString: string | null) => {
         if (!dateString) return 'N/A';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-MY', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return 'N/A';
+            return date.toLocaleDateString('en-MY', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch (e) {
+            return 'N/A';
+        }
+    };
+
+    const formatCurrency = (currencyObj: { value: number; currency: string } | null | undefined) => {
+        if (!currencyObj || currencyObj.value === undefined) return 'N/A';
+        // Format as Malaysian Ringgit with thousand separators
+        const formattedValue = currencyObj.value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return `RM ${formattedValue}`;
     };
 
     const exportToPDF = () => {
@@ -120,105 +132,85 @@ const AccountDetailsPage = () => {
             startY = doc.lastAutoTable.finalY + 10;
         };
 
-        // Basic Information
-        const basicInfoData = [
-            ['Account ID', accountData.accountInfo?.accountId || 'N/A'],
-            ['Master Account ID', accountData.accountInfo?.masterAccountId || 'N/A'],
-            ['Registration Type', accountData.accountInfo?.registrationType || 'N/A'],
-            ['Activation Source', accountData.accountInfo?.activationSource || 'N/A'],
-            ['Status', accountData.accountInfo?.status || 'N/A'],
-            ['Credit Limit', accountData.accountInfo?.creditLimit || 'N/A'],
-            ['PUK', accountData.accountInfo?.puk || 'N/A'],
-            ['Serial', accountData.accountInfo?.serial || 'N/A']
+        // Account Information
+        const accountInfoData = [
+            ['Account ID', accountData.account?.accountId || 'N/A'],
+            ['Master Account ID', accountData.account?.masterAccountId || 'N/A'],
+            ['Registration Type', accountData.account?.registrationType || 'N/A'],
+            ['Activation Source', accountData.account?.activationSource || 'N/A'],
+            ['Status', accountData.account?.status || 'N/A'],
+            ['Credit Limit', formatCurrency(accountData.account?.creditLimit)]
         ];
-        addSection('Basic Information', basicInfoData);
+        addSection('Account Information', accountInfoData);
 
-        // Personal Information
-        const personalInfoData = [
-            ['Name', accountData.personalInfo?.name || 'N/A'],
-            ['NRIC', accountData.personalInfo?.nric || 'N/A'],
-            ['Email', accountData.personalInfo?.email || 'N/A'],
-            ['Phone', accountData.personalInfo?.phone || 'N/A'],
-            ['Phone Model', accountData.personalInfo?.phoneModel || 'N/A']
+        // Customer Information
+        const customerInfoData = [
+            ['Name', accountData.customer?.name || 'N/A'],
+            ['NRIC', accountData.customer?.nric || 'N/A'],
+            ['Email', accountData.customer?.email || 'N/A'],
+            ['Phone', accountData.customer?.phone || 'N/A'],
+            ['Phone Model', accountData.customer?.phoneModel || 'N/A']
         ];
-        addSection('Personal Information', personalInfoData);
+        addSection('Customer Information', customerInfoData);
 
         // Plan Information
-        if (accountData.planInfo) {
+        if (accountData.plan) {
             const planInfoData = [
-                ['Plan Name', accountData.planInfo.planName || 'N/A'],
-                ['Plan Amount', accountData.planInfo.planAmount || 'N/A'],
-                ['Network Features', '']
+                ['Plan Name', accountData.plan.planName || 'N/A'],
+                ['Plan Amount', formatCurrency(accountData.plan.planAmount)]
             ];
-            
-            // Add network features
-            if (accountData.planInfo.networkFeatures) {
-                planInfoData.push(
-                    ['• LTE', accountData.planInfo.networkFeatures.lte ? 'Enabled' : 'Disabled'],
-                    ['• VoLTE', accountData.planInfo.networkFeatures.volte ? 'Enabled' : 'Disabled'],
-                    ['• 5G', accountData.planInfo.networkFeatures.enable5g ? 'Enabled' : 'Disabled']
-                );
-            }
             
             addSection('Plan Information', planInfoData);
         }
 
         // Contract Information
-        if (accountData.contractInfo) {
+        if (accountData.contract) {
             const contractData = [
-                ['Commencement Date', accountData.contractInfo.commencementDate || 'N/A'],
-                ['Contract Start', accountData.contractInfo.contractStart || 'N/A'],
-                ['Contract End', accountData.contractInfo.contractEnd || 'N/A'],
-                ['Suspension Date', accountData.contractInfo.suspensionDate || 'N/A'],
-                ['Barring Date', accountData.contractInfo.barringDate || 'N/A'],
-                ['Days Remaining', accountData.contractInfo.daysRemaining || 'N/A']
+                ['Commencement Date', formatDate(accountData.contract.commencementDate)],
+                ['Contract Start', formatDate(accountData.contract.contractStart)],
+                ['Contract End', formatDate(accountData.contract.contractEnd)],
+                ['Suspension Date', formatDate(accountData.contract.suspensionDate)],
+                ['Barring Date', formatDate(accountData.contract.barringDate)],
+                ['Days Remaining', accountData.contract.daysRemaining || 'N/A']
             ];
             addSection('Contract Information', contractData);
         }
 
         // Service Status
-        if (accountData.serviceStatus) {
+        if (accountData.service) {
             const serviceData = [
-                ['Roaming', accountData.serviceStatus.roaming ? 'Enabled' : 'Disabled'],
-                ['IDD Call', accountData.serviceStatus.iddCall ? 'Enabled' : 'Disabled'],
-                ['All Divert', accountData.serviceStatus.allDivert ? 'Enabled' : 'Disabled'],
-                ['Voice Mail', accountData.serviceStatus.voiceMail ? 'Enabled' : 'Disabled']
+                ['Roaming', accountData.service.roaming ? 'Enabled' : 'Disabled'],
+                ['IDD Call', accountData.service.iddCall ? 'Enabled' : 'Disabled'],
+                ['All Divert', accountData.service.allDivert ? 'Enabled' : 'Disabled'],
+                ['Voice Mail', accountData.service.voiceMail ? 'Enabled' : 'Disabled']
             ];
-            
-            // Add active services
-            if (accountData.serviceStatus.activeServices?.length > 0) {
-                serviceData.push(['Active Services', '']);
-                accountData.serviceStatus.activeServices.forEach((service: string) => {
-                    serviceData.push([`• ${service}`, '']);
-                });
-            }
             
             addSection('Service Status', serviceData);
         }
 
         // Billing Information
-        if (accountData.billingInfo) {
+        if (accountData.billing) {
             const billingData = [
-                ['Last Bill Date', accountData.billingInfo.lastBillDate || 'N/A'],
-                ['Last Bill Amount', accountData.billingInfo.lastBillAmount || 'N/A'],
-                ['Next Bill Date', accountData.billingInfo.nextBillDate || 'N/A'],
-                ['Outstanding Balance', accountData.billingInfo.outstandingBalance || 'N/A']
+                ['Last Bill Date', formatDate(accountData.billing.lastBillDate)],
+                ['Last Bill Amount', formatCurrency(accountData.billing.lastBillAmount)],
+                ['Next Bill Date', formatDate(accountData.billing.nextBillDate)],
+                ['Outstanding Balance', formatCurrency(accountData.billing.outstanding)]
             ];
             addSection('Billing Information', billingData);
             
             // Invoices
-            if (accountData.billingInfo.invoices?.length > 0) {
+            if (accountData.billing.invoices?.length > 0) {
                 // Add section header before the table
                 doc.setFontSize(12);
                 doc.setTextColor(15, 23, 42);
                 doc.text('Invoices', 14, startY + 10);
                 startY += 15;
                 
-                const invoiceData = accountData.billingInfo.invoices.map((invoice: any) => ({
+                const invoiceData = accountData.billing.invoices.map((invoice: any) => ({
                     invoiceNumber: invoice.invoiceNumber || 'N/A',
-                    date: invoice.date || 'N/A',
+                    date: formatDate(invoice.date),
                     status: invoice.status || 'N/A',
-                    amount: invoice.amount || 'N/A'
+                    amount: formatCurrency(invoice.amount)
                 }));
                 
                 autoTable(doc, {
@@ -262,15 +254,15 @@ const AccountDetailsPage = () => {
         }
 
         // Ticket History
-        if (accountData.ticketHistory?.length > 0) {
+        if (accountData.support?.tickets?.length > 0) {
             // Add section header
             doc.setFontSize(12);
             doc.setTextColor(15, 23, 42);
-            doc.text('Ticket History', 14, startY + 10);
+            doc.text('Support Tickets', 14, startY + 10);
             startY += 15;
             
             // Process each ticket individually to handle page breaks
-            accountData.ticketHistory.forEach((ticket: any, index: number) => {
+            accountData.support.tickets.forEach((ticket: any, index: number) => {
                 // Check if we need a new page before adding a ticket
                 if (startY > doc.internal.pageSize.height - 80) {
                     doc.addPage();
@@ -395,118 +387,96 @@ const AccountDetailsPage = () => {
                 <div ref={accountDetailsRef}>
                 {accountData && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <Section title="Basic Information">
-                            <InfoItem label="Account ID" value={accountData.accountInfo.accountId} />
-                            <InfoItem label="Master Account ID" value={accountData.accountInfo.masterAccountId} />
-                            <InfoItem label="Registration Type" value={accountData.accountInfo.registrationType} />
-                            <InfoItem label="Activation Source" value={accountData.accountInfo.activationSource} />
-                            <InfoItem label="Status" value={accountData.accountInfo.status} />
-                            <InfoItem label="Credit Limit" value={accountData.accountInfo.creditLimit} />
-                            <InfoItem label="PUK" value={accountData.accountInfo.puk} />
-                            <InfoItem label="Serial" value={accountData.accountInfo.serial} />
+                        <Section title="Account Information">
+                            <InfoItem label="Account ID" value={accountData.account.accountId} />
+                            <InfoItem label="Master Account ID" value={accountData.account.masterAccountId} />
+                            <InfoItem label="Registration Type" value={accountData.account.registrationType} />
+                            <InfoItem label="Activation Source" value={accountData.account.activationSource} />
+                            <InfoItem label="Status" value={accountData.account.status} />
+                            <InfoItem label="Credit Limit" value={formatCurrency(accountData.account.creditLimit)} />
                         </Section>
 
-                        <Section title="Personal Information">
-                            <InfoItem label="Name" value={accountData.personalInfo.name} />
-                            <InfoItem label="NRIC" value={accountData.personalInfo.nric} />
-                            <InfoItem label="Email" value={accountData.personalInfo.email} />
-                            <InfoItem label="Phone" value={accountData.personalInfo.phone} />
-                            <InfoItem label="Phone Model" value={accountData.personalInfo.phoneModel} />
+                        <Section title="Customer Information">
+                            <InfoItem label="Name" value={accountData.customer.name} />
+                            <InfoItem label="NRIC" value={accountData.customer.nric} />
+                            <InfoItem label="Email" value={accountData.customer.email} />
+                            <InfoItem label="Phone" value={accountData.customer.phone} />
+                            <InfoItem label="Phone Model" value={accountData.customer.phoneModel} />
                         </Section>
 
                         <Section title="Plan Information">
-                            <InfoItem label="Plan Name" value={accountData.planInfo.planName} />
-                            <InfoItem label="Plan Amount" value={accountData.planInfo.planAmount} />
-                            <div className="col-span-full">
-                                <span className="text-sm font-medium text-gray-500 uppercase tracking-wider block mb-2">Network Features</span>
-                                <div className="flex gap-4">
-                                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${accountData.planInfo.networkFeatures.lte ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>LTE</span>
-                                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${accountData.planInfo.networkFeatures.volte ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>VoLTE</span>
-                                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${accountData.planInfo.networkFeatures.enable5g ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>5G</span>
-                                </div>
-                            </div>
+                            <InfoItem label="Plan Name" value={accountData.plan.planName} />
+                            <InfoItem label="Plan Amount" value={formatCurrency(accountData.plan.planAmount)} />
                             
                             <div className="col-span-full">
                                 <div className="space-y-4">
                                     {/* Default Subscribed Services */}
-                                    <div>
-                                        <h4 className="text-sm font-medium text-gray-700 mb-2">Default Services</h4>
-                                        <div className="flex flex-wrap gap-2">
-                                            {accountData.planInfo.defaultServices?.length > 0 ? (
-                                                accountData.planInfo.defaultServices.map((service: any, i: number) => (
+                                    {accountData.plan.defaultSubscribedServices?.length > 0 && (
+                                        <div>
+                                            <h4 className="text-sm font-medium text-gray-700 mb-2">Default Services</h4>
+                                            <div className="flex flex-wrap gap-2">
+                                                {accountData.plan.defaultSubscribedServices.map((service: any, i: number) => (
                                                     <span key={`default-${i}`} className="px-2.5 py-1 bg-green-50 text-green-700 text-xs rounded-full border border-green-100">
                                                         {service.name}
                                                     </span>
-                                                ))
-                                            ) : (
-                                                <span className="text-xs text-gray-500">No default subscriptions</span>
-                                            )}
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
 
-                                    {/* Available Services */}
-                                    <div>
-                                        <h4 className="text-sm font-medium text-gray-700 mb-2">Available Services</h4>
-                                        <div className="flex flex-wrap gap-2">
-                                            {accountData.planInfo.availableSubscribedServices?.length > 0 ? (
-                                                accountData.planInfo.availableSubscribedServices.map((service: any, i: number) => (
-                                                    <span key={`available-${i}`} className="px-2.5 py-1 bg-blue-50 text-blue-700 text-xs rounded-full border border-blue-100">
-                                                        {service.name} (RM{service.amount})
+                                    {/* Additional Services */}
+                                    {accountData.plan.additionalSubscribedServices?.length > 0 && (
+                                        <div>
+                                            <h4 className="text-sm font-medium text-gray-700 mb-2">Additional Services</h4>
+                                            <div className="flex flex-wrap gap-2">
+                                                {accountData.plan.additionalSubscribedServices.map((service: any, i: number) => (
+                                                    <span key={`additional-${i}`} className="px-2.5 py-1 bg-blue-50 text-blue-700 text-xs rounded-full border border-blue-100">
+                                                        {service.name} ({formatCurrency(service.amount)})
                                                     </span>
-                                                ))
-                                            ) : (
-                                                <span className="text-xs text-gray-500">No additional services available</span>
-                                            )}
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
                         </Section>
 
                         <Section title="Contract Information">
-                            <InfoItem label="Commencement Date" value={accountData.contractInfo.commencementDate} />
-                            <InfoItem label="Contract Start" value={accountData.contractInfo.contractStart} />
-                            <InfoItem label="Contract End" value={accountData.contractInfo.contractEnd} />
-                            <InfoItem label="Suspension Date" value={accountData.contractInfo.suspensionDate} />
-                            <InfoItem label="Barring Date" value={accountData.contractInfo.barringDate} />
-                            <InfoItem label="Days Remaining" value={accountData.contractInfo.daysRemaining} />
+                            <InfoItem label="Commencement Date" value={formatDate(accountData.contract.commencementDate)} />
+                            <InfoItem label="Contract Start" value={formatDate(accountData.contract.contractStart)} />
+                            <InfoItem label="Contract End" value={formatDate(accountData.contract.contractEnd)} />
+                            <InfoItem label="Suspension Date" value={formatDate(accountData.contract.suspensionDate)} />
+                            <InfoItem label="Barring Date" value={formatDate(accountData.contract.barringDate)} />
+                            <InfoItem label="Days Remaining" value={accountData.contract.daysRemaining} />
                         </Section>
 
                         <Section title="Service Status">
-                            <InfoItem label="Roaming" value={accountData.serviceStatus.roaming} />
-                            <InfoItem label="IDD Call" value={accountData.serviceStatus.iddCall} />
-                            <InfoItem label="All Divert" value={accountData.serviceStatus.allDivert} />
-                            <InfoItem label="Voice Mail" value={accountData.serviceStatus.voiceMail} />
-                            <div className="col-span-full">
-                                <span className="text-sm font-medium text-gray-500 uppercase tracking-wider block mb-2">Active Services</span>
-                                <div className="flex flex-wrap gap-2">
-                                    {accountData.serviceStatus.activeServices.map((service: string, i: number) => (
-                                        <span key={i} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-md text-sm font-medium">{service}</span>
-                                    ))}
-                                </div>
-                            </div>
+                            <InfoItem label="Roaming" value={accountData.service.roaming} />
+                            <InfoItem label="IDD Call" value={accountData.service.iddCall} />
+                            <InfoItem label="All Divert" value={accountData.service.allDivert} />
+                            <InfoItem label="Voice Mail" value={accountData.service.voiceMail} />
                         </Section>
 
                         <Section title="Billing Information">
-                            <InfoItem label="Last Bill Date" value={accountData.billingInfo.lastBillDate} />
-                            <InfoItem label="Last Bill Amount" value={accountData.billingInfo.lastBillAmount} />
-                            <InfoItem label="Next Bill Date" value={accountData.billingInfo.nextBillDate} />
-                            <InfoItem label="Outstanding Balance" value={accountData.billingInfo.outstandingBalance} />
+                            <InfoItem label="Last Bill Date" value={formatDate(accountData.billing.lastBillDate)} />
+                            <InfoItem label="Last Bill Amount" value={formatCurrency(accountData.billing.lastBillAmount)} />
+                            <InfoItem label="Next Bill Date" value={formatDate(accountData.billing.nextBillDate)} />
+                            <InfoItem label="Outstanding Balance" value={formatCurrency(accountData.billing.outstanding)} />
                         </Section>
 
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-50 pb-2">Recent Payments</h2>
                             <div className="space-y-3">
-                                {accountData.billingInfo.paymentHistory && accountData.billingInfo.paymentHistory.length > 0 ? (
-                                    accountData.billingInfo.paymentHistory.map((payment: any, i: number) => (
+                                {accountData.billing?.payments && accountData.billing.payments.length > 0 ? (
+                                    accountData.billing.payments.map((payment: any, i: number) => (
                                         <div key={i} className="p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
                                             <div className="flex justify-between items-start">
                                                 <div>
-                                                    <div className="font-medium text-gray-900">{payment.amount}</div>
+                                                    <div className="font-medium text-gray-900">{formatCurrency(payment.amount)}</div>
                                                     <div className="text-sm text-gray-500 mt-1">{payment.method}</div>
                                                 </div>
                                                 <div className="text-right">
-                                                    <div className="text-sm font-medium text-gray-900">{payment.date}</div>
+                                                    <div className="text-sm font-medium text-gray-900">{formatDate(payment.date)}</div>
                                                     <div className="text-xs text-gray-500">{payment.reference}</div>
                                                 </div>
                                             </div>
@@ -523,8 +493,8 @@ const AccountDetailsPage = () => {
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-50 pb-2">Barring History</h2>
                             <div className="space-y-3">
-                                {accountData.billingInfo.barringHistory && accountData.billingInfo.barringHistory.length > 0 ? (
-                                    accountData.billingInfo.barringHistory.map((barring: any, i: number) => (
+                                {accountData.barring && accountData.barring.length > 0 ? (
+                                    accountData.barring.map((barring: any, i: number) => (
                                         <div key={i} className="p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
                                             <div className="flex justify-between items-start">
                                                 <div>
@@ -535,7 +505,7 @@ const AccountDetailsPage = () => {
                                                     <p className="text-sm text-gray-600">{barring.reason}</p>
                                                 </div>
                                                 <div className="text-right">
-                                                    <div className="text-sm font-medium text-gray-900">{barring.date}</div>
+                                                    <div className="text-sm font-medium text-gray-900">{formatDate(barring.date)}</div>
                                                     <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
                                                         {barring.action}
                                                     </span>
@@ -577,15 +547,15 @@ const AccountDetailsPage = () => {
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-50 pb-2">Invoices</h2>
                             <div className="space-y-4">
-                                {accountData.billingInfo.invoices.map((inv: any, i: number) => (
-                                    <><div key={i} className="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                                {accountData.billing.invoices.map((inv: any, i: number) => (
+                                    <div key={i} className="p-4 bg-gray-50 rounded-lg border border-gray-100">
                                         <div className="flex justify-between items-start mb-2">
                                             <div>
                                                 <span className="text-sm font-bold text-gray-900">{inv.invoiceNumber}</span>
-                                                <span className="text-xs text-gray-500 block">{inv.date}</span>
+                                                <span className="text-xs text-gray-500 block">{formatDate(inv.date)}</span>
                                                 {inv.status !== 'Paid' && (
                                                     <span className="text-xs text-red-500 block mt-1">
-                                                        Due: {inv.dueDate}
+                                                        Due: {formatDate(inv.dueDate)}
                                                     </span>
                                                 )}
                                             </div>
@@ -593,43 +563,49 @@ const AccountDetailsPage = () => {
                                                 {inv.status}
                                             </span>
                                         </div>
-                                        <div className="text-lg font-bold text-red-600">{inv.amount}</div>
-                                    </div>
-                                    <div className="border-t border-gray-200 pt-3 space-y-2">
-                                        {inv.items.map((item: any, itemIndex: number) => (
-                                            <div
-                                            key={itemIndex}
-                                            className="flex justify-between text-sm text-gray-700"
-                                            >
-                                            <span>{item.description}</span>
-                                            <span className="font-medium">{item.amount}</span>
+                                        <div className="text-lg font-bold text-red-600">{formatCurrency(inv.amount)}</div>
+                                        {inv.items && inv.items.length > 0 && (
+                                            <div className="border-t border-gray-200 mt-3 pt-3 space-y-2">
+                                                {inv.items.map((item: any, itemIndex: number) => (
+                                                    <div key={itemIndex} className="flex justify-between text-sm text-gray-700">
+                                                        <span>{item.description}</span>
+                                                        <span className="font-medium">{formatCurrency(item.amount)}</span>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        ))}
-                                        </div>
-                                    </>
+                                        )}
+                                    </div>
                                 ))}
                             </div>
                         </div>
 
-                        <Section title="Ticket History">
-                            <div className="col-span-full space-y-4">
-                                {accountData.ticketHistory.map((ticket: any, i: number) => (
-                                    <div key={i} className="p-4 border border-gray-100 rounded-lg bg-gray-50">
-                                        <div className="flex justify-between items-center mb-2">
-                                            <h3 className="font-bold text-gray-800">{ticket.title}</h3>
-                                            <span className="text-xs font-bold px-2 py-1 bg-gray-200 rounded text-gray-700 uppercase">{ticket.status}</span>
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+                            <h2 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-50 pb-2">Support Tickets</h2>
+                            <div className="space-y-4">
+                                {accountData.support?.tickets && accountData.support.tickets.length > 0 ? (
+                                    accountData.support.tickets.map((ticket: any, i: number) => (
+                                        <div key={i} className="p-4 border border-gray-100 rounded-lg bg-gray-50">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <h3 className="font-bold text-gray-800">{ticket.title}</h3>
+                                                <span className="text-xs font-bold px-2 py-1 bg-gray-200 rounded text-gray-700 uppercase">{ticket.status}</span>
+                                            </div>
+                                            <p className="text-sm text-gray-600 mb-2">{ticket.summary}</p>
+                                            <div className="text-xs text-gray-400">Created: {formatDate(ticket.createdAt)}</div>
                                         </div>
-                                        <p className="text-sm text-gray-600 mb-2">{ticket.summary}</p>
-                                        <div className="text-xs text-gray-400">Created: {ticket.createdAt}</div>
+                                    ))
+                                ) : (
+                                    <div className="text-center py-4 text-gray-500">
+                                        No support tickets available
                                     </div>
-                                ))}
+                                )}
                             </div>
-                        </Section>
+                        </div>
 
-                        <Section title="Customer Service Logs">
-                            <div className="col-span-full space-y-4">
-                                {accountData.customerLogs && accountData.customerLogs.length > 0 ? (
-                                    accountData.customerLogs.map((log: any, i: number) => (
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+                            <h2 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-50 pb-2">Customer Service Logs</h2>
+                            <div className="space-y-4">
+                                {accountData.support?.logs && accountData.support.logs.length > 0 ? (
+                                    accountData.support.logs.map((log: any, i: number) => (
                                         <div key={i} className="p-4 border border-gray-100 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                                             <div className="flex justify-between items-start mb-2">
                                                 <div>
@@ -648,7 +624,7 @@ const AccountDetailsPage = () => {
                                     </div>
                                 )}
                             </div>
-                        </Section>
+                        </div>
                     </div>
                 )}
                 </div>

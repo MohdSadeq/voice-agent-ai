@@ -305,7 +305,7 @@ export const authenticationAgent = new RealtimeAgent({
           return { success: false, error: "In correct date of birth" };
         }
 
-        if(user.personalInfo.nric.slice(-4) !== last_4_digits) {
+        if(user.customer.nric.slice(-4) !== last_4_digits) {
           return { success: false, error: "In correct last 4 digits of NRIC" };
         }
     

@@ -359,11 +359,11 @@ function getToolResponse(fName: string, args: any, details?: any): any {
         throw new Error("Phone number is required for getUserAccountInfo");
       }
       const accountInfo = getUserByMobile(args.phone_number);
-      if (accountInfo.personalInfo && updateUserContext) {
+      if (accountInfo.customer && updateUserContext) {
         const updates = {
-          mobile: accountInfo.personalInfo.phone,
-          nric: accountInfo.personalInfo.nric,
-          name: accountInfo.personalInfo.name,
+          mobile: accountInfo.customer.phone,
+          nric: accountInfo.customer.nric,
+          name: accountInfo.customer.name,
         };
         updateUserContext(updates);
         if (userContext) {

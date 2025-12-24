@@ -1,0 +1,144 @@
+{
+  "metadata": {
+    "description": "Redone Home WiFi Plans - Complete information for customer service",
+    "currency": "RM (Malaysian Ringgit)",
+    "lastUpdated": "2024-12",
+    "productLine": "redONE HOME 5G homeWiFi",
+    "instructions": "Use this data to answer customer questions about home WiFi plans, pricing, features, and recommendations"
+  },
+  "plans": [
+    {
+      "id": "homewifi-88-device",
+      "name": "5G homeWiFi88",
+      "category": "device-bundle",
+      "tagline": "Complete home WiFi solution with 5G router",
+      "monthlyPrice": 88,
+      "contractLength": "24 months",
+      "data": {
+        "total": "1000GB (1TB)",
+        "monthlyAllocation": "1TB per month",
+        "speedType": "5G speeds where available"
+      },
+      "device": {
+        "included": true,
+        "type": "5G WiFi Router",
+        "value": "Worth ~RM500",
+        "ownership": "Remains with redONE during contract"
+      },
+      "network": {
+        "supported": "4G and 5G",
+        "coverage": "Nationwide where available"
+      },
+      "installation": {
+        "type": "Self-installation",
+        "guide": "Instructions provided",
+        "fee": "FREE"
+      },
+      "keyBenefits": [
+        "FREE 5G WiFi Router included",
+        "1TB monthly data allocation",
+        "Supports both 4G and 5G networks",
+        "Connect multiple devices simultaneously",
+        "No installation fees"
+      ],
+      "idealFor": [
+        "New customers without a router",
+        "Those wanting latest 5G technology",
+        "Households needing reliable home internet",
+        "Users who prefer all-inclusive packages"
+      ],
+      "contractTerms": {
+        "duration": "24 months",
+        "earlyTermination": "Pro-rated device charges apply",
+        "autoRenewal": "Month-to-month after contract"
+      }
+    },
+    {
+      "id": "homewifi-68-sim",
+      "name": "5G homeWiFi68",
+      "category": "sim-only",
+      "tagline": "Flexible home WiFi for your own router",
+      "monthlyPrice": 68,
+      "contractLength": "12 months",
+      "data": {
+        "total": "1000GB (1TB)",
+        "monthlyAllocation": "1TB per month",
+        "speedType": "5G speeds where available"
+      },
+      "device": {
+        "included": false,
+        "requirement": "Customer must provide own 4G/5G compatible router",
+        "type": "Bring Your Own Device (BYOD)"
+      },
+      "network": {
+        "supported": "4G and 5G",
+        "coverage": "Nationwide where available"
+      },
+      "installation": {
+        "type": "Self-installation",
+        "what": "SIM card provided",
+        "fee": "FREE"
+      },
+      "keyBenefits": [
+        "Lower monthly cost at RM68",
+        "Shorter 12-month contract",
+        "Same 1TB data as device plan",
+        "Flexibility to use own router",
+        "Perfect for router owners"
+      ],
+      "idealFor": [
+        "Customers with existing 4G/5G routers",
+        "Those wanting lower monthly commitment",
+        "Users preferring shorter contracts",
+        "Budget-conscious households"
+      ],
+      "contractTerms": {
+        "duration": "12 months",
+        "earlyTermination": "Standard charges apply",
+        "autoRenewal": "Month-to-month after contract"
+      }
+    }
+  ],
+  "comparison": {
+    "priceDifference": "RM20 per month (RM88 vs RM68)",
+    "contractDifference": "12 months longer for device plan (24 vs 12)",
+    "dataAllocation": "Both plans offer same 1TB monthly data",
+    "mainDifference": "Device plan includes FREE 5G router, SIM-only requires own router"
+  },
+  "commonQuestions": {
+    "whichPlanIsBetter": "homeWiFi88 if you need a router, homeWiFi68 if you already have one",
+    "canIUpgrade": "Yes, you can upgrade from SIM-only to device plan",
+    "dataRollover": "No, unused data does not roll over to next month",
+    "coverage": "Both plans work on 4G and 5G networks nationwide where available",
+    "multipleDevices": "Yes, both plans support multiple device connections through WiFi"
+  },
+  "recommendations": {
+    "newCustomer": {
+      "plan": "5G homeWiFi88",
+      "reason": "Includes everything needed to get started with home internet"
+    },
+    "existingRouterOwner": {
+      "plan": "5G homeWiFi68",
+      "reason": "Save RM20/month and enjoy shorter contract"
+    },
+    "heavyUser": {
+      "plan": "Either plan",
+      "reason": "Both offer same 1TB data allocation"
+    },
+    "budgetConscious": {
+      "plan": "5G homeWiFi68",
+      "reason": "Lower monthly cost and shorter commitment"
+    }
+  },
+  "technicalRequirements": {
+    "forDevicePlan": "Just need a power outlet for the router",
+    "forSimOnly": "Must have 4G/5G compatible router with SIM slot",
+    "networkCompatibility": "Plans work on redONE's 4G and 5G networks"
+  },
+  "notes": {
+    "dataUsage": "1TB = 1000GB, sufficient for streaming, gaming, and work from home",
+    "fairUsagePolicy": "Standard FUP applies after excessive usage",
+    "coverage": "5G coverage expanding, 4G available as fallback",
+    "routerReturn": "Device plan router must be returned if contract terminated early"
+  }
+}

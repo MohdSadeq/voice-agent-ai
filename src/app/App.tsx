@@ -21,20 +21,23 @@ import { createModerationGuardrail } from "@/app/agentConfigs/guardrails";
 import { allAgentSets, defaultAgentSetKey } from "@/app/agentConfigs";
 import { customerServiceScenario } from "@/app/agentConfigs/customerService";
 import { chatSupervisorScenario } from "@/app/agentConfigs/chatSupervisor";
+import { customerServiceV2Scenario } from "@/app/agentConfigs/customerServiceV2";
 import { customerServiceCompanyName } from "@/app/agentConfigs/customerService";
 import { chatSupervisorCompanyName } from "@/app/agentConfigs/chatSupervisor";
+import { customerServiceV2CompanyName } from "@/app/agentConfigs/customerServiceV2";
 
 // Map used by connect logic for scenarios defined via the SDK.
 const sdkScenarioMap: Record<string, RealtimeAgent[]> = {
   customerService: customerServiceScenario,
   chatSupervisor: chatSupervisorScenario,
+  customerServiceV2: customerServiceV2Scenario,
 };
 
 import useAudioDownload from "./hooks/useAudioDownload";
 import { useHandleSessionHistory } from "./hooks/useHandleSessionHistory";
 
 function App() {
-  console.log('[App] Render');
+  //console.log('[App] Render');
   const searchParams = useSearchParams()!;
 
   // ---------------------------------------------------------------------
@@ -187,7 +190,7 @@ function App() {
     }
   }, [isPTTActive]);
 
-  const fetchEphemeralKey = async (): Promise<string | null> => {
+  const fetchEphemeralKey = async (): Promise<{ ephemeralKey: string; sessionId: string } | null> => {
     logClientEvent({ url: "/session" }, "fetch_session_token_request");
     const tokenResponse = await fetch("/api/session");
     const data = await tokenResponse.json();
@@ -200,7 +203,11 @@ function App() {
       return null;
     }
 
-    return data.client_secret.value;
+    // Return both ephemeral key and session ID
+    return {
+      ephemeralKey: data.client_secret.value,
+      sessionId: data.id, // OpenAI session ID
+    };
   };
 
   const connectToRealtime = async () => {
@@ -215,8 +222,12 @@ function App() {
       console.log('[App] sessionStatus set to CONNECTING');
 
       try {
-        const EPHEMERAL_KEY = await fetchEphemeralKey();
-        if (!EPHEMERAL_KEY) return;
+        const sessionData = await fetchEphemeralKey();
+        if (!sessionData) return;
+
+        const { ephemeralKey, sessionId } = sessionData;
+        
+        console.log('[App] Session data received:', { sessionId });
 
         // Ensure the selectedAgentName is first so that it becomes the root
         const reorderedAgents = [...sdkScenarioMap[agentSetKey]];
@@ -226,17 +237,19 @@ function App() {
           reorderedAgents.unshift(agent);
         }
 
-        const companyName = agentSetKey === 'customerService'
-          ? customerServiceCompanyName
-          : chatSupervisorCompanyName;
+        const companyName =
+          agentSetKey === 'customerService' ? customerServiceCompanyName
+            : agentSetKey === 'customerServiceV2' ? customerServiceV2CompanyName
+              : chatSupervisorCompanyName;
         const guardrail = createModerationGuardrail(companyName);
 
         await connect({
-          getEphemeralKey: async () => EPHEMERAL_KEY,
+          getEphemeralKey: async () => ephemeralKey,
           initialAgents: reorderedAgents,
           audioElement: sdkAudioElement,
           outputGuardrails: [guardrail],
           extraContext: {
+            sessionId, // Pass sessionId to all agents
             addTranscriptBreadcrumb,
             userContext,
             updateUserContext,

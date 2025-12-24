@@ -1,0 +1,446 @@
+{
+  "metadata": {
+    "description": "Redone telecommunication plans - Complete information for customer service",
+    "currency": "RM (Malaysian Ringgit)",
+    "lastUpdated": "2024-12",
+    "instructions": "Use this data to answer customer questions about available plans, pricing, features, and recommendations"
+  },
+  "plans": [
+    {
+      "id": "postpaid-plus-38",
+      "name": "postpaidPLUS38",
+      "category": "postpaid",
+      "tagline": "The ultimate 5G postpaid",
+      "monthlyPrice": 38,
+      "data": {
+        "total": "180GB",
+        "highSpeed": "130GB",
+        "hotspot": "50GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "10GB (4G LTE)",
+        "redVideo": "30GB (1GB/day)"
+      },
+      "contract": "No contract",
+      "phone": "None included",
+      "keyBenefits": [
+        "5G network access",
+        "No contract commitment",
+        "180GB total data",
+        "Bundled social media and video data"
+      ]
+    },
+    {
+      "id": "postpaid-plus-48",
+      "name": "postpaidPLUS48",
+      "category": "postpaid",
+      "tagline": "The ultimate 5G postpaid",
+      "monthlyPrice": 48,
+      "data": {
+        "total": "250GB",
+        "highSpeed": "150GB",
+        "hotspot": "100GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "10GB (4G LTE)",
+        "redVideo": "30GB (1GB/day)"
+      },
+      "contract": "No contract",
+      "phone": "None included",
+      "keyBenefits": [
+        "5G network access",
+        "250GB total data",
+        "Double hotspot quota (100GB)",
+        "Priority customer service"
+      ]
+    },
+    {
+      "id": "postpaid-family-98",
+      "name": "postpaidFAMILY98",
+      "category": "family",
+      "tagline": "The most affordable family plan for your whole family",
+      "monthlyPrice": 98,
+      "data": {
+        "total": "1000GB (1TB)",
+        "shared": "Yes - among all lines",
+        "perLine": "Shared from 1TB pool"
+      },
+      "voice": "Unlimited calls to all networks (all lines)",
+      "sms": "Standard rates",
+      "network": "5G",
+      "familyLines": "Up to 3 lines",
+      "extras": {
+        "redSocial": "10GB per line (4G LTE)",
+        "redVideo": "30GB per line (1GB/day)"
+      },
+      "contract": "No contract",
+      "phone": "None included",
+      "keyBenefits": [
+        "1TB shared data for up to 3 lines",
+        "Each line gets unlimited calls",
+        "Each line gets bundled extras",
+        "Perfect for families"
+      ]
+    },
+    {
+      "id": "redplan-plus-38",
+      "name": "redplanPLUS38",
+      "category": "device",
+      "tagline": "The fastest access to a FREE 5G Phone",
+      "monthlyPrice": 38,
+      "data": {
+        "total": "180GB",
+        "highSpeed": "130GB",
+        "hotspot": "50GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "10GB (4G LTE)",
+        "redVideo": "30GB (1GB/day)"
+      },
+      "contract": "6-month contract required",
+      "phone": "FREE 5G Phone (with conditions)",
+      "phoneConditions": "Sign up for 6 months contract AND add a supplementary line OR upgrade with loyalty plan",
+      "keyBenefits": [
+        "Same data as postpaidPLUS38",
+        "Includes FREE 5G phone",
+        "Only 6-month contract",
+        "Fast-track to device ownership"
+      ]
+    },
+    {
+      "id": "device-pro-68",
+      "name": "devicePRO68",
+      "category": "device",
+      "tagline": "The best phone bundle plan with FREE 5G phone",
+      "monthlyPrice": 68,
+      "data": {
+        "total": "200GB",
+        "highSpeed": "150GB",
+        "hotspot": "50GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "10GB (4G LTE)",
+        "redVideo": "30GB (1GB/day)"
+      },
+      "contract": "Standard contract",
+      "phone": "FREE Basic 5G Phone",
+      "phoneConditions": "No additional conditions",
+      "keyBenefits": [
+        "FREE Basic 5G phone included",
+        "200GB total data",
+        "No special conditions for phone",
+        "Great value bundle"
+      ]
+    },
+    {
+      "id": "device-pro-98",
+      "name": "devicePRO98",
+      "category": "device",
+      "tagline": "The perfect postpaid plan with FREE 5G phone for everyone",
+      "monthlyPrice": 98,
+      "data": {
+        "total": "300GB",
+        "highSpeed": "200GB",
+        "hotspot": "100GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "10GB (4G LTE)",
+        "redVideo": "30GB (1GB/day)"
+      },
+      "contract": "Standard contract",
+      "phone": "FREE High-Tech 5G Phone",
+      "phoneConditions": "No additional conditions",
+      "keyBenefits": [
+        "FREE High-Tech 5G phone included",
+        "300GB total data",
+        "100GB hotspot",
+        "Premium customer support"
+      ]
+    },
+    {
+      "id": "redplan-plus-48",
+      "name": "redplanPLUS48",
+      "category": "device",
+      "tagline": "The fastest access to a FREE 5G Phone",
+      "monthlyPrice": 48,
+      "data": {
+        "total": "250GB",
+        "highSpeed": "150GB",
+        "hotspot": "100GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "10GB (4G LTE)",
+        "redVideo": "30GB (1GB/day)"
+      },
+      "contract": "6-month contract required",
+      "phone": "FREE 5G Phone (with conditions)",
+      "phoneConditions": "Sign up for 6 months contract AND add a supplementary line OR upgrade with loyalty plan",
+      "keyBenefits": [
+        "Higher data than redplanPLUS38",
+        "Includes FREE 5G phone",
+        "Only 6-month contract",
+        "Double hotspot quota"
+      ]
+    },
+    {
+      "id": "5g-postpaid-10",
+      "name": "5GPostpaid10",
+      "category": "postpaid",
+      "tagline": "The affordable basic postpaid plan in town",
+      "monthlyPrice": 10,
+      "data": {
+        "total": "3GB",
+        "highSpeed": "3GB",
+        "hotspot": "None"
+      },
+      "voice": "Unlimited calls to redONE Postpaid only",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "Not included",
+        "redVideo": "Not included"
+      },
+      "contract": "No contract",
+      "phone": "None included",
+      "keyBenefits": [
+        "Most affordable postpaid at RM10",
+        "Basic 5G access",
+        "Perfect for light users",
+        "No frills plan"
+      ]
+    },
+    {
+      "id": "ux-50",
+      "name": "UX50",
+      "category": "unlimited",
+      "tagline": "The best unlimited plan",
+      "monthlyPrice": 50,
+      "data": {
+        "total": "Unlimited",
+        "highSpeed": "30GB at full speed",
+        "hotspot": "30GB",
+        "speedAfterQuota": "6 Mbps (FUP: 64kbps after 100GB)"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "10GB (4G LTE)",
+        "redVideo": "15GB (500MB/day)"
+      },
+      "contract": "No contract",
+      "phone": "None included",
+      "keyBenefits": [
+        "Truly unlimited data",
+        "30GB at high speed",
+        "Perfect for heavy users",
+        "Fair Usage Policy applies"
+      ]
+    },
+    {
+      "id": "family-38",
+      "name": "Family38",
+      "category": "supplementary",
+      "tagline": "The most affordable plan for your family",
+      "monthlyPrice": 38,
+      "data": {
+        "total": "180GB",
+        "highSpeed": "130GB",
+        "hotspot": "50GB"
+      },
+      "voice": "Unlimited calls",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "Not included",
+        "redVideo": "Not included"
+      },
+      "contract": "Follows masterline",
+      "phone": "None included",
+      "eligibility": "Only for RM38+ masterline customers",
+      "keyBenefits": [
+        "Supplementary line only",
+        "Same benefits as postpaidPLUS38",
+        "For existing customers",
+        "Add family members easily"
+      ]
+    },
+    {
+      "id": "postpaid-sfc-48",
+      "name": "PostpaidSFC48",
+      "category": "exclusive",
+      "tagline": "Exclusive postpaid with FREE jersey for football fans",
+      "monthlyPrice": 48,
+      "effectivePrice": 38,
+      "data": {
+        "total": "250GB",
+        "highSpeed": "150GB",
+        "hotspot": "100GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "10GB (4G LTE)",
+        "redVideo": "30GB (1GB/day)"
+      },
+      "contract": "6 months",
+      "phone": "None included",
+      "specialOffer": "FREE 2x Sabah FC jerseys + RM10 monthly rebate for 6 months",
+      "keyBenefits": [
+        "FREE Sabah FC jerseys",
+        "RM10 rebate (6 months)",
+        "Effective RM38/month",
+        "Limited edition offer"
+      ]
+    },
+    {
+      "id": "redplan-km-48",
+      "name": "redplanKM48",
+      "category": "exclusive",
+      "tagline": "Eksklusif postpaid for e-hailing drivers and food delivery riders",
+      "monthlyPrice": 48,
+      "data": {
+        "total": "250GB",
+        "highSpeed": "150GB",
+        "hotspot": "100GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "Not included",
+        "redVideo": "Not included"
+      },
+      "contract": "Standard",
+      "phone": "None included",
+      "specialOffer": "FREE RM120 Petrol Voucher",
+      "eligibility": "For e-hailing drivers and delivery riders",
+      "keyBenefits": [
+        "FREE RM120 petrol voucher",
+        "High data for navigation",
+        "Large hotspot quota",
+        "Perfect for drivers"
+      ]
+    },
+    {
+      "id": "mukmin-58",
+      "name": "Mukmin58",
+      "category": "government",
+      "tagline": "Exclusive postpaid with Takaful protection and FREE 5G Phone for government servants",
+      "monthlyPrice": 58,
+      "data": {
+        "total": "200GB",
+        "highSpeed": "150GB",
+        "hotspot": "50GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "Not included",
+        "redVideo": "Not included"
+      },
+      "contract": "Standard",
+      "phone": "FREE Smartphone",
+      "takaful": "RM12,500 coverage",
+      "eligibility": "Government servants only",
+      "keyBenefits": [
+        "FREE smartphone",
+        "RM12,500 Takaful coverage",
+        "Exclusive for civil servants",
+        "200GB total data"
+      ]
+    },
+    {
+      "id": "mukmin-88",
+      "name": "Mukmin88",
+      "category": "government",
+      "tagline": "Exclusive postpaid with Takaful protection and FREE 5G Phone for government servants",
+      "monthlyPrice": 88,
+      "data": {
+        "total": "300GB",
+        "highSpeed": "200GB",
+        "hotspot": "100GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "Not included",
+        "redVideo": "Not included"
+      },
+      "contract": "Standard",
+      "phone": "FREE Smartphone",
+      "takaful": "RM12,500 coverage",
+      "eligibility": "Government servants only",
+      "keyBenefits": [
+        "FREE smartphone",
+        "RM12,500 Takaful coverage",
+        "300GB data allocation",
+        "Double hotspot quota"
+      ]
+    },
+    {
+      "id": "mukmin-188",
+      "name": "Mukmin188",
+      "category": "government",
+      "tagline": "Exclusive postpaid with Takaful protection and FREE 5G Phone for government servants",
+      "monthlyPrice": 188,
+      "postContractPrice": 88,
+      "data": {
+        "total": "300GB",
+        "highSpeed": "200GB",
+        "hotspot": "100GB"
+      },
+      "voice": "Unlimited calls to all networks",
+      "sms": "Standard rates",
+      "network": "5G",
+      "extras": {
+        "redSocial": "Not included",
+        "redVideo": "Not included"
+      },
+      "contract": "36 months installment",
+      "phone": "Phone installment RM100 x 36 months",
+      "takaful": "RM12,500 coverage",
+      "eligibility": "Government servants only",
+      "keyBenefits": [
+        "Premium phone selection",
+        "RM12,500 Takaful coverage",
+        "RM88/month after 36 months",
+        "Device installment plan"
+      ]
+    }
+  ],
+  "commonQuestions": {
+    "cheapestPlan": "postpaidPLUS38 and redplanPLUS38 at RM38/month",
+    "mostData": "postpaidFAMILY98 with 1TB (1000GB) shared data",
+    "bestForIndividual": "postpaidPLUS48 for heavy users, postpaidPLUS38 for regular users",
+    "bestForFamily": "postpaidFAMILY98 - 1TB shared among 3 lines",
+    "plansWithPhones": "redplanPLUS38 (conditions apply), devicePRO68 (basic phone), devicePRO98 (high-tech phone)"
+  },
+  "notes": {
+    "redSocial": "Special data allocation for social media apps at 4G LTE speed",
+    "redVideo": "Special data allocation for video streaming, 1GB per day",
+    "5G": "All plans include 5G network access where available",
+    "hotspot": "Separate data allocation for mobile hotspot/tethering"
+  }
+}
