@@ -253,56 +253,79 @@ const AccountDetailsPage = () => {
             }
         }
 
-        // Ticket History
+        // Support Tickets - Enhanced with all details
         if (accountData.support?.tickets?.length > 0) {
-            // Add section header
-            doc.setFontSize(12);
-            doc.setTextColor(15, 23, 42);
-            doc.text('Support Tickets', 14, startY + 10);
-            startY += 15;
+            // Check if we need a new page
+            if (startY > doc.internal.pageSize.height - 60) {
+                doc.addPage();
+                startY = 20;
+            }
             
-            // Process each ticket individually to handle page breaks
+            // Add section header
+            doc.setFontSize(14);
+            doc.setTextColor(15, 23, 42);
+            doc.setFont('helvetica', 'bold');
+            doc.text(`Support Tickets (${accountData.support.tickets.length})`, 14, startY);
+            startY += 8;
+            
+            // Process each ticket individually
             accountData.support.tickets.forEach((ticket: any, index: number) => {
                 // Check if we need a new page before adding a ticket
-                if (startY > doc.internal.pageSize.height - 80) {
+                if (startY > doc.internal.pageSize.height - 100) {
                     doc.addPage();
                     startY = 20;
                 }
                 
+                // Find related logs for this ticket
+                const relatedLogs = accountData.support?.logs?.filter((log: any) => 
+                    log.relatedTickets === ticket.id
+                ) || [];
+                
                 const ticketData = [
+                    ['Ticket ID', `#${ticket.id}`],
                     ['Title', ticket.title || 'N/A'],
-                    ['Status', ticket.status || 'N/A'],
-                    ['Created', ticket.createdAt || 'N/A'],
-                    ['Summary', { content: ticket.summary || 'N/A', rowSpan: 3 }]
+                    ['Status', (ticket.status || 'N/A').toUpperCase()],
+                    ['Category', ticket.category || 'General'],
+                    ['Created', formatDate(ticket.createdAt)],
+                    ['Last Updated', formatDate(ticket.updatedAt)],
+                    ['Summary', ticket.summary || 'N/A']
                 ];
+                
+                if (ticket.pendingFor) {
+                    ticketData.push(['Pending For', ticket.pendingFor]);
+                }
+                
+                if (ticket.nextAction) {
+                    ticketData.push(['Next Action', ticket.nextAction]);
+                }
+                
+                if (relatedLogs.length > 0) {
+                    const logIds = relatedLogs.map((log: any) => `#${log.id}`).join(', ');
+                    ticketData.push(['Related Logs', logIds]);
+                }
                 
                 // Add ticket as a mini-table
                 autoTable(doc, {
                     startY: startY,
                     body: ticketData,
-                    theme: 'plain',
+                    theme: 'striped',
                     styles: { 
-                        fontSize: 9,
-                        cellPadding: 4,
+                        fontSize: 8,
+                        cellPadding: 3,
                         lineColor: [220, 220, 220],
-                        lineWidth: 0.3,
+                        lineWidth: 0.2,
                         valign: 'top'
-                    },
-                    headStyles: {
-                        fillColor: [240, 240, 240],
-                        textColor: [15, 23, 42],
-                        fontStyle: 'bold',
-                        lineWidth: 0.3
                     },
                     columnStyles: {
                         0: { 
-                            cellWidth: 30,
+                            cellWidth: 35,
                             fontStyle: 'bold',
-                            fillColor: [240, 240, 240]
+                            fillColor: [245, 245, 245],
+                            textColor: [60, 60, 60]
                         },
                         1: { 
                             cellWidth: 'auto',
-                            minCellHeight: 10
+                            minCellHeight: 8
                         }
                     },
                     margin: { left: 14, right: 14 },
@@ -312,14 +335,113 @@ const AccountDetailsPage = () => {
                 });
                 
                 // Add some space between tickets
-                startY += 10;
+                startY += 8;
                 
                 // Add a separator line between tickets (except after the last one)
-                if (index < accountData.ticketHistory.length - 1) {
+                if (index < accountData.support.tickets.length - 1) {
                     doc.setDrawColor(200, 200, 200);
-                    doc.setLineWidth(0.2);
+                    doc.setLineWidth(0.3);
                     doc.line(14, startY, doc.internal.pageSize.width - 14, startY);
-                    startY += 15;
+                    startY += 8;
+                }
+            });
+            
+            // Add some space after the section
+            startY += 10;
+        }
+
+        // Customer Service Logs - New comprehensive section
+        if (accountData.support?.logs?.length > 0) {
+            // Check if we need a new page
+            if (startY > doc.internal.pageSize.height - 60) {
+                doc.addPage();
+                startY = 20;
+            }
+            
+            // Add section header
+            doc.setFontSize(14);
+            doc.setTextColor(15, 23, 42);
+            doc.setFont('helvetica', 'bold');
+            doc.text(`Customer Service Logs (${accountData.support.logs.length})`, 14, startY);
+            startY += 8;
+            
+            // Process each log individually
+            accountData.support.logs.forEach((log: any, index: number) => {
+                // Check if we need a new page before adding a log
+                if (startY > doc.internal.pageSize.height - 100) {
+                    doc.addPage();
+                    startY = 20;
+                }
+                
+                const logData = [
+                    ['Log ID', `#${log.id}`],
+                    ['Category', (log.category || 'General').toUpperCase()],
+                    ['Timestamp', formatDate(log.timestamp)],
+                    ['Summary', log.summary || 'N/A']
+                ];
+                
+                if (log.agent) {
+                    logData.push(['Agent', log.agent]);
+                }
+                
+                if (log.duration) {
+                    logData.push(['Duration', `${log.duration} minutes`]);
+                }
+                
+                if (log.actions && log.actions.length > 0) {
+                    logData.push(['Actions Taken', log.actions.join(', ')]);
+                }
+                
+                if (log.followUpRequired) {
+                    const followUpText = log.followUpDate 
+                        ? `Yes (Due: ${formatDate(log.followUpDate)})`
+                        : 'Yes';
+                    logData.push(['Follow-up Required', followUpText]);
+                }
+                
+                if (log.relatedTickets) {
+                    logData.push(['Related Ticket', `#${log.relatedTickets}`]);
+                }
+                
+                // Add log as a mini-table
+                autoTable(doc, {
+                    startY: startY,
+                    body: logData,
+                    theme: 'striped',
+                    styles: { 
+                        fontSize: 8,
+                        cellPadding: 3,
+                        lineColor: [220, 220, 220],
+                        lineWidth: 0.2,
+                        valign: 'top'
+                    },
+                    columnStyles: {
+                        0: { 
+                            cellWidth: 35,
+                            fontStyle: 'bold',
+                            fillColor: [245, 245, 245],
+                            textColor: [60, 60, 60]
+                        },
+                        1: { 
+                            cellWidth: 'auto',
+                            minCellHeight: 8
+                        }
+                    },
+                    margin: { left: 14, right: 14 },
+                    didDrawPage: (data: any) => {
+                        startY = data.cursor?.y || startY;
+                    }
+                });
+                
+                // Add some space between logs
+                startY += 8;
+                
+                // Add a separator line between logs (except after the last one)
+                if (index < accountData.support.logs.length - 1) {
+                    doc.setDrawColor(200, 200, 200);
+                    doc.setLineWidth(0.3);
+                    doc.line(14, startY, doc.internal.pageSize.width - 14, startY);
+                    startY += 8;
                 }
             });
             
@@ -580,21 +702,105 @@ const AccountDetailsPage = () => {
                         </div>
 
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-50 pb-2">Support Tickets</h2>
+                            <div className="flex justify-between items-center mb-4 border-b border-gray-50 pb-2">
+                                <h2 className="text-xl font-bold text-gray-800">Support Tickets</h2>
+                                <span className="text-sm text-gray-500">
+                                    {accountData.support?.tickets?.length || 0} ticket(s)
+                                </span>
+                            </div>
                             <div className="space-y-4">
                                 {accountData.support?.tickets && accountData.support.tickets.length > 0 ? (
-                                    accountData.support.tickets.map((ticket: any, i: number) => (
-                                        <div key={i} className="p-4 border border-gray-100 rounded-lg bg-gray-50">
-                                            <div className="flex justify-between items-center mb-2">
-                                                <h3 className="font-bold text-gray-800">{ticket.title}</h3>
-                                                <span className="text-xs font-bold px-2 py-1 bg-gray-200 rounded text-gray-700 uppercase">{ticket.status}</span>
+                                    accountData.support.tickets.map((ticket: any, i: number) => {
+                                        const statusColors = {
+                                            resolved: 'bg-green-100 text-green-800 border-green-200',
+                                            pending: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                                            escalated: 'bg-red-100 text-red-800 border-red-200',
+                                            open: 'bg-blue-100 text-blue-800 border-blue-200',
+                                            closed: 'bg-gray-100 text-gray-800 border-gray-200'
+                                        };
+                                        const statusColor = statusColors[ticket.status?.toLowerCase() as keyof typeof statusColors] || statusColors.open;
+                                        
+                                        // Find related logs for this ticket
+                                        const relatedLogs = accountData.support?.logs?.filter((log: any) => 
+                                            log.relatedTickets === ticket.id
+                                        ) || [];
+
+                                        return (
+                                            <div key={i} id={`ticket-${ticket.id}`} className="p-5 border-2 border-gray-200 rounded-lg bg-gradient-to-br from-white to-gray-50 hover:shadow-md transition-all">
+                                                <div className="flex justify-between items-start mb-3">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <span className="text-xs font-mono text-gray-500">#{ticket.id}</span>
+                                                            <h3 className="font-bold text-gray-900 text-lg">{ticket.title}</h3>
+                                                        </div>
+                                                        <p className="text-sm text-gray-600 leading-relaxed">{ticket.summary}</p>
+                                                    </div>
+                                                    <span className={`text-xs font-bold px-3 py-1.5 rounded-full border ${statusColor} uppercase ml-4 whitespace-nowrap`}>
+                                                        {ticket.status}
+                                                    </span>
+                                                </div>
+                                                
+                                                <div className="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-gray-200">
+                                                    <div>
+                                                        <span className="text-xs text-gray-500 uppercase tracking-wide">Category</span>
+                                                        <p className="text-sm font-medium text-gray-900 capitalize">{ticket.category || 'General'}</p>
+                                                    </div>
+                                                    <div>
+                                                        <span className="text-xs text-gray-500 uppercase tracking-wide">Created</span>
+                                                        <p className="text-sm font-medium text-gray-900">{formatDate(ticket.createdAt)}</p>
+                                                    </div>
+                                                    {ticket.updatedAt && (
+                                                        <div>
+                                                            <span className="text-xs text-gray-500 uppercase tracking-wide">Last Updated</span>
+                                                            <p className="text-sm font-medium text-gray-900">{formatDate(ticket.updatedAt)}</p>
+                                                        </div>
+                                                    )}
+                                                    {ticket.pendingFor && (
+                                                        <div>
+                                                            <span className="text-xs text-gray-500 uppercase tracking-wide">Pending For</span>
+                                                            <p className="text-sm font-medium text-gray-900">{ticket.pendingFor}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                {ticket.nextAction && (
+                                                    <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+                                                        <span className="text-xs text-blue-600 uppercase tracking-wide font-semibold">Next Action</span>
+                                                        <p className="text-sm text-blue-900 mt-1">{ticket.nextAction}</p>
+                                                    </div>
+                                                )}
+
+                                                {relatedLogs.length > 0 && (
+                                                    <div className="mt-4 pt-3 border-t border-gray-200">
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                                            </svg>
+                                                            <span className="text-xs text-gray-600 font-semibold uppercase tracking-wide">
+                                                                Related Logs ({relatedLogs.length})
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {relatedLogs.map((log: any, logIdx: number) => (
+                                                                <a 
+                                                                    key={logIdx}
+                                                                    href={`#log-${log.id}`}
+                                                                    className="text-xs px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200 hover:bg-indigo-100 transition-colors font-mono"
+                                                                >
+                                                                    Log #{log.id}
+                                                                </a>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
-                                            <p className="text-sm text-gray-600 mb-2">{ticket.summary}</p>
-                                            <div className="text-xs text-gray-400">Created: {formatDate(ticket.createdAt)}</div>
-                                        </div>
-                                    ))
+                                        );
+                                    })
                                 ) : (
-                                    <div className="text-center py-4 text-gray-500">
+                                    <div className="text-center py-8 text-gray-500">
+                                        <svg className="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
                                         No support tickets available
                                     </div>
                                 )}
@@ -602,24 +808,121 @@ const AccountDetailsPage = () => {
                         </div>
 
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 border-b border-gray-50 pb-2">Customer Service Logs</h2>
+                            <div className="flex justify-between items-center mb-4 border-b border-gray-50 pb-2">
+                                <h2 className="text-xl font-bold text-gray-800">Customer Service Logs</h2>
+                                <span className="text-sm text-gray-500">
+                                    {accountData.support?.logs?.length || 0} log(s)
+                                </span>
+                            </div>
                             <div className="space-y-4">
                                 {accountData.support?.logs && accountData.support.logs.length > 0 ? (
-                                    accountData.support.logs.map((log: any, i: number) => (
-                                        <div key={i} className="p-4 border border-gray-100 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <div>
-                                                    <h3 className="font-medium text-gray-800 capitalize">{log.category}</h3>
-                                                    <p className="text-sm text-gray-600 mt-1">{log.summary}</p>
+                                    accountData.support.logs.map((log: any, i: number) => {
+                                        const categoryColors = {
+                                            network: 'bg-purple-100 text-purple-800 border-purple-200',
+                                            billing: 'bg-orange-100 text-orange-800 border-orange-200',
+                                            service: 'bg-blue-100 text-blue-800 border-blue-200',
+                                            technical: 'bg-red-100 text-red-800 border-red-200',
+                                            general: 'bg-gray-100 text-gray-800 border-gray-200'
+                                        };
+                                        const categoryColor = categoryColors[log.category?.toLowerCase() as keyof typeof categoryColors] || categoryColors.general;
+
+                                        return (
+                                            <div key={i} id={`log-${log.id}`} className="p-5 border-2 border-gray-200 rounded-lg bg-gradient-to-br from-white to-gray-50 hover:shadow-md transition-all">
+                                                <div className="flex justify-between items-start mb-3">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <span className="text-xs font-mono text-gray-500">Log #{log.id}</span>
+                                                            <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${categoryColor} uppercase`}>
+                                                                {log.category}
+                                                            </span>
+                                                        </div>
+                                                        <p className="text-sm text-gray-700 leading-relaxed">{log.summary}</p>
+                                                    </div>
                                                 </div>
-                                                <span className="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 font-medium capitalize">
-                                                    {log.category}
-                                                </span>
+
+                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3 pt-3 border-t border-gray-200">
+                                                    {log.agent && (
+                                                        <div>
+                                                            <span className="text-xs text-gray-500 uppercase tracking-wide">Agent</span>
+                                                            <div className="flex items-center gap-1.5 mt-1">
+                                                                <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                                </svg>
+                                                                <p className="text-sm font-medium text-gray-900">{log.agent}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {log.duration && (
+                                                        <div>
+                                                            <span className="text-xs text-gray-500 uppercase tracking-wide">Duration</span>
+                                                            <div className="flex items-center gap-1.5 mt-1">
+                                                                <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                </svg>
+                                                                <p className="text-sm font-medium text-gray-900">{log.duration} min</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    <div>
+                                                        <span className="text-xs text-gray-500 uppercase tracking-wide">Timestamp</span>
+                                                        <p className="text-sm font-medium text-gray-900">{formatDate(log.timestamp)}</p>
+                                                    </div>
+                                                </div>
+
+                                                {log.actions && log.actions.length > 0 && (
+                                                    <div className="mt-3 pt-3 border-t border-gray-200">
+                                                        <span className="text-xs text-gray-500 uppercase tracking-wide font-semibold">Actions Taken</span>
+                                                        <div className="flex flex-wrap gap-2 mt-2">
+                                                            {log.actions.map((action: string, actionIdx: number) => (
+                                                                <span key={actionIdx} className="text-xs px-2.5 py-1 bg-green-50 text-green-700 rounded-full border border-green-200">
+                                                                    {action}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {log.followUpRequired && (
+                                                    <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                                                        <div className="flex items-center gap-2">
+                                                            <svg className="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                                            </svg>
+                                                            <span className="text-xs text-amber-800 font-semibold uppercase tracking-wide">Follow-up Required</span>
+                                                        </div>
+                                                        {log.followUpDate && (
+                                                            <p className="text-sm text-amber-900 mt-1">Due: {formatDate(log.followUpDate)}</p>
+                                                        )}
+                                                    </div>
+                                                )}
+
+                                                {log.relatedTickets && (
+                                                    <div className="mt-4 pt-3 border-t border-gray-200">
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                                            </svg>
+                                                            <span className="text-xs text-gray-600 font-semibold uppercase tracking-wide">Related Ticket</span>
+                                                        </div>
+                                                        <a 
+                                                            href={`#ticket-${log.relatedTickets}`}
+                                                            className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200 hover:bg-indigo-100 transition-colors font-mono"
+                                                        >
+                                                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                            </svg>
+                                                            Ticket #{log.relatedTickets}
+                                                        </a>
+                                                    </div>
+                                                )}
                                             </div>
-                                        </div>
-                                    ))
+                                        );
+                                    })
                                 ) : (
-                                    <div className="text-center py-4 text-gray-500">
+                                    <div className="text-center py-8 text-gray-500">
+                                        <svg className="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
                                         No customer service logs available
                                     </div>
                                 )}

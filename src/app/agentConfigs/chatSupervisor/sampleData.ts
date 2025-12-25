@@ -101,7 +101,7 @@ export interface Ticket {
 }
 
 export interface CustomerLog {
-  id: string;
+  id: string | number;
   timestamp: string;
   summary: string;
   category: 'network' | 'billing' | 'service' | 'technical' | 'general';
@@ -111,6 +111,8 @@ export interface CustomerLog {
   duration: number;
   followUpRequired: boolean;
   followUpDate?: string;
+  ticketId?: number;
+  createdAt?: string;
 }
 
 export interface User {
@@ -332,23 +334,32 @@ export const getAccountInfo = (userId: number = 1) => {
     tickets: (user.ticketHistories || [])
       .sort((a: Ticket, b: Ticket) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .map((ticket: Ticket) => ({
-        id: ticket.id,
-        title: ticket.title,
-        summary: ticket.summary,
-        status: ticket.status,
-        category: ticket.category,
-        pendingFor: ticket.pendingFor,
-        nextAction: ticket.nextAction,
-        createdAt: formatDate(ticket.createdAt),
-        updatedAt: formatDate(ticket.updatedAt)
+        id: ticket?.id,
+        title: ticket?.title,
+        summary: ticket?.summary,
+        status: ticket?.status,
+        category: ticket?.category,
+        pendingFor: ticket?.pendingFor,
+        nextAction: ticket?.nextAction,
+        createdAt: formatDate(ticket?.createdAt),
+        updatedAt: formatDate(ticket?.updatedAt)
       })),
 
     // Customer Service Logs
     logs: (user.customerLogs || [])
       .sort((a: CustomerLog, b: CustomerLog) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
       .map((log: CustomerLog) => ({
-        summary: log.summary,
-        category: log.category,
+        summary: log?.summary,
+        category: log?.category,
+        id: log?.id,
+        timestamp: log?.timestamp,
+        actions: log?.actions,
+        agent: log?.agent,
+        duration: log?.duration,
+        followUpRequired: log?.followUpRequired,
+        followUpDate: log?.followUpDate,
+        relatedTickets: log?.ticketId,
+        createdAt: log?.timestamp,
       }))
     }
   }

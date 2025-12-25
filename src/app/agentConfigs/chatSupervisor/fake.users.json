@@ -1319,7 +1319,10 @@
         "status": "in-progress",
         "category": "network",
         "createdAt": "2025-12-08T08:50:21.208Z",
-        "updatedAt": "2025-11-23T10:41:31.639Z"
+        "updatedAt": "2025-11-23T10:41:31.639Z",
+        "relatedLogIds": [
+          5002
+        ]
       },
       {
         "id": 1001,
@@ -1330,7 +1333,10 @@
         "status": "closed",
         "category": "billing",
         "createdAt": "2025-11-14T03:57:11.227Z",
-        "updatedAt": "2025-11-25T22:01:20.804Z"
+        "updatedAt": "2025-11-25T22:01:20.804Z",
+        "relatedLogIds": [
+          5001
+        ]
       },
       {
         "id": 1002,
@@ -1341,12 +1347,13 @@
         "status": "open",
         "category": "service",
         "createdAt": "2025-12-07T21:27:30.230Z",
-        "updatedAt": "2025-11-14T01:45:33.868Z"
+        "updatedAt": "2025-11-14T01:45:33.868Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "bc5f3838-54d6-438f-81c3-1d720fa075d1",
+        "id": 5001,
         "timestamp": "2025-11-23T23:35:27.073Z",
         "summary": "Plan change not processed correctly. Verified request and reprocessed with backdated changes.",
         "category": "billing",
@@ -1358,10 +1365,11 @@
         ],
         "agent": "Michael Brown",
         "duration": 8,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1001
       },
       {
-        "id": "506701d3-df3f-4dba-949e-22c8fe9bca19",
+        "id": 5002,
         "timestamp": "2025-10-06T22:35:27.073Z",
         "summary": "5G not working. Verified device compatibility and network settings. Escalated to network team.",
         "category": "network",
@@ -1372,10 +1380,11 @@
         "agent": "Michael Brown",
         "duration": 12,
         "followUpRequired": true,
-        "followUpDate": "2025-10-13"
+        "followUpDate": "2025-10-13",
+        "ticketId": 1000
       },
       {
-        "id": "40429cf0-d69c-41c7-99f6-79ab80d703ae",
+        "id": 5003,
         "timestamp": "2025-10-02T22:35:27.073Z",
         "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
         "category": "general",
@@ -1385,10 +1394,11 @@
         ],
         "agent": "Priya Patel",
         "duration": 5,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "c01b5d6e-091b-4bb7-90b5-06c7b1a60e5a",
+        "id": 5004,
         "timestamp": "2025-07-19T22:35:27.073Z",
         "summary": "Family plan management. Added new line and explained shared data usage.",
         "category": "service",
@@ -1399,10 +1409,11 @@
         ],
         "agent": "Maria Garcia",
         "duration": 15,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "a5cbdbe3-e6bc-4cea-8aa5-714ec1b4d44c",
+        "id": 5005,
         "timestamp": "2025-06-20T22:35:27.073Z",
         "summary": "Number porting inquiry. Provided requirements and initiated porting process.",
         "category": "service",
@@ -1414,7 +1425,8 @@
         ],
         "agent": "Aisha Khan",
         "duration": 14,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -2588,7 +2600,8 @@
         "status": "closed",
         "category": "network",
         "createdAt": "2025-12-03T20:34:24.658Z",
-        "updatedAt": "2025-12-02T06:29:06.348Z"
+        "updatedAt": "2025-12-02T06:29:06.348Z",
+        "relatedLogIds": []
       },
       {
         "id": 1004,
@@ -2599,7 +2612,10 @@
         "status": "closed",
         "category": "billing",
         "createdAt": "2025-11-25T16:50:25.119Z",
-        "updatedAt": "2025-12-02T03:50:01.254Z"
+        "updatedAt": "2025-12-02T03:50:01.254Z",
+        "relatedLogIds": [
+          5006
+        ]
       },
       {
         "id": 1005,
@@ -2610,12 +2626,15 @@
         "status": "resolved",
         "category": "service",
         "createdAt": "2025-11-29T07:58:08.373Z",
-        "updatedAt": "2025-11-26T02:42:22.479Z"
+        "updatedAt": "2025-11-26T02:42:22.479Z",
+        "relatedLogIds": [
+          5010
+        ]
       }
     ],
     "customerLogs": [
       {
-        "id": "11843d6d-7b0e-4bbc-a422-c69637c4f78e",
+        "id": 5006,
         "timestamp": "2025-11-01T23:35:27.073Z",
         "summary": "Customer disputing charges on latest bill. Explained charges and provided detailed breakdown. Issued partial credit for inconvenience.",
         "category": "billing",
@@ -2628,10 +2647,11 @@
         "agent": "Alex Johnson",
         "duration": 5,
         "followUpRequired": true,
-        "followUpDate": "2025-11-04"
+        "followUpDate": "2025-11-04",
+        "ticketId": 1004
       },
       {
-        "id": "c783aba9-b722-4255-86c7-134839da8e1b",
+        "id": 5007,
         "timestamp": "2025-08-12T22:35:27.073Z",
         "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
         "category": "technical",
@@ -2644,10 +2664,11 @@
         "agent": "Michael Brown",
         "duration": 2,
         "followUpRequired": true,
-        "followUpDate": "2025-08-13"
+        "followUpDate": "2025-08-13",
+        "ticketId": null
       },
       {
-        "id": "f43bfce0-b1ba-49fc-a7ad-a669d84efd0e",
+        "id": 5008,
         "timestamp": "2025-07-07T22:35:27.073Z",
         "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
         "category": "billing",
@@ -2659,10 +2680,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 6,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "db30e8bc-00a8-4653-bf9c-fd3018f1703d",
+        "id": 5009,
         "timestamp": "2025-07-06T22:35:27.073Z",
         "summary": "Requested account ownership transfer. Explained process and documentation required.",
         "category": "general",
@@ -2674,10 +2696,11 @@
         ],
         "agent": "Priya Patel",
         "duration": 11,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "c33896c9-16c2-43cd-a53e-c7e960ec22a0",
+        "id": 5010,
         "timestamp": "2025-07-02T22:35:27.073Z",
         "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
         "category": "general",
@@ -2687,7 +2710,8 @@
         ],
         "agent": "Sarah Lee",
         "duration": 8,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1005
       }
     ]
   },
@@ -3278,7 +3302,11 @@
         "status": "in-progress",
         "category": "network",
         "createdAt": "2025-11-20T17:58:04.845Z",
-        "updatedAt": "2025-11-16T13:35:33.135Z"
+        "updatedAt": "2025-11-16T13:35:33.135Z",
+        "relatedLogIds": [
+          5011,
+          5012
+        ]
       },
       {
         "id": 1007,
@@ -3289,7 +3317,8 @@
         "status": "in-progress",
         "category": "billing",
         "createdAt": "2025-12-06T04:01:34.115Z",
-        "updatedAt": "2025-12-05T12:30:34.292Z"
+        "updatedAt": "2025-12-05T12:30:34.292Z",
+        "relatedLogIds": []
       },
       {
         "id": 1008,
@@ -3300,12 +3329,13 @@
         "status": "open",
         "category": "service",
         "createdAt": "2025-11-28T04:28:23.103Z",
-        "updatedAt": "2025-11-12T05:11:32.627Z"
+        "updatedAt": "2025-11-12T05:11:32.627Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "1a58977b-ac0b-4c21-923f-3f78d44f9792",
+        "id": 5011,
         "timestamp": "2025-11-13T23:35:27.073Z",
         "summary": "Requested account ownership transfer. Explained process and documentation required.",
         "category": "general",
@@ -3316,10 +3346,11 @@
         ],
         "agent": "James Wilson",
         "duration": 9,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1006
       },
       {
-        "id": "33f14208-603c-4ddc-b5e7-4f8f59f880fe",
+        "id": 5012,
         "timestamp": "2025-11-02T23:35:27.073Z",
         "summary": "Payment not reflected in account. Verified payment and processed manual update. Confirmed with customer.",
         "category": "billing",
@@ -3330,10 +3361,11 @@
         ],
         "agent": "Alex Johnson",
         "duration": 5,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1006
       },
       {
-        "id": "8738c53c-11a5-4c53-a110-9288fec0fd4d",
+        "id": 5013,
         "timestamp": "2025-08-06T22:35:27.073Z",
         "summary": "Customer reported no network coverage in their area. Checked coverage map and confirmed poor coverage. Suggested network settings reset.",
         "category": "network",
@@ -3344,10 +3376,11 @@
         ],
         "agent": "James Wilson",
         "duration": 8,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "113fbec0-f631-45b9-b0de-6498cccfc3ee",
+        "id": 5014,
         "timestamp": "2025-07-21T22:35:27.073Z",
         "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
         "category": "technical",
@@ -3359,10 +3392,11 @@
         ],
         "agent": "James Wilson",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "dd5176b4-e14c-4350-9afa-a0e771bad32f",
+        "id": 5015,
         "timestamp": "2025-07-09T22:35:27.073Z",
         "summary": "Question about contract terms. Explained terms and early termination fees.",
         "category": "general",
@@ -3373,7 +3407,8 @@
         ],
         "agent": "Michael Brown",
         "duration": 2,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -4816,7 +4851,8 @@
         "status": "open",
         "category": "network",
         "createdAt": "2025-12-05T14:20:50.773Z",
-        "updatedAt": "2025-11-26T05:59:19.450Z"
+        "updatedAt": "2025-11-26T05:59:19.450Z",
+        "relatedLogIds": []
       },
       {
         "id": 1010,
@@ -4827,7 +4863,10 @@
         "status": "resolved",
         "category": "billing",
         "createdAt": "2025-11-24T01:58:50.711Z",
-        "updatedAt": "2025-11-24T17:28:07.801Z"
+        "updatedAt": "2025-11-24T17:28:07.801Z",
+        "relatedLogIds": [
+          5016
+        ]
       },
       {
         "id": 1011,
@@ -4838,12 +4877,15 @@
         "status": "open",
         "category": "service",
         "createdAt": "2025-11-14T04:38:09.664Z",
-        "updatedAt": "2025-11-26T17:28:07.297Z"
+        "updatedAt": "2025-11-26T17:28:07.297Z",
+        "relatedLogIds": [
+          5017
+        ]
       }
     ],
     "customerLogs": [
       {
-        "id": "d9ab5924-7b15-4382-8883-d2075f30745b",
+        "id": 5016,
         "timestamp": "2025-11-27T23:35:27.073Z",
         "summary": "Question about contract terms. Explained terms and early termination fees.",
         "category": "general",
@@ -4855,10 +4897,11 @@
         ],
         "agent": "Alex Johnson",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1010
       },
       {
-        "id": "d1483ea5-6e7f-44ec-8c40-73ef1f352744",
+        "id": 5017,
         "timestamp": "2025-11-07T23:35:27.073Z",
         "summary": "Customer wants to change plan. Provided plan comparison and processed change effective next billing cycle.",
         "category": "service",
@@ -4868,10 +4911,11 @@
         ],
         "agent": "Alex Johnson",
         "duration": 5,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1011
       },
       {
-        "id": "ff136c8c-7343-4166-876c-1644e9455a79",
+        "id": 5018,
         "timestamp": "2025-08-26T22:35:27.073Z",
         "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
         "category": "general",
@@ -4882,10 +4926,11 @@
         ],
         "agent": "Michael Brown",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "bdc8d371-674a-4772-b2e0-0b19c27039b9",
+        "id": 5019,
         "timestamp": "2025-08-15T22:35:27.073Z",
         "summary": "SMS not being received. Checked message center number and performed network refresh.",
         "category": "technical",
@@ -4896,10 +4941,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 15,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "3cc91a5f-10da-4b82-869b-549ac1fe3783",
+        "id": 5020,
         "timestamp": "2025-08-05T22:35:27.073Z",
         "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
         "category": "general",
@@ -4909,7 +4955,8 @@
         ],
         "agent": "David Kim",
         "duration": 9,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -6141,7 +6188,11 @@
         "status": "closed",
         "category": "network",
         "createdAt": "2025-12-02T15:40:31.790Z",
-        "updatedAt": "2025-11-13T10:51:16.786Z"
+        "updatedAt": "2025-11-13T10:51:16.786Z",
+        "relatedLogIds": [
+          5021,
+          5024
+        ]
       },
       {
         "id": 1013,
@@ -6152,7 +6203,8 @@
         "status": "resolved",
         "category": "billing",
         "createdAt": "2025-12-04T17:29:04.475Z",
-        "updatedAt": "2025-12-01T14:25:38.118Z"
+        "updatedAt": "2025-12-01T14:25:38.118Z",
+        "relatedLogIds": []
       },
       {
         "id": 1014,
@@ -6163,12 +6215,16 @@
         "status": "resolved",
         "category": "service",
         "createdAt": "2025-11-11T04:50:23.651Z",
-        "updatedAt": "2025-11-25T21:55:24.772Z"
+        "updatedAt": "2025-11-25T21:55:24.772Z",
+        "relatedLogIds": [
+          5022,
+          5023
+        ]
       }
     ],
     "customerLogs": [
       {
-        "id": "d0ba8de9-c2a3-4103-b317-7edb2d51dc77",
+        "id": 5021,
         "timestamp": "2025-11-26T23:35:27.074Z",
         "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
         "category": "general",
@@ -6180,10 +6236,11 @@
         ],
         "agent": "Sarah Lee",
         "duration": 3,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1012
       },
       {
-        "id": "401634f5-e3c9-49a3-bc8a-aab6a44267e7",
+        "id": 5022,
         "timestamp": "2025-11-16T23:35:27.074Z",
         "summary": "VoLTE not working. Verified device compatibility and network settings. Reset VoLTE profile.",
         "category": "technical",
@@ -6193,10 +6250,11 @@
         ],
         "agent": "David Kim",
         "duration": 5,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1014
       },
       {
-        "id": "73516457-995a-4b44-8fb5-8d6853f1bacb",
+        "id": 5023,
         "timestamp": "2025-10-29T23:35:27.074Z",
         "summary": "Requested account ownership transfer. Explained process and documentation required.",
         "category": "general",
@@ -6207,10 +6265,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 3,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1014
       },
       {
-        "id": "adf0b3c2-f637-4a4d-b9df-94d1f72eaab1",
+        "id": 5024,
         "timestamp": "2025-08-02T22:35:27.074Z",
         "summary": "VoLTE not working. Verified device compatibility and network settings. Reset VoLTE profile.",
         "category": "technical",
@@ -6222,10 +6281,11 @@
         ],
         "agent": "Alex Johnson",
         "duration": 2,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1012
       },
       {
-        "id": "ccf3907b-4834-42b0-a643-ec4909cc8add",
+        "id": 5025,
         "timestamp": "2025-06-16T22:35:27.074Z",
         "summary": "Requested account ownership transfer. Explained process and documentation required.",
         "category": "general",
@@ -6236,7 +6296,8 @@
         "agent": "Aisha Khan",
         "duration": 10,
         "followUpRequired": true,
-        "followUpDate": "2025-06-18"
+        "followUpDate": "2025-06-18",
+        "ticketId": null
       }
     ]
   },
@@ -6859,7 +6920,8 @@
         "status": "closed",
         "category": "network",
         "createdAt": "2025-11-18T10:58:07.237Z",
-        "updatedAt": "2025-11-18T21:14:14.016Z"
+        "updatedAt": "2025-11-18T21:14:14.016Z",
+        "relatedLogIds": []
       },
       {
         "id": 1016,
@@ -6870,7 +6932,8 @@
         "status": "open",
         "category": "billing",
         "createdAt": "2025-11-12T02:19:54.308Z",
-        "updatedAt": "2025-11-14T04:37:17.862Z"
+        "updatedAt": "2025-11-14T04:37:17.862Z",
+        "relatedLogIds": []
       },
       {
         "id": 1017,
@@ -6881,12 +6944,13 @@
         "status": "resolved",
         "category": "service",
         "createdAt": "2025-11-20T10:04:56.521Z",
-        "updatedAt": "2025-11-24T15:56:33.248Z"
+        "updatedAt": "2025-11-24T15:56:33.248Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "ee7e4e23-7c70-4956-baf5-179d8072d1b8",
+        "id": 5026,
         "timestamp": "2025-10-07T22:35:27.074Z",
         "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
         "category": "general",
@@ -6898,10 +6962,11 @@
         ],
         "agent": "Priya Patel",
         "duration": 6,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "7a400a7e-9cf5-4676-9fe6-5a889fb75fc0",
+        "id": 5027,
         "timestamp": "2025-09-23T22:35:27.074Z",
         "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
         "category": "general",
@@ -6913,10 +6978,11 @@
         "agent": "James Wilson",
         "duration": 10,
         "followUpRequired": true,
-        "followUpDate": "2025-09-27"
+        "followUpDate": "2025-09-27",
+        "ticketId": null
       },
       {
-        "id": "8fbd039c-9e9c-4a7f-b874-d8f9a50715e8",
+        "id": 5028,
         "timestamp": "2025-08-01T22:35:27.074Z",
         "summary": "General feedback about service. Thanked customer and noted feedback for management.",
         "category": "general",
@@ -6929,10 +6995,11 @@
         "agent": "Aisha Khan",
         "duration": 5,
         "followUpRequired": true,
-        "followUpDate": "2025-08-06"
+        "followUpDate": "2025-08-06",
+        "ticketId": null
       },
       {
-        "id": "e32bc754-9475-463c-8990-cfdf2e954532",
+        "id": 5029,
         "timestamp": "2025-07-15T22:35:27.074Z",
         "summary": "Question about contract terms. Explained terms and early termination fees.",
         "category": "general",
@@ -6942,10 +7009,11 @@
         ],
         "agent": "Priya Patel",
         "duration": 3,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "80094367-0293-47f1-b2cc-f597b31edc22",
+        "id": 5030,
         "timestamp": "2025-07-13T22:35:27.074Z",
         "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
         "category": "billing",
@@ -6955,7 +7023,8 @@
         ],
         "agent": "Michael Brown",
         "duration": 8,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -8067,7 +8136,8 @@
         "status": "in-progress",
         "category": "network",
         "createdAt": "2025-12-04T00:18:02.118Z",
-        "updatedAt": "2025-11-18T05:02:07.690Z"
+        "updatedAt": "2025-11-18T05:02:07.690Z",
+        "relatedLogIds": []
       },
       {
         "id": 1019,
@@ -8078,7 +8148,8 @@
         "status": "resolved",
         "category": "billing",
         "createdAt": "2025-11-23T20:15:35.451Z",
-        "updatedAt": "2025-11-22T00:06:18.283Z"
+        "updatedAt": "2025-11-22T00:06:18.283Z",
+        "relatedLogIds": []
       },
       {
         "id": 1020,
@@ -8089,12 +8160,15 @@
         "status": "open",
         "category": "service",
         "createdAt": "2025-11-13T23:44:02.977Z",
-        "updatedAt": "2025-12-04T16:49:49.076Z"
+        "updatedAt": "2025-12-04T16:49:49.076Z",
+        "relatedLogIds": [
+          5032
+        ]
       }
     ],
     "customerLogs": [
       {
-        "id": "8f35d0ba-3a26-4012-be24-47f7d7dbdb75",
+        "id": 5031,
         "timestamp": "2025-10-10T22:35:27.074Z",
         "summary": "5G not working. Verified device compatibility and network settings. Escalated to network team.",
         "category": "network",
@@ -8105,10 +8179,11 @@
         ],
         "agent": "Sarah Lee",
         "duration": 4,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "57224797-27da-4a33-9e2b-18d4f5898d72",
+        "id": 5032,
         "timestamp": "2025-10-07T22:35:27.074Z",
         "summary": "Family plan management. Added new line and explained shared data usage.",
         "category": "service",
@@ -8120,10 +8195,11 @@
         ],
         "agent": "Maria Garcia",
         "duration": 11,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1020
       },
       {
-        "id": "24b3ce43-fd7c-40e1-b51d-3cc5f2394c8a",
+        "id": 5033,
         "timestamp": "2025-08-16T22:35:27.074Z",
         "summary": "Customer reported no network coverage in their area. Checked coverage map and confirmed poor coverage. Suggested network settings reset.",
         "category": "network",
@@ -8134,10 +8210,11 @@
         ],
         "agent": "David Kim",
         "duration": 11,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "edf433c3-40f0-4e08-8c2a-3ef8eadf1d8a",
+        "id": 5034,
         "timestamp": "2025-08-14T22:35:27.074Z",
         "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
         "category": "general",
@@ -8149,10 +8226,11 @@
         "agent": "James Wilson",
         "duration": 5,
         "followUpRequired": true,
-        "followUpDate": "2025-08-16"
+        "followUpDate": "2025-08-16",
+        "ticketId": null
       },
       {
-        "id": "f5664f68-d349-4cda-94ec-9532ad75fd20",
+        "id": 5035,
         "timestamp": "2025-06-12T22:35:27.074Z",
         "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
         "category": "billing",
@@ -8162,7 +8240,8 @@
         ],
         "agent": "Sarah Lee",
         "duration": 13,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -9163,7 +9242,13 @@
         "status": "open",
         "category": "network",
         "createdAt": "2025-11-12T13:15:33.815Z",
-        "updatedAt": "2025-12-05T11:54:03.994Z"
+        "updatedAt": "2025-12-05T11:54:03.994Z",
+        "relatedLogIds": [
+          5036,
+          5037,
+          5039,
+          5040
+        ]
       },
       {
         "id": 1022,
@@ -9174,7 +9259,8 @@
         "status": "in-progress",
         "category": "billing",
         "createdAt": "2025-11-13T18:08:57.273Z",
-        "updatedAt": "2025-11-20T04:32:39.537Z"
+        "updatedAt": "2025-11-20T04:32:39.537Z",
+        "relatedLogIds": []
       },
       {
         "id": 1023,
@@ -9185,12 +9271,13 @@
         "status": "closed",
         "category": "service",
         "createdAt": "2025-11-24T04:30:48.852Z",
-        "updatedAt": "2025-11-13T07:22:18.647Z"
+        "updatedAt": "2025-11-13T07:22:18.647Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "47a61785-1ff0-4090-8cdd-36a7bce11429",
+        "id": 5036,
         "timestamp": "2025-11-11T23:35:27.074Z",
         "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
         "category": "technical",
@@ -9200,10 +9287,11 @@
         ],
         "agent": "Michael Brown",
         "duration": 13,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1021
       },
       {
-        "id": "d65cc4c2-95ad-4510-b71d-af29c4c738a1",
+        "id": 5037,
         "timestamp": "2025-10-24T22:35:27.074Z",
         "summary": "Intermittent call drops reported. Suggested toggling airplane mode and checking for software updates.",
         "category": "network",
@@ -9214,10 +9302,11 @@
         ],
         "agent": "Alex Johnson",
         "duration": 13,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1021
       },
       {
-        "id": "4cb240d9-a50f-4230-86b9-3044f9fad5d9",
+        "id": 5038,
         "timestamp": "2025-10-10T22:35:27.074Z",
         "summary": "SIM replacement requested. Verified account ownership and initiated replacement process.",
         "category": "service",
@@ -9227,10 +9316,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 10,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "23861da1-2035-4c9b-83cf-b6b5cd4cece3",
+        "id": 5039,
         "timestamp": "2025-07-25T22:35:27.074Z",
         "summary": "VoLTE not working. Verified device compatibility and network settings. Reset VoLTE profile.",
         "category": "technical",
@@ -9240,10 +9330,11 @@
         ],
         "agent": "Michael Brown",
         "duration": 11,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1021
       },
       {
-        "id": "18eef749-b250-48e7-ba60-b00fc92e78b1",
+        "id": 5040,
         "timestamp": "2025-06-22T22:35:27.074Z",
         "summary": "Roaming issues while traveling. Verified roaming is enabled and provided manual network selection instructions.",
         "category": "network",
@@ -9253,7 +9344,8 @@
         ],
         "agent": "Aisha Khan",
         "duration": 3,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1021
       }
     ]
   },
@@ -9974,7 +10066,8 @@
         "status": "open",
         "category": "network",
         "createdAt": "2025-11-19T18:53:48.380Z",
-        "updatedAt": "2025-11-20T13:42:41.878Z"
+        "updatedAt": "2025-11-20T13:42:41.878Z",
+        "relatedLogIds": []
       },
       {
         "id": 1025,
@@ -9985,7 +10078,10 @@
         "status": "open",
         "category": "billing",
         "createdAt": "2025-11-18T18:41:17.414Z",
-        "updatedAt": "2025-11-19T08:19:05.063Z"
+        "updatedAt": "2025-11-19T08:19:05.063Z",
+        "relatedLogIds": [
+          5041
+        ]
       },
       {
         "id": 1026,
@@ -9996,12 +10092,13 @@
         "status": "open",
         "category": "service",
         "createdAt": "2025-11-30T19:03:15.351Z",
-        "updatedAt": "2025-12-06T17:25:27.287Z"
+        "updatedAt": "2025-12-06T17:25:27.287Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "ee5f7ce3-bd8b-435d-ac9b-9420c1d6d0a2",
+        "id": 5041,
         "timestamp": "2025-11-11T23:35:27.075Z",
         "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
         "category": "technical",
@@ -10014,10 +10111,11 @@
         "agent": "Sarah Lee",
         "duration": 6,
         "followUpRequired": true,
-        "followUpDate": "2025-11-12"
+        "followUpDate": "2025-11-12",
+        "ticketId": 1025
       },
       {
-        "id": "578556bd-4364-4185-b7dc-00f32e22ab02",
+        "id": 5042,
         "timestamp": "2025-08-24T22:35:27.074Z",
         "summary": "SIM replacement requested. Verified account ownership and initiated replacement process.",
         "category": "service",
@@ -10028,10 +10126,11 @@
         ],
         "agent": "Sarah Lee",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "1542daef-ca19-4d7b-b8cf-b5c041870c35",
+        "id": 5043,
         "timestamp": "2025-08-11T22:35:27.075Z",
         "summary": "Payment not reflected in account. Verified payment and processed manual update. Confirmed with customer.",
         "category": "billing",
@@ -10041,10 +10140,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 3,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "36a7bfe9-32d5-4a92-af1b-96e04c435535",
+        "id": 5044,
         "timestamp": "2025-07-13T22:35:27.075Z",
         "summary": "General feedback about service. Thanked customer and noted feedback for management.",
         "category": "general",
@@ -10057,10 +10157,11 @@
         "agent": "Michael Brown",
         "duration": 12,
         "followUpRequired": true,
-        "followUpDate": "2025-07-14"
+        "followUpDate": "2025-07-14",
+        "ticketId": null
       },
       {
-        "id": "84249249-1ae4-4ec4-a4b2-eff8a9f2ac52",
+        "id": 5045,
         "timestamp": "2025-07-06T22:35:27.074Z",
         "summary": "Customer disputing charges on latest bill. Explained charges and provided detailed breakdown. Issued partial credit for inconvenience.",
         "category": "billing",
@@ -10071,7 +10172,8 @@
         ],
         "agent": "Maria Garcia",
         "duration": 8,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -11254,7 +11356,11 @@
         "status": "closed",
         "category": "network",
         "createdAt": "2025-11-15T02:42:21.409Z",
-        "updatedAt": "2025-11-30T10:33:22.973Z"
+        "updatedAt": "2025-11-30T10:33:22.973Z",
+        "relatedLogIds": [
+          5046,
+          5049
+        ]
       },
       {
         "id": 1028,
@@ -11265,7 +11371,8 @@
         "status": "resolved",
         "category": "billing",
         "createdAt": "2025-11-14T09:26:50.622Z",
-        "updatedAt": "2025-12-07T20:49:13.929Z"
+        "updatedAt": "2025-12-07T20:49:13.929Z",
+        "relatedLogIds": []
       },
       {
         "id": 1029,
@@ -11276,12 +11383,15 @@
         "status": "closed",
         "category": "service",
         "createdAt": "2025-11-12T23:16:33.300Z",
-        "updatedAt": "2025-11-10T05:55:39.707Z"
+        "updatedAt": "2025-11-10T05:55:39.707Z",
+        "relatedLogIds": [
+          5047
+        ]
       }
     ],
     "customerLogs": [
       {
-        "id": "3198e65b-77bb-40a1-b98d-2234969a435e",
+        "id": 5046,
         "timestamp": "2025-11-30T23:35:27.075Z",
         "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
         "category": "general",
@@ -11293,10 +11403,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 11,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1027
       },
       {
-        "id": "14191dbb-11cc-414e-8a03-72f76d2e2931",
+        "id": 5047,
         "timestamp": "2025-10-26T23:35:27.075Z",
         "summary": "General feedback about service. Thanked customer and noted feedback for management.",
         "category": "general",
@@ -11308,10 +11419,11 @@
         ],
         "agent": "Maria Garcia",
         "duration": 15,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1029
       },
       {
-        "id": "a6d6515e-b19e-487b-9813-c6ad6c75dc20",
+        "id": 5048,
         "timestamp": "2025-10-02T22:35:27.075Z",
         "summary": "General feedback about service. Thanked customer and noted feedback for management.",
         "category": "general",
@@ -11323,10 +11435,11 @@
         ],
         "agent": "David Kim",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "ad209399-1c50-4db1-89d8-ab6aba7fa9d4",
+        "id": 5049,
         "timestamp": "2025-08-22T22:35:27.075Z",
         "summary": "Roaming issues while traveling. Verified roaming is enabled and provided manual network selection instructions.",
         "category": "network",
@@ -11337,10 +11450,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 14,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1027
       },
       {
-        "id": "dc456e4a-f2bc-47d2-b995-74c8f9cf2111",
+        "id": 5050,
         "timestamp": "2025-07-24T22:35:27.075Z",
         "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
         "category": "general",
@@ -11350,7 +11464,8 @@
         ],
         "agent": "James Wilson",
         "duration": 3,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -12502,7 +12617,11 @@
         "status": "closed",
         "category": "network",
         "createdAt": "2025-11-25T08:58:12.120Z",
-        "updatedAt": "2025-11-16T06:14:41.102Z"
+        "updatedAt": "2025-11-16T06:14:41.102Z",
+        "relatedLogIds": [
+          5051,
+          5055
+        ]
       },
       {
         "id": 1031,
@@ -12513,7 +12632,8 @@
         "status": "closed",
         "category": "billing",
         "createdAt": "2025-12-02T02:13:16.511Z",
-        "updatedAt": "2025-11-10T10:17:50.769Z"
+        "updatedAt": "2025-11-10T10:17:50.769Z",
+        "relatedLogIds": []
       },
       {
         "id": 1032,
@@ -12524,12 +12644,17 @@
         "status": "closed",
         "category": "service",
         "createdAt": "2025-11-11T11:55:14.859Z",
-        "updatedAt": "2025-11-18T21:02:57.805Z"
+        "updatedAt": "2025-11-18T21:02:57.805Z",
+        "relatedLogIds": [
+          5052,
+          5053,
+          5054
+        ]
       }
     ],
     "customerLogs": [
       {
-        "id": "a4f465fd-047c-4111-a2a1-9787cdc842d1",
+        "id": 5051,
         "timestamp": "2025-11-18T23:35:27.075Z",
         "summary": "Number porting inquiry. Provided requirements and initiated porting process.",
         "category": "service",
@@ -12539,10 +12664,11 @@
         ],
         "agent": "Michael Brown",
         "duration": 11,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1030
       },
       {
-        "id": "17eafb19-a7d2-465a-84bd-cee9f0105b17",
+        "id": 5052,
         "timestamp": "2025-10-16T22:35:27.075Z",
         "summary": "Mobile hotspot not working. Verified plan includes hotspot and reset data settings.",
         "category": "technical",
@@ -12552,10 +12678,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 4,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1032
       },
       {
-        "id": "80cbf605-1547-4a84-9b77-8b87c32272df",
+        "id": 5053,
         "timestamp": "2025-08-28T22:35:27.075Z",
         "summary": "Roaming issues while traveling. Verified roaming is enabled and provided manual network selection instructions.",
         "category": "network",
@@ -12565,10 +12692,11 @@
         ],
         "agent": "Sarah Lee",
         "duration": 10,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1032
       },
       {
-        "id": "39df481f-f57d-4939-9785-50fbcfc79061",
+        "id": 5054,
         "timestamp": "2025-06-24T22:35:27.075Z",
         "summary": "Request to enable international roaming. Verified ID and enabled service with rate explanation.",
         "category": "service",
@@ -12581,10 +12709,11 @@
         "agent": "James Wilson",
         "duration": 11,
         "followUpRequired": true,
-        "followUpDate": "2025-06-26"
+        "followUpDate": "2025-06-26",
+        "ticketId": 1032
       },
       {
-        "id": "b91e5ad7-95a9-4d53-9fbc-49a50b95fc49",
+        "id": 5055,
         "timestamp": "2025-06-14T22:35:27.075Z",
         "summary": "VoLTE not working. Verified device compatibility and network settings. Reset VoLTE profile.",
         "category": "technical",
@@ -12596,7 +12725,8 @@
         "agent": "Michael Brown",
         "duration": 5,
         "followUpRequired": true,
-        "followUpDate": "2025-06-19"
+        "followUpDate": "2025-06-19",
+        "ticketId": 1030
       }
     ]
   },
@@ -14071,7 +14201,11 @@
         "status": "in-progress",
         "category": "network",
         "createdAt": "2025-11-29T02:52:16.522Z",
-        "updatedAt": "2025-11-24T05:39:26.892Z"
+        "updatedAt": "2025-11-24T05:39:26.892Z",
+        "relatedLogIds": [
+          5057,
+          5060
+        ]
       },
       {
         "id": 1034,
@@ -14082,7 +14216,8 @@
         "status": "open",
         "category": "billing",
         "createdAt": "2025-11-13T15:14:09.028Z",
-        "updatedAt": "2025-11-24T10:59:16.222Z"
+        "updatedAt": "2025-11-24T10:59:16.222Z",
+        "relatedLogIds": []
       },
       {
         "id": 1035,
@@ -14093,12 +14228,15 @@
         "status": "closed",
         "category": "service",
         "createdAt": "2025-11-23T08:24:30.132Z",
-        "updatedAt": "2025-12-06T03:01:45.855Z"
+        "updatedAt": "2025-12-06T03:01:45.855Z",
+        "relatedLogIds": [
+          5056
+        ]
       }
     ],
     "customerLogs": [
       {
-        "id": "c71d29ff-740d-4910-ae00-3846d9de7b6e",
+        "id": 5056,
         "timestamp": "2025-10-10T22:35:27.075Z",
         "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
         "category": "general",
@@ -14111,10 +14249,11 @@
         "agent": "Aisha Khan",
         "duration": 4,
         "followUpRequired": true,
-        "followUpDate": "2025-10-12"
+        "followUpDate": "2025-10-12",
+        "ticketId": 1035
       },
       {
-        "id": "b1e3bc88-b0b5-40e2-8e9b-fad6bb27903d",
+        "id": 5057,
         "timestamp": "2025-10-06T22:35:27.075Z",
         "summary": "Customer reported no network coverage in their area. Checked coverage map and confirmed poor coverage. Suggested network settings reset.",
         "category": "network",
@@ -14126,10 +14265,11 @@
         ],
         "agent": "Alex Johnson",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1033
       },
       {
-        "id": "cb89168b-ee34-4faf-8c13-5520cf1b8ac4",
+        "id": 5058,
         "timestamp": "2025-08-29T22:35:27.075Z",
         "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
         "category": "billing",
@@ -14141,10 +14281,11 @@
         ],
         "agent": "Priya Patel",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "4fd81c54-3950-46e7-825b-9f3bbbbd3641",
+        "id": 5059,
         "timestamp": "2025-07-11T22:35:27.075Z",
         "summary": "SIM replacement requested. Verified account ownership and initiated replacement process.",
         "category": "service",
@@ -14156,10 +14297,11 @@
         ],
         "agent": "Michael Brown",
         "duration": 8,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "eca9c8be-c954-4337-bae8-472ec774312f",
+        "id": 5060,
         "timestamp": "2025-06-18T22:35:27.075Z",
         "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
         "category": "network",
@@ -14171,7 +14313,8 @@
         ],
         "agent": "Aisha Khan",
         "duration": 7,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1033
       }
     ]
   },
@@ -15055,7 +15198,8 @@
         "status": "closed",
         "category": "network",
         "createdAt": "2025-11-16T10:21:12.354Z",
-        "updatedAt": "2025-11-27T17:17:22.614Z"
+        "updatedAt": "2025-11-27T17:17:22.614Z",
+        "relatedLogIds": []
       },
       {
         "id": 1037,
@@ -15066,7 +15210,8 @@
         "status": "in-progress",
         "category": "billing",
         "createdAt": "2025-11-26T09:50:09.557Z",
-        "updatedAt": "2025-11-27T16:19:21.194Z"
+        "updatedAt": "2025-11-27T16:19:21.194Z",
+        "relatedLogIds": []
       },
       {
         "id": 1038,
@@ -15077,12 +15222,13 @@
         "status": "in-progress",
         "category": "service",
         "createdAt": "2025-11-21T13:06:37.489Z",
-        "updatedAt": "2025-11-24T02:00:22.233Z"
+        "updatedAt": "2025-11-24T02:00:22.233Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "009d2c61-d3e5-4b7e-b946-f9394b820967",
+        "id": 5061,
         "timestamp": "2025-10-10T22:35:27.075Z",
         "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
         "category": "billing",
@@ -15094,10 +15240,11 @@
         "agent": "Maria Garcia",
         "duration": 15,
         "followUpRequired": true,
-        "followUpDate": "2025-10-17"
+        "followUpDate": "2025-10-17",
+        "ticketId": null
       },
       {
-        "id": "2b0aa1c9-c48d-4773-b387-3d1821d53bb7",
+        "id": 5062,
         "timestamp": "2025-09-22T22:35:27.075Z",
         "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
         "category": "general",
@@ -15110,10 +15257,11 @@
         "agent": "Sarah Lee",
         "duration": 11,
         "followUpRequired": true,
-        "followUpDate": "2025-09-27"
+        "followUpDate": "2025-09-27",
+        "ticketId": null
       },
       {
-        "id": "ec2cce7a-fdc7-494b-b502-456c705fa8cd",
+        "id": 5063,
         "timestamp": "2025-09-21T22:35:27.075Z",
         "summary": "Question about contract terms. Explained terms and early termination fees.",
         "category": "general",
@@ -15124,10 +15272,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 4,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "f01e6a6d-ef00-4fb4-b616-879375839baf",
+        "id": 5064,
         "timestamp": "2025-09-15T22:35:27.075Z",
         "summary": "Plan change not processed correctly. Verified request and reprocessed with backdated changes.",
         "category": "billing",
@@ -15137,10 +15286,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 9,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "f31c6932-1150-4263-84c9-558c7f75bec1",
+        "id": 5065,
         "timestamp": "2025-07-02T22:35:27.075Z",
         "summary": "5G not working. Verified device compatibility and network settings. Escalated to network team.",
         "category": "network",
@@ -15153,7 +15303,8 @@
         "agent": "Priya Patel",
         "duration": 9,
         "followUpRequired": true,
-        "followUpDate": "2025-07-03"
+        "followUpDate": "2025-07-03",
+        "ticketId": null
       }
     ]
   },
@@ -15895,7 +16046,11 @@
         "status": "closed",
         "category": "network",
         "createdAt": "2025-12-03T09:13:48.745Z",
-        "updatedAt": "2025-11-26T10:21:00.879Z"
+        "updatedAt": "2025-11-26T10:21:00.879Z",
+        "relatedLogIds": [
+          5066,
+          5068
+        ]
       },
       {
         "id": 1040,
@@ -15906,7 +16061,8 @@
         "status": "open",
         "category": "billing",
         "createdAt": "2025-12-08T14:36:59.876Z",
-        "updatedAt": "2025-11-23T04:30:04.032Z"
+        "updatedAt": "2025-11-23T04:30:04.032Z",
+        "relatedLogIds": []
       },
       {
         "id": 1041,
@@ -15917,12 +16073,13 @@
         "status": "resolved",
         "category": "service",
         "createdAt": "2025-12-06T07:21:00.488Z",
-        "updatedAt": "2025-11-30T07:05:00.498Z"
+        "updatedAt": "2025-11-30T07:05:00.498Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "5baef6f6-9442-4132-873e-ea547d445d36",
+        "id": 5066,
         "timestamp": "2025-11-27T23:35:27.075Z",
         "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
         "category": "network",
@@ -15933,10 +16090,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 14,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1039
       },
       {
-        "id": "7b90e74c-d615-4b02-9cb9-d9eff8d2a54c",
+        "id": 5067,
         "timestamp": "2025-10-03T22:35:27.075Z",
         "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
         "category": "general",
@@ -15948,10 +16106,11 @@
         ],
         "agent": "Priya Patel",
         "duration": 8,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "0e24da60-4d1e-4b97-a13d-842fea9139f2",
+        "id": 5068,
         "timestamp": "2025-10-03T22:35:27.075Z",
         "summary": "5G not working. Verified device compatibility and network settings. Escalated to network team.",
         "category": "network",
@@ -15963,10 +16122,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 2,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1039
       },
       {
-        "id": "e2181469-a841-4867-b601-97093fb7822d",
+        "id": 5069,
         "timestamp": "2025-08-12T22:35:27.075Z",
         "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
         "category": "technical",
@@ -15978,10 +16138,11 @@
         ],
         "agent": "James Wilson",
         "duration": 10,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "47c67696-2b97-4e4e-896b-4fab26054db1",
+        "id": 5070,
         "timestamp": "2025-07-15T22:35:27.075Z",
         "summary": "General feedback about service. Thanked customer and noted feedback for management.",
         "category": "general",
@@ -15992,7 +16153,8 @@
         ],
         "agent": "Aisha Khan",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -16583,7 +16745,11 @@
         "status": "open",
         "category": "network",
         "createdAt": "2025-12-05T05:37:05.325Z",
-        "updatedAt": "2025-11-30T12:37:44.799Z"
+        "updatedAt": "2025-11-30T12:37:44.799Z",
+        "relatedLogIds": [
+          5071,
+          5073
+        ]
       },
       {
         "id": 1043,
@@ -16594,7 +16760,8 @@
         "status": "in-progress",
         "category": "billing",
         "createdAt": "2025-11-10T06:50:34.969Z",
-        "updatedAt": "2025-11-18T00:09:00.931Z"
+        "updatedAt": "2025-11-18T00:09:00.931Z",
+        "relatedLogIds": []
       },
       {
         "id": 1044,
@@ -16605,12 +16772,13 @@
         "status": "closed",
         "category": "service",
         "createdAt": "2025-11-15T12:26:09.642Z",
-        "updatedAt": "2025-11-14T12:41:03.388Z"
+        "updatedAt": "2025-11-14T12:41:03.388Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "3b8c9ade-9f3d-40b5-ad21-d6c116b60c6f",
+        "id": 5071,
         "timestamp": "2025-11-25T23:35:27.076Z",
         "summary": "Roaming issues while traveling. Verified roaming is enabled and provided manual network selection instructions.",
         "category": "network",
@@ -16621,10 +16789,11 @@
         "agent": "Aisha Khan",
         "duration": 8,
         "followUpRequired": true,
-        "followUpDate": "2025-11-27"
+        "followUpDate": "2025-11-27",
+        "ticketId": 1042
       },
       {
-        "id": "8453705f-0496-4d2e-b70d-ade549885c79",
+        "id": 5072,
         "timestamp": "2025-09-26T22:35:27.076Z",
         "summary": "Requested account ownership transfer. Explained process and documentation required.",
         "category": "general",
@@ -16636,10 +16805,11 @@
         "agent": "David Kim",
         "duration": 10,
         "followUpRequired": true,
-        "followUpDate": "2025-09-27"
+        "followUpDate": "2025-09-27",
+        "ticketId": null
       },
       {
-        "id": "c1db0df2-1133-495f-9d0f-208ee9518889",
+        "id": 5073,
         "timestamp": "2025-08-08T22:35:27.076Z",
         "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
         "category": "network",
@@ -16650,10 +16820,11 @@
         ],
         "agent": "Sarah Lee",
         "duration": 13,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1042
       },
       {
-        "id": "ce09b803-76ba-48a8-94f6-30e93dfad814",
+        "id": 5074,
         "timestamp": "2025-07-07T22:35:27.076Z",
         "summary": "Customer disputing charges on latest bill. Explained charges and provided detailed breakdown. Issued partial credit for inconvenience.",
         "category": "billing",
@@ -16663,10 +16834,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 8,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "4fc3df98-5b02-41c3-a2fe-5ad1c7eee750",
+        "id": 5075,
         "timestamp": "2025-06-27T22:35:27.075Z",
         "summary": "Payment not reflected in account. Verified payment and processed manual update. Confirmed with customer.",
         "category": "billing",
@@ -16677,7 +16849,8 @@
         ],
         "agent": "Aisha Khan",
         "duration": 6,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -17402,7 +17575,11 @@
         "status": "resolved",
         "category": "network",
         "createdAt": "2025-11-12T09:37:16.050Z",
-        "updatedAt": "2025-12-01T01:45:41.245Z"
+        "updatedAt": "2025-12-01T01:45:41.245Z",
+        "relatedLogIds": [
+          5076,
+          5080
+        ]
       },
       {
         "id": 1046,
@@ -17413,7 +17590,8 @@
         "status": "resolved",
         "category": "billing",
         "createdAt": "2025-11-27T21:11:17.783Z",
-        "updatedAt": "2025-11-26T03:21:13.864Z"
+        "updatedAt": "2025-11-26T03:21:13.864Z",
+        "relatedLogIds": []
       },
       {
         "id": 1047,
@@ -17424,12 +17602,15 @@
         "status": "resolved",
         "category": "service",
         "createdAt": "2025-11-09T06:26:27.945Z",
-        "updatedAt": "2025-11-09T09:34:17.307Z"
+        "updatedAt": "2025-11-09T09:34:17.307Z",
+        "relatedLogIds": [
+          5077
+        ]
       }
     ],
     "customerLogs": [
       {
-        "id": "8ede3d92-b3ca-4938-b3ab-cb806e81831f",
+        "id": 5076,
         "timestamp": "2025-11-17T23:35:27.076Z",
         "summary": "5G not working. Verified device compatibility and network settings. Escalated to network team.",
         "category": "network",
@@ -17440,10 +17621,11 @@
         "agent": "Sarah Lee",
         "duration": 10,
         "followUpRequired": true,
-        "followUpDate": "2025-11-20"
+        "followUpDate": "2025-11-20",
+        "ticketId": 1045
       },
       {
-        "id": "a9640eb3-8acb-4b08-bc1a-86b1da7efc5f",
+        "id": 5077,
         "timestamp": "2025-10-23T22:35:27.076Z",
         "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
         "category": "network",
@@ -17453,10 +17635,11 @@
         ],
         "agent": "James Wilson",
         "duration": 15,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1047
       },
       {
-        "id": "2491de66-dcb0-4c61-aac8-7f7469f1f7b1",
+        "id": 5078,
         "timestamp": "2025-08-12T22:35:27.076Z",
         "summary": "Payment not reflected in account. Verified payment and processed manual update. Confirmed with customer.",
         "category": "billing",
@@ -17467,10 +17650,11 @@
         ],
         "agent": "Aisha Khan",
         "duration": 8,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "d5fcd6d8-3b64-4f6f-86df-83e08d1325ef",
+        "id": 5079,
         "timestamp": "2025-07-29T22:35:27.076Z",
         "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
         "category": "network",
@@ -17481,10 +17665,11 @@
         ],
         "agent": "Maria Garcia",
         "duration": 10,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "9b6368a3-0773-40b4-9bef-51c757edcac4",
+        "id": 5080,
         "timestamp": "2025-07-20T22:35:27.076Z",
         "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
         "category": "general",
@@ -17495,7 +17680,8 @@
         ],
         "agent": "Michael Brown",
         "duration": 10,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1045
       }
     ]
   },
@@ -18967,7 +19153,11 @@
         "status": "open",
         "category": "network",
         "createdAt": "2025-12-03T18:29:06.103Z",
-        "updatedAt": "2025-11-11T07:08:14.248Z"
+        "updatedAt": "2025-11-11T07:08:14.248Z",
+        "relatedLogIds": [
+          5083,
+          5084
+        ]
       },
       {
         "id": 1049,
@@ -18978,7 +19168,10 @@
         "status": "in-progress",
         "category": "billing",
         "createdAt": "2025-11-17T02:38:36.035Z",
-        "updatedAt": "2025-11-19T16:51:38.018Z"
+        "updatedAt": "2025-11-19T16:51:38.018Z",
+        "relatedLogIds": [
+          5081
+        ]
       },
       {
         "id": 1050,
@@ -18989,12 +19182,13 @@
         "status": "resolved",
         "category": "service",
         "createdAt": "2025-11-20T10:08:02.733Z",
-        "updatedAt": "2025-11-27T02:14:22.983Z"
+        "updatedAt": "2025-11-27T02:14:22.983Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "51f43df0-95c6-4876-bdea-6911d1cee455",
+        "id": 5081,
         "timestamp": "2025-11-02T23:35:27.076Z",
         "summary": "Customer unable to make calls. Verified account status and signal strength. Performed network refresh on the line.",
         "category": "network",
@@ -19004,10 +19198,11 @@
         ],
         "agent": "Sarah Lee",
         "duration": 14,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1049
       },
       {
-        "id": "643ab4e0-c7ab-4161-a405-4ea1526a0e18",
+        "id": 5082,
         "timestamp": "2025-08-19T22:35:27.076Z",
         "summary": "Requested account ownership transfer. Explained process and documentation required.",
         "category": "general",
@@ -19019,10 +19214,11 @@
         "agent": "James Wilson",
         "duration": 13,
         "followUpRequired": true,
-        "followUpDate": "2025-08-24"
+        "followUpDate": "2025-08-24",
+        "ticketId": null
       },
       {
-        "id": "4666abc2-b918-4994-aada-c4cc8c020cf7",
+        "id": 5083,
         "timestamp": "2025-08-09T22:35:27.076Z",
         "summary": "WiFi calling issues. Verified WiFi network compatibility and re-provisioned service.",
         "category": "technical",
@@ -19033,10 +19229,11 @@
         "agent": "Maria Garcia",
         "duration": 14,
         "followUpRequired": true,
-        "followUpDate": "2025-08-14"
+        "followUpDate": "2025-08-14",
+        "ticketId": 1048
       },
       {
-        "id": "071d9c87-3b79-475f-9c6b-e969163e7079",
+        "id": 5084,
         "timestamp": "2025-07-28T22:35:27.076Z",
         "summary": "SMS not being received. Checked message center number and performed network refresh.",
         "category": "technical",
@@ -19047,10 +19244,11 @@
         ],
         "agent": "Sarah Lee",
         "duration": 3,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1048
       },
       {
-        "id": "9ad01541-75b0-435e-849e-40a2f0627de5",
+        "id": 5085,
         "timestamp": "2025-07-15T22:35:27.076Z",
         "summary": "Request to enable international roaming. Verified ID and enabled service with rate explanation.",
         "category": "service",
@@ -19063,7 +19261,8 @@
         "agent": "Michael Brown",
         "duration": 10,
         "followUpRequired": true,
-        "followUpDate": "2025-07-20"
+        "followUpDate": "2025-07-20",
+        "ticketId": null
       }
     ]
   },
@@ -20576,7 +20775,10 @@
         "status": "in-progress",
         "category": "network",
         "createdAt": "2025-11-27T00:58:39.597Z",
-        "updatedAt": "2025-11-10T16:10:25.466Z"
+        "updatedAt": "2025-11-10T16:10:25.466Z",
+        "relatedLogIds": [
+          5086
+        ]
       },
       {
         "id": 1052,
@@ -20587,7 +20789,10 @@
         "status": "resolved",
         "category": "billing",
         "createdAt": "2025-11-17T23:22:50.184Z",
-        "updatedAt": "2025-11-10T04:22:48.019Z"
+        "updatedAt": "2025-11-10T04:22:48.019Z",
+        "relatedLogIds": [
+          5087
+        ]
       },
       {
         "id": 1053,
@@ -20598,12 +20803,13 @@
         "status": "in-progress",
         "category": "service",
         "createdAt": "2025-11-26T09:14:05.683Z",
-        "updatedAt": "2025-11-30T03:44:17.404Z"
+        "updatedAt": "2025-11-30T03:44:17.404Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "09ae07ab-d1d8-497f-8794-da66ead2bdb0",
+        "id": 5086,
         "timestamp": "2025-12-03T23:35:27.076Z",
         "summary": "Requested account ownership transfer. Explained process and documentation required.",
         "category": "general",
@@ -20615,10 +20821,11 @@
         ],
         "agent": "Maria Garcia",
         "duration": 13,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1051
       },
       {
-        "id": "4d4f206e-74c7-4190-8822-19d86f5b49e3",
+        "id": 5087,
         "timestamp": "2025-11-20T23:35:27.076Z",
         "summary": "Customer reported no network coverage in their area. Checked coverage map and confirmed poor coverage. Suggested network settings reset.",
         "category": "network",
@@ -20630,10 +20837,11 @@
         ],
         "agent": "Michael Brown",
         "duration": 15,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1052
       },
       {
-        "id": "70f01828-8e70-4964-af64-bd8ba6cabde1",
+        "id": 5088,
         "timestamp": "2025-08-29T22:35:27.076Z",
         "summary": "Requested account ownership transfer. Explained process and documentation required.",
         "category": "general",
@@ -20645,10 +20853,11 @@
         ],
         "agent": "Maria Garcia",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "7327219e-9b58-4365-bea2-8265ae9be966",
+        "id": 5089,
         "timestamp": "2025-08-01T22:35:27.076Z",
         "summary": "Requested account ownership transfer. Explained process and documentation required.",
         "category": "general",
@@ -20660,10 +20869,11 @@
         ],
         "agent": "Priya Patel",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "c9dcb988-1666-48d5-9c20-c82fe820f66c",
+        "id": 5090,
         "timestamp": "2025-07-25T22:35:27.076Z",
         "summary": "WiFi calling issues. Verified WiFi network compatibility and re-provisioned service.",
         "category": "technical",
@@ -20673,7 +20883,8 @@
         ],
         "agent": "Alex Johnson",
         "duration": 9,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -21899,7 +22110,8 @@
         "status": "open",
         "category": "network",
         "createdAt": "2025-12-02T20:53:37.637Z",
-        "updatedAt": "2025-11-26T10:50:08.466Z"
+        "updatedAt": "2025-11-26T10:50:08.466Z",
+        "relatedLogIds": []
       },
       {
         "id": 1055,
@@ -21910,7 +22122,8 @@
         "status": "in-progress",
         "category": "billing",
         "createdAt": "2025-11-19T07:18:46.196Z",
-        "updatedAt": "2025-11-13T02:55:47.440Z"
+        "updatedAt": "2025-11-13T02:55:47.440Z",
+        "relatedLogIds": []
       },
       {
         "id": 1056,
@@ -21921,12 +22134,16 @@
         "status": "closed",
         "category": "service",
         "createdAt": "2025-11-18T09:14:38.927Z",
-        "updatedAt": "2025-12-08T19:24:50.803Z"
+        "updatedAt": "2025-12-08T19:24:50.803Z",
+        "relatedLogIds": [
+          5091,
+          5092
+        ]
       }
     ],
     "customerLogs": [
       {
-        "id": "8dd2214d-9d51-4d87-81f8-0901f2918ef6",
+        "id": 5091,
         "timestamp": "2025-11-10T23:35:27.076Z",
         "summary": "General feedback about service. Thanked customer and noted feedback for management.",
         "category": "general",
@@ -21938,10 +22155,11 @@
         ],
         "agent": "Maria Garcia",
         "duration": 4,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1056
       },
       {
-        "id": "28d4a275-8ed1-4b3a-91e6-8846d2a3f035",
+        "id": 5092,
         "timestamp": "2025-10-26T23:35:27.076Z",
         "summary": "Request to enable international roaming. Verified ID and enabled service with rate explanation.",
         "category": "service",
@@ -21953,10 +22171,11 @@
         ],
         "agent": "James Wilson",
         "duration": 3,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1056
       },
       {
-        "id": "a815c513-05e3-4df2-bc30-30377231468e",
+        "id": 5093,
         "timestamp": "2025-09-09T22:35:27.076Z",
         "summary": "Number porting inquiry. Provided requirements and initiated porting process.",
         "category": "service",
@@ -21968,10 +22187,11 @@
         ],
         "agent": "David Kim",
         "duration": 6,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "a032a854-629f-43f2-8c70-3bffd28c43ff",
+        "id": 5094,
         "timestamp": "2025-08-22T22:35:27.076Z",
         "summary": "Inquiry about international calling rates. Provided rate sheet and suggested best options.",
         "category": "general",
@@ -21981,10 +22201,11 @@
         ],
         "agent": "Sarah Lee",
         "duration": 3,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "bbb80a41-052d-4ba2-8379-8abf2f72c214",
+        "id": 5095,
         "timestamp": "2025-08-18T22:35:27.076Z",
         "summary": "Call forwarding not working. Verified settings and re-configured call forwarding.",
         "category": "technical",
@@ -21994,7 +22215,8 @@
         ],
         "agent": "Maria Garcia",
         "duration": 8,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       }
     ]
   },
@@ -22780,7 +23002,11 @@
         "status": "open",
         "category": "network",
         "createdAt": "2025-11-18T01:14:19.854Z",
-        "updatedAt": "2025-11-21T13:12:40.149Z"
+        "updatedAt": "2025-11-21T13:12:40.149Z",
+        "relatedLogIds": [
+          5096,
+          5097
+        ]
       },
       {
         "id": 1058,
@@ -22791,7 +23017,8 @@
         "status": "open",
         "category": "billing",
         "createdAt": "2025-11-23T12:23:05.575Z",
-        "updatedAt": "2025-12-05T14:06:05.189Z"
+        "updatedAt": "2025-12-05T14:06:05.189Z",
+        "relatedLogIds": []
       },
       {
         "id": 1059,
@@ -22802,12 +23029,13 @@
         "status": "closed",
         "category": "service",
         "createdAt": "2025-11-30T11:35:32.658Z",
-        "updatedAt": "2025-11-28T13:13:36.286Z"
+        "updatedAt": "2025-11-28T13:13:36.286Z",
+        "relatedLogIds": []
       }
     ],
     "customerLogs": [
       {
-        "id": "9c286b45-c610-4726-930f-22054c692763",
+        "id": 5096,
         "timestamp": "2025-10-30T23:35:27.076Z",
         "summary": "Plan change not processed correctly. Verified request and reprocessed with backdated changes.",
         "category": "billing",
@@ -22819,10 +23047,11 @@
         ],
         "agent": "David Kim",
         "duration": 6,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1057
       },
       {
-        "id": "288c2d41-3e97-4045-9a2d-a3065b31b33d",
+        "id": 5097,
         "timestamp": "2025-10-28T23:35:27.076Z",
         "summary": "Customer inquired about data add-ons. Provided options and prices. Customer will consider and call back.",
         "category": "general",
@@ -22833,10 +23062,11 @@
         ],
         "agent": "Michael Brown",
         "duration": 3,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": 1057
       },
       {
-        "id": "1ec6072c-0956-4384-8607-166be8682cf0",
+        "id": 5098,
         "timestamp": "2025-10-03T22:35:27.076Z",
         "summary": "SMS not being received. Checked message center number and performed network refresh.",
         "category": "technical",
@@ -22848,10 +23078,11 @@
         ],
         "agent": "Sarah Lee",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "019dd9d6-186e-44b9-bc5f-dd96616e5b85",
+        "id": 5099,
         "timestamp": "2025-06-24T22:35:27.076Z",
         "summary": "WiFi calling issues. Verified WiFi network compatibility and re-provisioned service.",
         "category": "technical",
@@ -22862,10 +23093,11 @@
         ],
         "agent": "Sarah Lee",
         "duration": 12,
-        "followUpRequired": false
+        "followUpRequired": false,
+        "ticketId": null
       },
       {
-        "id": "2c83486f-7780-4930-9d87-707c17edd58b",
+        "id": 5100,
         "timestamp": "2025-06-19T22:35:27.076Z",
         "summary": "Promotional discount not applied. Verified eligibility and applied discount to account.",
         "category": "billing",
@@ -22876,7 +23108,8 @@
         "agent": "David Kim",
         "duration": 6,
         "followUpRequired": true,
-        "followUpDate": "2025-06-25"
+        "followUpDate": "2025-06-25",
+        "ticketId": null
       }
     ]
   }
