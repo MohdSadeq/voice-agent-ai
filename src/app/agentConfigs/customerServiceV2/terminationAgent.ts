@@ -52,11 +52,33 @@ You are CONTINUING an existing conversation.
 ❌ "I'm the termination specialist"
 ❌ "I can help with that"
 
-**CORRECT RESPONSE:**
-User: "I want to cancel my service"
-✅ "I understand you'd like to cancel. To check your contract status and any fees, I'll need to verify your identity. May I have your phone number please?"
+**CRITICAL: MANDATORY FIRST ACTION AFTER HANDOFF**
 
-**REMEMBER:** Show empathy, then jump STRAIGHT to helping. Check authentication and proceed immediately.
+**WHEN YOU RECEIVE CONTROL (from any agent or supervisor):**
+1. **IMMEDIATELY call checkTerminationEligibility() with NO parameters** - Do this BEFORE asking for anything
+2. **If tool returns success** → User is already authenticated
+   - Proceed with termination details immediately
+   - Example: "I see your contract ends on December 31st, 2025. If you terminate now, there's an early termination fee of 500 ringgit."
+3. **If tool returns authentication error** → User needs authentication
+   - Follow the authentication flow below
+
+**AUTHENTICATION FLOW (only if checkTerminationEligibility fails):**
+- If from supervisor: Supervisor has already asked for phone number, user's first response will be the phone number
+- If from other agent: Ask "For security, may I have your phone number please?"
+- Then proceed with NRIC verification
+
+**CRITICAL RULES:**
+- ✅ ALWAYS call checkTerminationEligibility() first, even after handoff
+- ❌ NEVER ask for phone number without calling checkTerminationEligibility() first
+- ❌ NEVER assume user is not authenticated
+- Users are often already authenticated from another agent (account, plan upgrade, etc.)
+
+**Example After Handoff from Account Agent:**
+User: [Transferred from account agent where they're already authenticated]
+Agent: [Calls checkTerminationEligibility()] → Success → "I see your contract ends on December 31st, 2025..."
+✅ NO re-authentication needed!
+
+**REMEMBER:** Check authentication first. Show empathy throughout the process.
 
 # Core Responsibilities
 - Handle service termination requests professionally and empathetically
@@ -67,9 +89,55 @@ User: "I want to cancel my service"
 - Require authentication before processing terminations
 
 # Authentication Requirement
-- ALWAYS verify user identity before discussing termination details
-- Use session context to check authentication status
-- If not authenticated, explain that you need to verify their identity first
+**CRITICAL: TWO-FACTOR AUTHENTICATION REQUIRED FOR TERMINATION**
+Service termination requires enhanced security with TWO verification steps:
+1. Phone Number
+2. NRIC Last 4 Digits
+
+## Authentication Flow (Do this ONCE per session):
+
+1. **First, check if already fully authenticated:**
+   - Call checkTerminationEligibility() to check authentication status
+   - If successful → User is fully authenticated, proceed with termination details
+   - If error indicates authentication needed → Proceed to authentication steps below
+
+2. **If not authenticated, verify identity in TWO steps:**
+   
+   **Step 1 - Phone Verification:**
+   - Ask: "For security, may I have your phone number please?"
+   - **CRITICAL: Wait for user to provide a phone number (10-11 digits)**
+   - **If user says something else (e.g., "hello", "good morning", "hi")**: Say "I need your phone number to verify your identity. Please provide your phone number."
+   - **NEVER make up or assume a phone number!**
+   - Once user provides phone number, repeat back for confirmation: "Thank you. Just to confirm, that's [repeat all digits], correct?"
+   - Wait for user confirmation (yes/correct/that's right)
+   - Call authenticateUser(phone_number)
+   - If successful → Proceed to Step 2
+   
+   **Step 2 - NRIC Verification:**
+   - Ask: "For additional security, may I have the last 4 digits of your NRIC please?"
+   - Call verifyNRIC(nric_last_4)
+   - If successful → User is now FULLY authenticated for termination
+   - Call checkTerminationEligibility() to retrieve contract details
+
+3. **Once fully authenticated:**
+   - Authentication persists across the entire session
+   - User will NOT be asked again, even after agent handoffs
+   - Simply call checkTerminationEligibility() without re-authenticating
+
+## Examples:
+
+**First time user (not authenticated):**
+User: "I want to cancel my service"
+Agent: "I understand. For security, may I have your phone number please?"
+User: "60123456789"
+Agent: [Calls authenticateUser] → "Thank you. For additional security, may I have the last 4 digits of your NRIC?"
+User: "5678"
+Agent: [Calls verifyNRIC] → [Calls checkTerminationEligibility] → "I see your contract ends on December 31st, 2025..."
+
+**Already authenticated in another agent:**
+User: [Transferred from account agent where they already authenticated with phone + NRIC]
+Agent: [Calls checkTerminationEligibility] → Success → "I see your contract ends on December 31st, 2025..."
+✅ NO re-authentication needed!
 
 # Anti-Hallucination Guardrails (CRITICAL)
 - ONLY use actual contract data from the tools
@@ -158,10 +226,187 @@ User: "I want to cancel my service"
 - Show empathy but remain professional
 - Keep responses SHORT for voice
 - Support English, Malay, and Mandarin
+
+# ⚠️ OUT OF SCOPE - HAND OFF TO OTHER AGENTS ⚠️
+
+## Transfer to Account Agent IF user asks about:
+- Account details (balance, credit limit, account status)
+- Billing information (invoices, payment history, outstanding balance)
+- Payment methods or payment issues
+- Personal information updates
+- Usage details (call logs, data usage)
+- **Action**: Use transfer_to_account_agent tool immediately
+- **Say**: "I'll connect you with our account specialist who can help with that."
+
+## Transfer to Plans Agent IF user asks about:
+- Available plans or plan details
+- Plan features, pricing, or comparisons
+- What plans are available
+- **Action**: Use transfer_to_plans_agent tool immediately
+- **Say**: "I'll connect you with our plans specialist who can help with that."
+
+## Transfer to Plan Upgrade Agent IF user asks about:
+- Upgrading or changing their current plan
+- Better plan options
+- More data or features
+- **Action**: Use transfer_to_plan_upgrade_agent tool immediately
+- **Say**: "I'll connect you with our upgrade specialist who can help with that."
+
+## Stay in Termination Agent ONLY IF:
+- User wants to cancel or terminate service
+- User asks about early termination fees
+- User asks about contract end date
+- User asks about cancellation process
+- User wants to discuss service termination
+
+**CRITICAL**: If user asks about account details, billing, plans, upgrades, or anything NOT related to service termination, HAND OFF immediately. Do NOT try to handle it yourself!
+
 - Provide clear reference numbers
 `,
 
     tools: [
+        tool({
+            name: 'authenticateUser',
+            description:
+                'Authenticate a user by their phone number and store authentication in session context. Use this when user is not yet authenticated.',
+            parameters: {
+                type: 'object',
+                properties: {
+                    phone_number: {
+                        type: 'string',
+                        description: 'User\'s phone number for authentication',
+                    },
+                },
+                required: ['phone_number'],
+                additionalProperties: false,
+            },
+            execute: async (input: unknown, context: any) => {
+                const { phone_number } = input as { phone_number: string };
+                
+                // Get session ID from context
+                const sessionId = context?.context?.sessionId || context?.sessionId || phone_number;
+                
+                try {
+                    // Get user account information to verify phone number exists
+                    const accountInfo = getUserByMobile(phone_number);
+
+                    // Update session context with authentication data
+                    updateSessionContext(sessionId, {
+                        phoneNumber: phone_number,
+                        accountId: accountInfo.account.accountId,
+                        userName: accountInfo.customer.name,
+                        isPhoneVerified: true,
+                        lastActivity: Date.now(),
+                    });
+                    
+                    console.log('[Termination Agent - Phone Authentication]', { 
+                        sessionId, 
+                        userName: accountInfo.customer.name,
+                        accountId: accountInfo.account.accountId 
+                    });
+
+                    return {
+                        success: true,
+                        authenticated: true,
+                        userName: accountInfo.customer.name,
+                        accountId: accountInfo.account.accountId,
+                        message: `Phone verified for ${accountInfo.customer.name}. Please provide last 4 digits of NRIC for additional security.`,
+                        needsNricVerification: true,
+                    };
+                } catch (error) {
+                    return {
+                        success: false,
+                        authenticated: false,
+                        error: 'Failed to authenticate user. Please verify the phone number.',
+                    };
+                }
+            },
+        }),
+
+        tool({
+            name: 'verifyNRIC',
+            description:
+                'Verify user\'s NRIC last 4 digits (Step 2 of authentication). Only call this AFTER phone number is verified.',
+            parameters: {
+                type: 'object',
+                properties: {
+                    nric_last_4: {
+                        type: 'string',
+                        description: 'Last 4 digits of user\'s NRIC',
+                    },
+                },
+                required: ['nric_last_4'],
+                additionalProperties: false,
+            },
+            execute: async (input: unknown, context: any) => {
+                const { nric_last_4 } = input as { nric_last_4: string };
+                
+                // Get session ID from context
+                const sessionId = context?.context?.sessionId || context?.sessionId;
+                
+                if (!sessionId) {
+                    return {
+                        success: false,
+                        error: 'No session found',
+                    };
+                }
+                
+                try {
+                    // Get session context to check phone verification
+                    const sessionContext = getSessionContext(sessionId);
+                    
+                    if (!sessionContext.isPhoneVerified || !sessionContext.phoneNumber) {
+                        return {
+                            success: false,
+                            error: 'Phone number must be verified first',
+                            needsPhoneVerification: true,
+                        };
+                    }
+                    
+                    // Get user account to verify NRIC
+                    const accountInfo = getUserByMobile(sessionContext.phoneNumber);
+                    
+                    // Extract last 4 digits of NRIC from account
+                    const actualNricLast4 = accountInfo.customer.nric.slice(-4);
+                    
+                    // Verify NRIC matches
+                    if (nric_last_4 === actualNricLast4) {
+                        // Update session context with NRIC verification
+                        updateSessionContext(sessionId, {
+                            nricLast4: nric_last_4,
+                            isNricVerified: true,
+                            // isAuthenticated will be auto-set to true by updateSessionContext
+                            lastActivity: Date.now(),
+                        });
+                        
+                        console.log('[NRIC Verification Success - Termination Agent]', { 
+                            sessionId,
+                            userName: sessionContext.userName,
+                            fullyAuthenticated: true
+                        });
+
+                        return {
+                            success: true,
+                            nricVerified: true,
+                            fullyAuthenticated: true,
+                            message: 'Identity verified successfully. You can now proceed with termination inquiry.',
+                        };
+                    } else {
+                        return {
+                            success: false,
+                            nricVerified: false,
+                            error: 'NRIC verification failed. The last 4 digits do not match our records.',
+                        };
+                    }
+                } catch (error) {
+                    return {
+                        success: false,
+                        error: 'Failed to verify NRIC. Please try again.',
+                    };
+                }
+            },
+        }),
+
         tool({
             name: 'checkTerminationEligibility',
             description:

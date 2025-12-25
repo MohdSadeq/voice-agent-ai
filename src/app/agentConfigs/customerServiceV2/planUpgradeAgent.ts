@@ -50,7 +50,31 @@ You are CONTINUING an existing conversation.
 User: "I want to upgrade my plan"
 ✅ "To help with your upgrade, I'll need to verify your identity. May I have your phone number please?"
 
-**REMEMBER:** Jump STRAIGHT to helping. Check authentication and proceed immediately.
+**CRITICAL: MANDATORY FIRST ACTION AFTER HANDOFF**
+
+**WHEN YOU RECEIVE CONTROL (from any agent or supervisor):**
+1. **IMMEDIATELY call checkCurrentPlan() with NO parameters** - Do this BEFORE asking for anything
+2. **If tool returns success** → User is already authenticated
+   - Show upgrade options immediately
+   - Example: "I see you're on AMAZING38. What would you like more of—data, international calls, or other features?"
+3. **If tool returns authentication error** → User needs authentication
+   - Follow the authentication flow below
+
+**AUTHENTICATION FLOW (only if checkCurrentPlan fails):**
+- If from supervisor: Supervisor has already asked for phone number, user's first response will be the phone number
+- If from other agent: Ask "For security, may I have your phone number please?"
+- Then proceed with NRIC verification
+
+**CRITICAL RULES:**
+- ✅ ALWAYS call checkCurrentPlan() first, even after handoff
+- ❌ NEVER ask for phone number without calling checkCurrentPlan() first
+- ❌ NEVER assume user is not authenticated
+- Users are often already authenticated from another agent (account, termination, etc.)
+
+**Example After Handoff from Account Agent:**
+User: [Transferred from account agent where they're already authenticated]
+Agent: [Calls checkCurrentPlan()] → Success → "I see you're on AMAZING38. What would you like more of—data or features?"
+✅ NO re-authentication needed!
 
 # Core Responsibilities
 - Help customers upgrade their current plans
@@ -60,30 +84,55 @@ User: "I want to upgrade my plan"
 - Require authentication before processing upgrades
 
 # Authentication Requirement
-**CRITICAL AUTHENTICATION FLOW:**
+**CRITICAL: TWO-FACTOR AUTHENTICATION REQUIRED FOR PLAN UPGRADES**
+Plan upgrades require enhanced security with TWO verification steps:
+1. Phone Number
+2. NRIC Last 4 Digits
 
-1. **First, try checkCurrentPlan** (no parameters needed)
-   - This automatically checks if user is already authenticated in session
-   - If successful → User is authenticated, proceed with upgrade options
-   - If returns requiresAuth → User needs authentication
+## Authentication Flow (Do this ONCE per session):
 
-2. **If user needs authentication:**
-   - Ask for their phone number politely
-   - Call authenticateUser with the phone number
-   - This will store authentication in session context for ALL agents
-   - Once authenticated, the session persists across agent handoffs
+1. **First, check if already fully authenticated:**
+   - Call checkCurrentPlan() without parameters
+   - If successful → User is fully authenticated, proceed with upgrade options
+   - If error → Proceed to authentication steps below
 
-3. **Session Context Benefits:**
-   - Authentication is stored and shared across all agents
-   - User won't need to re-authenticate when transferred to other agents
-   - Phone number is automatically available for subsequent operations
+2. **If not authenticated, verify identity in TWO steps:**
+   
+   **Step 1 - Phone Verification:**
+   - Ask: "For security, may I have your phone number please?"
+   - **CRITICAL: Wait for user to provide a phone number (10-11 digits)**
+   - **If user says something else (e.g., "hello", "good morning", "hi")**: Say "I need your phone number to verify your identity. Please provide your phone number."
+   - **NEVER make up or assume a phone number!**
+   - Once user provides phone number, repeat back for confirmation: "Thank you. Just to confirm, that's [repeat all digits], correct?"
+   - Wait for user confirmation (yes/correct/that's right)
+   - Call authenticateUser(phone_number)
+   - If successful → Proceed to Step 2
+   
+   **Step 2 - NRIC Verification:**
+   - Ask: "For additional security, may I have the last 4 digits of your NRIC please?"
+   - Call verifyNRIC(nric_last_4)
+   - If successful → User is now FULLY authenticated for plan upgrades
+   - Call checkCurrentPlan() to retrieve plan details
 
-**Example Flow:**
-- User: "I want to upgrade my plan"
-- Agent: [Calls checkCurrentPlan]
-- If authenticated → "I see you're on PLUS 38. Let me show you upgrade options..."
-- If not authenticated → "To help with your upgrade, may I have your phone number please?"
-- User provides phone → [Call authenticateUser] → Now authenticated for entire session
+3. **Once fully authenticated:**
+   - Authentication persists across the entire session
+   - User will NOT be asked again, even after agent handoffs
+   - Simply call checkCurrentPlan() without parameters
+
+## Examples:
+
+**First time user (not authenticated):**
+User: "I want to upgrade my plan"
+Agent: "For security, may I have your phone number please?"
+User: "60123456789"
+Agent: [Calls authenticateUser] → "Thank you. For additional security, may I have the last 4 digits of your NRIC?"
+User: "5678"
+Agent: [Calls verifyNRIC] → [Calls checkCurrentPlan] → "I see you're on AMAZING38. Let me show you upgrade options..."
+
+**Already authenticated in account agent:**
+User: [Transferred from account agent where they already authenticated with phone + NRIC]
+Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let me show you upgrade options..."
+✅ NO re-authentication needed!
 
 # Anti-Hallucination Guardrails (CRITICAL)
 - ONLY use actual plan data from the tools
@@ -197,6 +246,33 @@ User: "I want to upgrade my plan"
 - Keep responses SHORT for voice
 - Support English, Malay, and Mandarin
 - Recognize affirmative responses in multiple languages: yes, ya, yeah, confirmed, proceed, okay, ja (German/Dutch), oui (French)
+
+# ⚠️ OUT OF SCOPE - HAND OFF TO OTHER AGENTS ⚠️
+
+## Transfer to Account Agent IF user asks about:
+- Account details (balance, credit limit, account status)
+- Billing information (invoices, payment history, outstanding balance)
+- Payment methods or payment issues
+- Contract details (start date, end date)
+- Personal information updates
+- Usage details (call logs, data usage)
+- **Action**: Use transfer_to_account_agent tool immediately
+- **Say**: "I'll connect you with our account specialist who can help with that."
+
+## Transfer to Termination Agent IF user asks about:
+- Canceling service or terminating account
+- Early termination fees
+- Contract cancellation
+- **Action**: Use transfer_to_termination_agent tool immediately
+- **Say**: "I'll connect you with our team who handles service termination."
+
+## Stay in Plan Upgrade Agent ONLY IF:
+- User wants to upgrade their plan
+- User wants to compare upgrade options
+- User wants to know about higher-tier plans
+- User wants more data, features, or better plan
+
+**CRITICAL**: If user asks about billing, account details, or anything NOT related to plan upgrades, HAND OFF immediately. Do NOT try to handle it yourself!
 `,
 
     tools: [
@@ -253,6 +329,90 @@ User: "I want to upgrade my plan"
                         success: false,
                         authenticated: false,
                         error: 'Failed to authenticate user. Please verify the phone number.',
+                    };
+                }
+            },
+        }),
+
+        tool({
+            name: 'verifyNRIC',
+            description:
+                'Verify user\'s NRIC last 4 digits (Step 2 of authentication). Only call this AFTER phone number is verified.',
+            parameters: {
+                type: 'object',
+                properties: {
+                    nric_last_4: {
+                        type: 'string',
+                        description: 'Last 4 digits of user\'s NRIC',
+                    },
+                },
+                required: ['nric_last_4'],
+                additionalProperties: false,
+            },
+            execute: async (input: unknown, context: any) => {
+                const { nric_last_4 } = input as { nric_last_4: string };
+                
+                // Get session ID from context
+                const sessionId = context?.context?.sessionId || context?.sessionId;
+                
+                if (!sessionId) {
+                    return {
+                        success: false,
+                        error: 'No session found',
+                    };
+                }
+                
+                try {
+                    // Get session context to check phone verification
+                    const sessionContext = getSessionContext(sessionId);
+                    
+                    if (!sessionContext.isPhoneVerified || !sessionContext.phoneNumber) {
+                        return {
+                            success: false,
+                            error: 'Phone number must be verified first',
+                            needsPhoneVerification: true,
+                        };
+                    }
+                    
+                    // Get user account to verify NRIC
+                    const accountInfo = getUserByMobile(sessionContext.phoneNumber);
+                    
+                    // Extract last 4 digits of NRIC from account
+                    const actualNricLast4 = accountInfo.customer.nric.slice(-4);
+                    
+                    // Verify NRIC matches
+                    if (nric_last_4 === actualNricLast4) {
+                        // Update session context with NRIC verification
+                        updateSessionContext(sessionId, {
+                            nricLast4: nric_last_4,
+                            isNricVerified: true,
+                            // isAuthenticated will be auto-set to true by updateSessionContext
+                            lastActivity: Date.now(),
+                        });
+                        
+                        console.log('[NRIC Verification Success - Plan Upgrade Agent]', { 
+                            sessionId,
+                            userName: sessionContext.userName,
+                            fullyAuthenticated: true
+                        });
+
+                        return {
+                            success: true,
+                            nricVerified: true,
+                            fullyAuthenticated: true,
+                            message: 'Identity verified successfully. You can now proceed with plan upgrades.',
+                        };
+                    } else {
+                        return {
+                            success: false,
+                            nricVerified: false,
+                            error: 'NRIC verification failed. The last 4 digits do not match our records.',
+                        };
+                    }
+                } catch (error) {
+                    return {
+                        success: false,
+                        error: 'Failed to verify NRIC. Please try again.',
                     };
                 }
             },

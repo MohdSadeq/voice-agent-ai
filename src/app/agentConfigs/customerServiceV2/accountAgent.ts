@@ -28,14 +28,29 @@ export const accountAgent = new RealtimeAgent({
     instructions: `
 ⚠️ CRITICAL RULE #1: NEVER GREET OR ACKNOWLEDGE TRANSFERS ⚠️
 DO NOT say: "Hello", "Please hold", "I've connected you", "Thank you for being transferred", "Please hold for a moment while I transfer you"
-The user has ALREADY been greeted. Jump STRAIGHT to calling getUserAccountInfo tool.
+The user has ALREADY been greeted. Jump STRAIGHT to helping.
 
-⚠️ CRITICAL RULE #2: ALWAYS CALL getUserAccountInfo TOOL FIRST ⚠️
-When user asks about their account:
-1. IMMEDIATELY call getUserAccountInfo() WITHOUT phone_number parameter
-2. If tool succeeds → Provide account information
-3. If tool returns error → THEN ask for phone number
-DO NOT ask for phone number before calling the tool!
+⚠️ CRITICAL RULE #2: ALWAYS CHECK AUTHENTICATION STATUS FIRST ⚠️
+
+**MANDATORY FIRST ACTION - NO EXCEPTIONS:**
+When you receive control (after handoff or user query):
+1. **IMMEDIATELY call getUserAccountInfo() with NO parameters** - Do this BEFORE saying anything
+2. **If tool returns success** → User is already authenticated
+   - Provide the information they requested immediately
+   - Example: "Your current balance is 150 MYR" or "Your outstanding balance is 55.08 MYR"
+3. **If tool returns authentication error** → User needs authentication
+   - Then ask: "For security, may I have your phone number please?"
+
+**CRITICAL RULES:**
+- ✅ ALWAYS call getUserAccountInfo() first, even if user says "hi" or "hello"
+- ❌ NEVER ask for phone number without calling getUserAccountInfo() first
+- ❌ NEVER assume user is not authenticated
+- Users are often already authenticated from another agent (plan upgrade, termination, etc.)
+
+**Example Flow After Handoff:**
+User: [Transferred from plan upgrade agent] "I want to check my bill"
+Agent: [Calls getUserAccountInfo()] → Success → "Your outstanding balance is 55.08 MYR"
+✅ NO authentication needed - user was already authenticated!
 
 # Identity
 You are a professional customer service agent for redONE Mobile Service, specializing in account management and billing inquiries.
@@ -95,22 +110,81 @@ User: "Check my account"
 - Provide accurate information from account data only
 - Never invent or assume account details
 
-# IMPORTANT: Session Context & Phone Number Persistence
-- The getUserAccountInfo tool can be called WITHOUT a phone_number parameter
-- If the user has already provided their phone number in this session, it will be automatically retrieved
-- ALWAYS try calling getUserAccountInfo first (without phone_number) to check if user is already authenticated
-- Only ask for phone number if the tool returns an error saying it's required
-- This prevents repeatedly asking the user for their phone number
+# ⚠️ CRITICAL FIRST ACTION: ALWAYS CHECK AUTHENTICATION FIRST ⚠️
+**BEFORE asking for phone number or NRIC:**
+1. **IMMEDIATELY call getUserAccountInfo() without any parameters**
+2. If it succeeds → User is already authenticated, provide the information they requested
+3. If it fails with authentication error → THEN ask for phone number
 
-**Correct Flow:**
-1. User asks about account → Call getUserAccountInfo() without parameters
-2. If successful → User is already authenticated, provide account info
-3. If error "Phone number required" → Ask user for phone number, then call getUserAccountInfo(phone_number)
+**DO NOT ask for phone number without calling getUserAccountInfo() first!**
+This prevents asking users to re-authenticate when they're already authenticated.
 
-**Example:**
-User: "Check my account" (second time in conversation)
-✅ CORRECT: Call getUserAccountInfo() → Success → "I see you're on the AMAZING38 plan..."
-❌ WRONG: "May I have your phone number?" (they already gave it!)
+# CRITICAL: Two-Factor Authentication (Phone + NRIC)
+**Account access requires BOTH phone number AND last 4 digits of NRIC for security.**
+
+## Authentication Flow (Do this ONCE per session):
+
+1. **First, check if already authenticated:**
+   - Call getUserAccountInfo() without parameters
+   - If successful → User is fully authenticated, provide account info immediately
+   - If error → Proceed to authentication steps below
+
+2. **If not authenticated, verify identity in TWO steps:**
+   
+   **Step 1 - Phone Verification:**
+   - Ask: "For security, may I have your phone number please?"
+   - **CRITICAL: Wait for user to provide a phone number (10-11 digits)**
+   - **If user says something else (e.g., "hello", "good morning", "hi")**: Say "I need your phone number to verify your identity. Please provide your phone number."
+   - **NEVER make up or assume a phone number!**
+   - Once user provides phone number, repeat back for confirmation: "Thank you. Just to confirm, that's [repeat digits], correct?"
+   - Wait for user confirmation (yes/correct/that's right)
+   - Call verifyPhoneNumber(phone_number)
+   - If successful → Proceed to Step 2
+   
+   **Step 2 - NRIC Verification:**
+   - Ask: "For additional security, may I have the last 4 digits of your NRIC please?"
+   - Call verifyNRIC(nric_last_4)
+   - If successful → User is now fully authenticated
+   - Call getUserAccountInfo() to retrieve account details
+
+3. **Once authenticated:**
+   - Authentication persists across the entire session
+   - User will NOT be asked again, even after agent handoffs
+   - Simply call getUserAccountInfo() without parameters
+
+## Examples:
+
+**First time user (not authenticated):**
+User: "What's my account balance?"
+Agent: "For security, may I have your phone number please?"
+User: "60123456789"
+Agent: [Calls verifyPhoneNumber] → "Thank you. For additional security, may I have the last 4 digits of your NRIC?"
+User: "5678"
+Agent: [Calls verifyNRIC] → [Calls getUserAccountInfo] → "Your current balance is..."
+
+**Second time in same session (already authenticated):**
+User: "What's my plan?"
+Agent: [Calls getUserAccountInfo] → Success → "You're on the AMAZING38 plan..."
+✅ NO re-authentication needed!
+
+**After handoff from another agent (already authenticated there):**
+User: [Transferred from plan upgrade agent]
+Agent: [Calls getUserAccountInfo] → Success → Provides account info
+✅ NO re-authentication needed!
+
+**After handoff - user says "hi" or anything:**
+User: "hi"
+Agent: [FIRST calls getUserAccountInfo without parameters]
+- If success → "You're already authenticated. How can I help with your account?"
+- If fails → "For security, may I have your phone number please?"
+✅ ALWAYS call getUserAccountInfo first, even if user just says "hi"!
+
+**After handoff - user asks a question:**
+User: "what's my balance?"
+Agent: [FIRST calls getUserAccountInfo without parameters]
+- If success → Provides balance information immediately
+- If fails → "For security, may I have your phone number please?"
+✅ ALWAYS call getUserAccountInfo first!
 
 
 # Anti-Hallucination Guardrails (CRITICAL)
@@ -159,6 +233,147 @@ User: "Check my account" (second time in conversation)
 
     tools: [
         tool({
+            name: 'verifyPhoneNumber',
+            description:
+                'Verify user\'s phone number (Step 1 of authentication). Call this first before NRIC verification.',
+            parameters: {
+                type: 'object',
+                properties: {
+                    phone_number: {
+                        type: 'string',
+                        description: 'User\'s phone number to verify',
+                    },
+                },
+                required: ['phone_number'],
+                additionalProperties: false,
+            },
+            execute: async (input: unknown, context: any) => {
+                const { phone_number } = input as { phone_number: string };
+                
+                // Get session ID from context
+                const sessionId = context?.context?.sessionId || context?.sessionId || phone_number;
+                
+                try {
+                    // Verify phone number exists in the system
+                    const accountInfo = getUserByMobile(phone_number);
+                    
+                    // Update session context with phone verification
+                    updateSessionContext(sessionId, {
+                        phoneNumber: phone_number,
+                        isPhoneVerified: true,
+                        accountId: accountInfo.account.accountId,
+                        userName: accountInfo.customer.name,
+                        lastActivity: Date.now(),
+                    });
+                    
+                    console.log('[Phone Verification Success]', { 
+                        sessionId, 
+                        phoneNumber: phone_number,
+                        userName: accountInfo.customer.name 
+                    });
+
+                    return {
+                        success: true,
+                        phoneVerified: true,
+                        userName: accountInfo.customer.name,
+                        message: 'Phone number verified successfully. Please provide last 4 digits of NRIC for additional security.',
+                        needsNricVerification: true,
+                    };
+                } catch (error) {
+                    return {
+                        success: false,
+                        phoneVerified: false,
+                        error: 'Phone number not found in our system. Please verify and try again.',
+                    };
+                }
+            },
+        }),
+
+        tool({
+            name: 'verifyNRIC',
+            description:
+                'Verify user\'s NRIC last 4 digits (Step 2 of authentication). Only call this AFTER phone number is verified.',
+            parameters: {
+                type: 'object',
+                properties: {
+                    nric_last_4: {
+                        type: 'string',
+                        description: 'Last 4 digits of user\'s NRIC',
+                    },
+                },
+                required: ['nric_last_4'],
+                additionalProperties: false,
+            },
+            execute: async (input: unknown, context: any) => {
+                const { nric_last_4 } = input as { nric_last_4: string };
+                
+                // Get session ID from context
+                const sessionId = context?.context?.sessionId || context?.sessionId;
+                
+                if (!sessionId) {
+                    return {
+                        success: false,
+                        error: 'No session found',
+                    };
+                }
+                
+                try {
+                    // Get session context to check phone verification
+                    const sessionContext = getSessionContext(sessionId);
+                    
+                    if (!sessionContext.isPhoneVerified || !sessionContext.phoneNumber) {
+                        return {
+                            success: false,
+                            error: 'Phone number must be verified first',
+                            needsPhoneVerification: true,
+                        };
+                    }
+                    
+                    // Get user account to verify NRIC
+                    const accountInfo = getUserByMobile(sessionContext.phoneNumber);
+                    
+                    // Extract last 4 digits of NRIC from account
+                    const actualNricLast4 = accountInfo.customer.nric.slice(-4);
+                    
+                    // Verify NRIC matches
+                    if (nric_last_4 === actualNricLast4) {
+                        // Update session context with NRIC verification
+                        updateSessionContext(sessionId, {
+                            nricLast4: nric_last_4,
+                            isNricVerified: true,
+                            // isAuthenticated will be auto-set to true by updateSessionContext
+                            lastActivity: Date.now(),
+                        });
+                        
+                        console.log('[NRIC Verification Success]', { 
+                            sessionId,
+                            userName: sessionContext.userName,
+                            fullyAuthenticated: true
+                        });
+
+                        return {
+                            success: true,
+                            nricVerified: true,
+                            fullyAuthenticated: true,
+                            message: 'Identity verified successfully. You now have full access to your account information.',
+                        };
+                    } else {
+                        return {
+                            success: false,
+                            nricVerified: false,
+                            error: 'NRIC verification failed. The last 4 digits do not match our records.',
+                        };
+                    }
+                } catch (error) {
+                    return {
+                        success: false,
+                        error: 'Failed to verify NRIC. Please try again.',
+                    };
+                }
+            },
+        }),
+
+        tool({
             name: 'getUserAccountInfo',
             description:
                 'Get detailed account information. Can be called without phone_number if user is already authenticated in this session.',
@@ -182,72 +397,61 @@ User: "Check my account" (second time in conversation)
                 // ALWAYS check session first for existing authentication
                 const sessionContext = getSessionContext(sessionId);
                 
-                // Priority: Use stored phone number if user is already authenticated
-                // This prevents asking for phone number multiple times
-                let phone_number: string | undefined;
-                
+                // Check if user is FULLY authenticated (both phone AND NRIC verified)
                 if (sessionContext.isAuthenticated && sessionContext.phoneNumber) {
-                    // User is already authenticated - use stored phone number
-                    phone_number = sessionContext.phoneNumber;
-                    console.log('[Get Account Info] Using stored phone number from session', {
-                        sessionId,
-                        storedPhone: sessionContext.phoneNumber,
-                        isAuthenticated: true
-                    });
-                } else {
-                    // Not authenticated yet - use provided phone number
-                    phone_number = inputData.phone_number;
-                    console.log('[Get Account Info] Using provided phone number', {
-                        sessionId,
-                        providedPhone: inputData.phone_number,
-                        isAuthenticated: false
-                    });
-                }
+                    // User is fully authenticated - retrieve account info
+                    try {
+                        const accountInfo = getUserByMobile(sessionContext.phoneNumber);
+                        
+                        console.log('[Get Account Info] Using authenticated session', {
+                            sessionId,
+                            userName: sessionContext.userName,
+                            isAuthenticated: true,
+                            phoneVerified: sessionContext.isPhoneVerified,
+                            nricVerified: sessionContext.isNricVerified
+                        });
 
-                // If no phone number available at all, return error
-                if (!phone_number) {
-                    console.log('[Get Account Info] No phone number available');
+                        return {
+                            success: true,
+                            data: accountInfo,
+                            sessionId: sessionId,
+                            userName: accountInfo.customer.name,
+                        };
+                    } catch (error) {
+                        return {
+                            success: false,
+                            error: 'Failed to retrieve account information',
+                        };
+                    }
+                }
+                
+                // User is NOT fully authenticated - check what's missing
+                const authStatus = getAuthenticationStatus(sessionId);
+                
+                if (authStatus.needsPhoneVerification) {
                     return {
                         success: false,
-                        error: 'Phone number required',
-                        message: 'May I have your phone number to access your account details?'
+                        error: 'Authentication required',
+                        message: 'For security, may I have your phone number please?',
+                        needsPhoneVerification: true,
                     };
                 }
-
-                try {
-                    // Get user account information
-                    const accountInfo = getUserByMobile(phone_number);
-
-                    // Update session context with user data
-                    // This maintains the session throughout the interaction
-                    updateSessionContext(sessionId, {
-                        phoneNumber: phone_number,
-                        accountId: accountInfo.account.accountId,
-                        userName: accountInfo.customer.name,
-                        isAuthenticated: true,
-                        isPhoneVerified: true,
-                        lastActivity: Date.now(),
-                    });
-                    
-                    console.log('[Session Updated]', { 
-                        sessionId, 
-                        userName: accountInfo.customer.name,
-                        accountId: accountInfo.account.accountId 
-                    });
-
-                    // Return account information
-                    return {
-                        success: true,
-                        data: accountInfo,
-                        sessionId: sessionId,
-                        userName: accountInfo.customer.name,
-                    };
-                } catch (error) {
+                
+                if (authStatus.needsNricVerification) {
                     return {
                         success: false,
-                        error: 'Failed to retrieve account information',
+                        error: 'NRIC verification required',
+                        message: 'For additional security, may I have the last 4 digits of your NRIC please?',
+                        needsNricVerification: true,
                     };
                 }
+
+                // Fallback - should not reach here
+                return {
+                    success: false,
+                    error: 'Authentication incomplete',
+                    message: 'Please complete authentication to access your account.',
+                };
             },
         }),
     ],
