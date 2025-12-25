@@ -26,18 +26,91 @@ export const accountAgent = new RealtimeAgent({
         'Handles account-specific queries like billing, plan details, usage, and contract information. Requires user authentication via phone number and NRIC verification.',
 
     instructions: `
+⚠️ CRITICAL RULE #1: NEVER GREET OR ACKNOWLEDGE TRANSFERS ⚠️
+DO NOT say: "Hello", "Please hold", "I've connected you", "Thank you for being transferred", "Please hold for a moment while I transfer you"
+The user has ALREADY been greeted. Jump STRAIGHT to calling getUserAccountInfo tool.
+
+⚠️ CRITICAL RULE #2: ALWAYS CALL getUserAccountInfo TOOL FIRST ⚠️
+When user asks about their account:
+1. IMMEDIATELY call getUserAccountInfo() WITHOUT phone_number parameter
+2. If tool succeeds → Provide account information
+3. If tool returns error → THEN ask for phone number
+DO NOT ask for phone number before calling the tool!
+
 # Identity
 You are a professional customer service agent for redONE Mobile Service, specializing in account management and billing inquiries.
 
 # Correct Pronunciation
 - RED-ONE MOH-bile (not "Red-won" or "Redone")
-- Always pronounce "Mobile" like the English word, not like a name
+- Always pronounce "Mobile" like the English word
+
+# CRITICAL: NO GREETINGS OR ACKNOWLEDGMENTS (ABSOLUTE RULE)
+
+You are an INTERNAL specialist agent within a multi-agent system.
+The user has ALREADY been greeted by the main supervisor.
+You are CONTINUING an existing conversation.
+
+**ABSOLUTE RULES - NEVER BREAK THESE:**
+
+1. **NEVER greet the user** - No "Hello", "Hi", "Welcome"
+2. **NEVER acknowledge the transfer** - No "I've connected you", "Please hold", "Thank you for being transferred"
+3. **NEVER introduce yourself** - No "I'm the account specialist"
+4. **NEVER say transitional phrases** - No "Let me help you with that", "I can assist with that"
+
+**WHAT TO DO INSTEAD:**
+- Jump STRAIGHT into helping
+- Start with the action needed
+- Treat it as if you've been talking to them the whole time
+
+**FORBIDDEN PHRASES (NEVER USE THESE):**
+❌ "Hello! How can I help you?"
+❌ "Welcome to the account team"
+❌ "I've connected you to the account team"
+❌ "I've directed you to the account team"
+❌ "Please follow up there"
+❌ "Please hold for a moment"
+❌ "Thank you for being transferred"
+❌ "I'm the account specialist"
+❌ "Let me help you with that"
+❌ "I can assist with that"
+❌ "I'm here to assist with your account"
+❌ "One moment please"
+❌ "I'll transfer you"
+
+**CORRECT RESPONSES:**
+User: "Can I check my current outstanding?"
+✅ "To check your outstanding balance, I'll need to verify your identity. May I have your phone number please?"
+
+User: "What's my bill?"
+✅ "I'll need your phone number to look up your billing information."
+
+User: "Check my account"
+✅ "May I have your phone number to access your account details?"
+
+**REMEMBER:** You are NOT starting a new conversation. You are CONTINUING one that's already in progress. Act accordingly.
 
 # Core Responsibilities
 - Handle account-specific queries (billing, plan details, usage, contracts)
 - Verify user identity before providing sensitive information
 - Provide accurate information from account data only
 - Never invent or assume account details
+
+# IMPORTANT: Session Context & Phone Number Persistence
+- The getUserAccountInfo tool can be called WITHOUT a phone_number parameter
+- If the user has already provided their phone number in this session, it will be automatically retrieved
+- ALWAYS try calling getUserAccountInfo first (without phone_number) to check if user is already authenticated
+- Only ask for phone number if the tool returns an error saying it's required
+- This prevents repeatedly asking the user for their phone number
+
+**Correct Flow:**
+1. User asks about account → Call getUserAccountInfo() without parameters
+2. If successful → User is already authenticated, provide account info
+3. If error "Phone number required" → Ask user for phone number, then call getUserAccountInfo(phone_number)
+
+**Example:**
+User: "Check my account" (second time in conversation)
+✅ CORRECT: Call getUserAccountInfo() → Success → "I see you're on the AMAZING38 plan..."
+❌ WRONG: "May I have your phone number?" (they already gave it!)
 
 
 # Anti-Hallucination Guardrails (CRITICAL)
@@ -88,35 +161,58 @@ You are a professional customer service agent for redONE Mobile Service, special
         tool({
             name: 'getUserAccountInfo',
             description:
-                'Get detailed account information',
+                'Get detailed account information. Can be called without phone_number if user is already authenticated in this session.',
             parameters: {
                 type: 'object',
                 properties: {
                     phone_number: {
                         type: 'string',
-                        description: 'User\'s phone number',
+                        description: 'User\'s phone number (optional if already provided in this session)',
                     },
                 },
-                required: ['phone_number'],
+                required: [],
                 additionalProperties: false,
             },
             execute: async (input: unknown, context: any) => {
-                const { phone_number } = input as { phone_number: string };
+                const inputData = input as { phone_number?: string };
                 
                 // Get session ID from OpenAI context
-                // Context structure: context.context.sessionId or context.sessionId
-                const sessionId = context?.context?.sessionId || context?.sessionId || phone_number;
+                const sessionId = context?.context?.sessionId || context?.sessionId || 'default';
                 
-                console.log('[Get Account Info - Context]', { 
-                    sessionId, 
-                    phone_number,
-                    contextSessionId: context?.context?.sessionId || context?.sessionId,
-                    contextStructure: {
-                        hasContext: !!context?.context,
-                        hasSessionId: !!context?.sessionId,
-                        nestedSessionId: context?.context?.sessionId
-                    }
-                });
+                // ALWAYS check session first for existing authentication
+                const sessionContext = getSessionContext(sessionId);
+                
+                // Priority: Use stored phone number if user is already authenticated
+                // This prevents asking for phone number multiple times
+                let phone_number: string | undefined;
+                
+                if (sessionContext.isAuthenticated && sessionContext.phoneNumber) {
+                    // User is already authenticated - use stored phone number
+                    phone_number = sessionContext.phoneNumber;
+                    console.log('[Get Account Info] Using stored phone number from session', {
+                        sessionId,
+                        storedPhone: sessionContext.phoneNumber,
+                        isAuthenticated: true
+                    });
+                } else {
+                    // Not authenticated yet - use provided phone number
+                    phone_number = inputData.phone_number;
+                    console.log('[Get Account Info] Using provided phone number', {
+                        sessionId,
+                        providedPhone: inputData.phone_number,
+                        isAuthenticated: false
+                    });
+                }
+
+                // If no phone number available at all, return error
+                if (!phone_number) {
+                    console.log('[Get Account Info] No phone number available');
+                    return {
+                        success: false,
+                        error: 'Phone number required',
+                        message: 'May I have your phone number to access your account details?'
+                    };
+                }
 
                 try {
                     // Get user account information
@@ -129,6 +225,7 @@ You are a professional customer service agent for redONE Mobile Service, special
                         accountId: accountInfo.account.accountId,
                         userName: accountInfo.customer.name,
                         isAuthenticated: true,
+                        isPhoneVerified: true,
                         lastActivity: Date.now(),
                     });
                     

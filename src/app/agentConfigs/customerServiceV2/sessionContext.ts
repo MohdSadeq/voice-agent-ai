@@ -1,7 +1,14 @@
 /**
  * Session Context Management
- * Persists authentication state across agent handoffs
+ * Persists authentication state and conversation state across agent handoffs
  */
+
+export interface ConversationMessage {
+    role: 'user' | 'assistant' | 'system';
+    content: string;
+    timestamp: number;
+    agentName?: string;
+}
 
 export interface SessionContext {
     // Authentication state
@@ -14,6 +21,14 @@ export interface SessionContext {
     // User information
     accountId?: string;
     userName?: string;
+    
+    // Conversation state (NEW)
+    conversationStarted: boolean;
+    greetingDone: boolean;
+    lastAgent?: string;
+    currentAgent?: string;
+    userIntent?: string;
+    conversationHistory: ConversationMessage[];
     
     // Session metadata
     sessionId: string;
@@ -40,6 +55,9 @@ export function getSessionContext(sessionId: string): SessionContext {
             isPhoneVerified: false,
             isNricVerified: false,
             isAuthenticated: false,
+            conversationStarted: false,
+            greetingDone: false,
+            conversationHistory: [],
             timestamp: Date.now(),
             lastActivity: Date.now(),
         };
@@ -54,6 +72,9 @@ export function getSessionContext(sessionId: string): SessionContext {
             isPhoneVerified: false,
             isNricVerified: false,
             isAuthenticated: false,
+            conversationStarted: false,
+            greetingDone: false,
+            conversationHistory: [],
             timestamp: Date.now(),
             lastActivity: Date.now(),
         };
@@ -104,6 +125,89 @@ export function clearSessionContext(sessionId: string): void {
 export function isSessionAuthenticated(sessionId: string): boolean {
     const context = getSessionContext(sessionId);
     return context.isAuthenticated;
+}
+
+/**
+ * Add a message to conversation history
+ */
+export function addToConversationHistory(
+    sessionId: string,
+    role: 'user' | 'assistant' | 'system',
+    content: string,
+    agentName?: string
+): void {
+    const context = getSessionContext(sessionId);
+    
+    const message: ConversationMessage = {
+        role,
+        content,
+        timestamp: Date.now(),
+        agentName,
+    };
+    
+    context.conversationHistory.push(message);
+    
+    // Keep only last 50 messages to prevent memory bloat
+    if (context.conversationHistory.length > 50) {
+        context.conversationHistory = context.conversationHistory.slice(-50);
+    }
+    
+    updateSessionContext(sessionId, {
+        conversationHistory: context.conversationHistory,
+    });
+}
+
+/**
+ * Mark greeting as done (called after first greeting)
+ */
+export function markGreetingDone(sessionId: string): void {
+    updateSessionContext(sessionId, {
+        conversationStarted: true,
+        greetingDone: true,
+    });
+}
+
+/**
+ * Update current agent (called during handoff)
+ */
+export function updateCurrentAgent(sessionId: string, agentName: string): void {
+    const context = getSessionContext(sessionId);
+    updateSessionContext(sessionId, {
+        lastAgent: context.currentAgent,
+        currentAgent: agentName,
+    });
+}
+
+/**
+ * Set user intent (helps agents understand what user wants)
+ */
+export function setUserIntent(sessionId: string, intent: string): void {
+    updateSessionContext(sessionId, {
+        userIntent: intent,
+    });
+}
+
+/**
+ * Get handoff contract - complete context for agent handoff
+ */
+export function getHandoffContract(sessionId: string): {
+    conversationState: SessionContext;
+    shouldGreet: boolean;
+    conversationSummary: string;
+} {
+    const context = getSessionContext(sessionId);
+    
+    // Build conversation summary from history
+    const recentMessages = context.conversationHistory.slice(-10);
+    const conversationSummary = recentMessages
+        .map(msg => `${msg.role.toUpperCase()}: ${msg.content}`)
+        .join('\n');
+    
+    return {
+        conversationState: context,
+        shouldGreet: !context.greetingDone,
+        conversationSummary,
+    };
 }
 
 /**
