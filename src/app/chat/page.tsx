@@ -17,11 +17,11 @@ const Index = () => {
         </div>
       </div>
 
-      <ChatBot
+      {/* <ChatBot
         title="AI Assistant"
         subtitle="Ask me anything!"
         welcomeMessage="Hi there! 👋 I'm your AI assistant. How can I help you today?"
-      />
+      /> */}
     </div>
   );
 };
