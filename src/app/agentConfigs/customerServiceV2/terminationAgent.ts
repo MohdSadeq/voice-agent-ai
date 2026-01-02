@@ -423,10 +423,22 @@ Agent: [Calls checkTerminationEligibility] → Success → "I see your contract 
                 additionalProperties: false,
             },
             execute: async (input: unknown, context: any) => {
+                let mobile: string | undefined  = '';
                 const { phone_number } = input as { phone_number: string };
-                
+                mobile = phone_number?.replace(/[^\d]/g, '');
                 // Get session ID from context
-                const sessionId = context?.context?.sessionId || context?.sessionId || phone_number;
+                const sessionId = context?.context?.sessionId || context?.sessionId || mobile;
+                const sessionContext = getSessionContext(sessionId);
+               if(!mobile){
+                    mobile = sessionContext?.phoneNumber;
+               }
+
+               if(!mobile){
+                return {
+                    success: false,
+                    error: 'No phone number found',
+                };
+               }
                 
                 try {
                     // Check authentication status
@@ -440,7 +452,7 @@ Agent: [Calls checkTerminationEligibility] → Success → "I see your contract 
                     }
 
                     // Get user account information
-                    const accountInfo = getUserByMobile(phone_number);
+                    const accountInfo = getUserByMobile(mobile);
                     
                     // Calculate termination details
                     const now = new Date();
@@ -477,7 +489,7 @@ Agent: [Calls checkTerminationEligibility] → Success → "I see your contract 
                 } catch (error) {
                     return {
                         success: false,
-                        error: 'Failed to retrieve termination eligibility',
+                        error: 'Failed to retrieve termination eligibility' + error,
                     };
                 }
             },
