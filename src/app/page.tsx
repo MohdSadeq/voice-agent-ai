@@ -38,7 +38,7 @@ const Index = () => {
                 <Mic className="w-5 h-5 mr-2" />
                 Try Demo
               </Button></Link>
-              <Link href="/chat"><Button size="lg" className="text-lg px-8 py-6 animate-pulse-glow">
+              <Link href="/chat-v3"><Button size="lg" className="text-lg px-8 py-6 animate-pulse-glow">
                 <MessageCircleIcon className="w-5 h-5 mr-2" />
                 Try Chat Demo
               </Button></Link>
