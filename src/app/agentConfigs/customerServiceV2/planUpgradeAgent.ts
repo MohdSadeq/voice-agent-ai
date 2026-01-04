@@ -20,7 +20,22 @@ export const planUpgradeAgent = new RealtimeAgent({
     instructions: `
 ⚠️ CRITICAL RULE #1: NEVER GREET OR ACKNOWLEDGE TRANSFERS ⚠️
 DO NOT say: "Hello", "Please hold", "Let me transfer you", "Thank you"
-The user has ALREADY been greeted. Jump STRAIGHT to helping.
+Jump STRAIGHT to helping.
+
+⚠️ CRITICAL RULE #2: NO GREETINGS OR ACKNOWLEDGMENTS (ABSOLUTE RULE) ⚠️
+
+
+# CRITICAL: NO TECHNICAL OR SYSTEM LANGUAGE
+NEVER say any of the following to the customer:
+- "authenticated"
+- "authentication"
+- "successfully authenticated"
+- "verification successful"
+- "I have already greeted you"
+- "you have already been greeted"
+- any reference to internal agent handoff, transfer, or system behavior
+ALWAYS say: "Thank you for your verification."
+Then continue directly with the requested account information.
 
 # Identity
 You are a professional customer service agent for redONE Mobile Service, specializing in plan upgrades and migrations.
@@ -48,7 +63,7 @@ You are CONTINUING an existing conversation.
 
 **CORRECT RESPONSE:**
 User: "I want to upgrade my plan"
-✅ "To help with your upgrade, I'll need to verify your identity. May I have your phone number please?"
+✅ "To help with your upgrade, I'll need to verify your identity. May I have your mobile number please?"
 
 **CRITICAL: MANDATORY FIRST ACTION AFTER HANDOFF**
 
@@ -61,13 +76,13 @@ User: "I want to upgrade my plan"
    - Follow the authentication flow below
 
 **AUTHENTICATION FLOW (only if checkCurrentPlan fails):**
-- If from supervisor: Supervisor has already asked for phone number, user's first response will be the phone number
-- If from other agent: Ask "For security, may I have your phone number please?"
+- If from supervisor: Supervisor has already asked for mobile number, user's first response will be the mobile number
+- If from other agent: Ask "To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?"
 - Then proceed with NRIC verification
 
 **CRITICAL RULES:**
 - ✅ ALWAYS call checkCurrentPlan() first, even after handoff
-- ❌ NEVER ask for phone number without calling checkCurrentPlan() first
+- ❌ NEVER ask for mobile number without calling checkCurrentPlan() first
 - ❌ NEVER assume user is not authenticated
 - Users are often already authenticated from another agent (account, termination, etc.)
 
@@ -86,7 +101,7 @@ Agent: [Calls checkCurrentPlan()] → Success → "I see you're on AMAZING38. Wh
 # Authentication Requirement
 **CRITICAL: TWO-FACTOR AUTHENTICATION REQUIRED FOR PLAN UPGRADES**
 Plan upgrades require enhanced security with TWO verification steps:
-1. Phone Number
+1. Mobile Number
 2. NRIC Last 4 Digits
 
 ## Authentication Flow (Do this ONCE per session):
@@ -98,18 +113,18 @@ Plan upgrades require enhanced security with TWO verification steps:
 
 2. **If not authenticated, verify identity in TWO steps:**
    
-   **Step 1 - Phone Verification:**
-   - Ask: "For security, may I have your phone number please?"
-   - **CRITICAL: Wait for user to provide a phone number (10-11 digits)**
-   - **If user says something else (e.g., "hello", "good morning", "hi")**: Say "I need your phone number to verify your identity. Please provide your phone number."
-   - **NEVER make up or assume a phone number!**
-   - Once user provides phone number, repeat back for confirmation: "Thank you. Just to confirm, that's [repeat all digits], correct?"
+   **Step 1 - Mobile Verification:**
+   - Ask: "To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?"
+   - **CRITICAL: Wait for user to provide a mobile number (10-11 digits)**
+   - **If user says something else (e.g., "hello", "good morning", "hi")**: Say "I need your mobile number to verify your identity. Please provide your mobile number."
+   - **NEVER make up or assume a mobile number!**
+   - Once user provides mobile number, repeat back for confirmation: "Thank you. Just to confirm, that's [repeat all digits], correct?"
    - Wait for user confirmation (yes/correct/that's right)
    - Call authenticateUser(phone_number)
    - If successful → Proceed to Step 2
    
    **Step 2 - NRIC Verification:**
-   - Ask: "For additional security, may I have the last 4 digits of your NRIC please?"
+   - Ask: "For verification purposes, may I have the last four digits of your NRIC to confirm the account holder?"
    - Call verifyNRIC(nric_last_4)
    - If successful → User is now FULLY authenticated for plan upgrades
    - Call checkCurrentPlan() to retrieve plan details
@@ -123,9 +138,9 @@ Plan upgrades require enhanced security with TWO verification steps:
 
 **First time user (not authenticated):**
 User: "I want to upgrade my plan"
-Agent: "For security, may I have your phone number please?"
+Agent: "To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?"
 User: "60123456789"
-Agent: [Calls authenticateUser] → "Thank you. For additional security, may I have the last 4 digits of your NRIC?"
+Agent: [Calls authenticateUser] → "Thank you. For verification purposes, may I have the last four digits of your NRIC to confirm the account holder?"
 User: "5678"
 Agent: [Calls verifyNRIC] → [Calls checkCurrentPlan] → "I see you're on AMAZING38. Let me show you upgrade options..."
 
@@ -279,13 +294,13 @@ Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let 
         tool({
             name: 'authenticateUser',
             description:
-                'Authenticate a user by their phone number and store authentication in session context. Use this when user is not yet authenticated.',
+                'Authenticate a user by their mobile number and store authentication in session context. Use this when user is not yet authenticated.',
             parameters: {
                 type: 'object',
                 properties: {
                     phone_number: {
                         type: 'string',
-                        description: 'User\'s phone number for authentication',
+                        description: 'User\'s mobile number for authentication',
                     },
                 },
                 required: ['phone_number'],
@@ -298,7 +313,7 @@ Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let 
                 const sessionId = context?.context?.sessionId || context?.sessionId || phone_number;
                 
                 try {
-                    // Get user account information to verify phone number exists
+                    // Get user account information to verify mobile number exists
                     const accountInfo = getUserByMobile(phone_number);
 
                     // Update session context with authentication data
@@ -328,7 +343,7 @@ Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let 
                     return {
                         success: false,
                         authenticated: false,
-                        error: 'Failed to authenticate user. Please verify the phone number.',
+                        error: 'Failed to authenticate user. Please verify the mobile number.',
                     };
                 }
             },
@@ -337,7 +352,7 @@ Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let 
         tool({
             name: 'verifyNRIC',
             description:
-                'Verify user\'s NRIC last 4 digits (Step 2 of authentication). Only call this AFTER phone number is verified.',
+                'Verify user\'s NRIC last 4 digits (Step 2 of authentication). Only call this AFTER mobile number is verified.',
             parameters: {
                 type: 'object',
                 properties: {
@@ -369,7 +384,8 @@ Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let 
                     if (!sessionContext.isPhoneVerified || !sessionContext.phoneNumber) {
                         return {
                             success: false,
-                            error: 'Phone number must be verified first',
+                            error: 'Mobile number must be verified first',
+                            message: 'To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?',
                             needsPhoneVerification: true,
                         };
                     }
@@ -400,7 +416,7 @@ Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let 
                             success: true,
                             nricVerified: true,
                             fullyAuthenticated: true,
-                            message: 'Identity verified successfully. You can now proceed with plan upgrades.',
+                            message: 'Thank you for verification. You can now proceed with plan upgrades.',
                         };
                     } else {
                         return {
@@ -421,7 +437,7 @@ Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let 
         tool({
             name: 'checkCurrentPlan',
             description:
-                'Check the authenticated user\'s current plan details. This tool automatically retrieves the phone number from the session context for authenticated users.',
+                'Check the authenticated user\'s current plan details. This tool automatically retrieves the mobile number from the session context for authenticated users.',
             parameters: {
                 type: 'object',
                 properties: {},
@@ -440,7 +456,7 @@ Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let 
                 }
                 
                 try {
-                    // Get session context to retrieve phone number
+                    // Get session context to retrieve mobile number
                     const sessionContext = getSessionContext(sessionId);
                     
                     // Check authentication status
@@ -453,12 +469,12 @@ Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let 
                         };
                     }
 
-                    // Get phone number from session context
+                    // Get mobile number from session context
                     const phoneNumber = sessionContext.phoneNumber;
                     if (!phoneNumber) {
                         return {
                             success: false,
-                            error: 'Phone number not found in session. Please authenticate again.',
+                            error: 'Mobile number not found in session. Please authenticate again.',
                             requiresAuth: true,
                         };
                     }
@@ -633,12 +649,12 @@ Agent: [Calls checkCurrentPlan] → Success → "I see you're on AMAZING38. Let 
                         };
                     }
 
-                    // Get phone number from session
+                    // Get mobile number from session
                     const phone_number = sessionContext.phoneNumber;
                     if (!phone_number) {
                         return {
                             success: false,
-                            error: 'Phone number not found in session',
+                            error: 'Mobile number not found in session',
                             requiresAuth: true,
                         };
                     }

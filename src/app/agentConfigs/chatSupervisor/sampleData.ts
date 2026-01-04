@@ -369,10 +369,6 @@ export const getUserByMobile = (mobileNumber: string) => {
   // First, remove all non-digit characters including brackets
   const digitsOnly = mobileNumber?.replace(/[^\d]/g, '');
 
-  // Check if the number starts with 60 (country code for Malaysia)
-  // If not, add it
-
-
   const user = (users as User[]).find(u => {
     // Clean the stored number for comparison
     const storedNumber = u?.callerId?.replace(/\D/g, '');
