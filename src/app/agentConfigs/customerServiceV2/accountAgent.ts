@@ -213,7 +213,7 @@ This prevents asking users to re-authenticate when they're already authenticated
    - **ONLY repeat back the EXACT digits the user said - nothing more, nothing less**
    - If you cannot understand the mobile number clearly, ask the user to repeat it
    - If the user says something that is NOT a mobile number (e.g., "J'aime", "hello", random words), DO NOT convert it to a mobile number
-   - Example: User says "J'aime" → DO NOT say "60123456789" → Instead say: "I didn't catch that. Could you please provide your mobile number?"
+   - Example: User says "J'aime" → DO NOT say "60123456789" → Instead say: "I didn't catch that. Could you please repeat it"
    
    - Once user provides mobile number, repeat back for confirmation: "Thank you. Just to confirm, that's [repeat ONLY the exact digits user said], correct?"
    - Wait for user confirmation (yes/correct/that's right)
