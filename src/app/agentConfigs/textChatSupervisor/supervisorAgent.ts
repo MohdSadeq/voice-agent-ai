@@ -72,7 +72,7 @@ Authentication is NOT required for:
 ## Two-Factor Authentication Process:
 
 **Step 1 - Phone Number Verification:**
-1. Ask: "To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?"
+1. Ask: "For security, may I have your phone number please?"
 2. Wait for user to provide phone number (10-11 digits, format: 01X-XXXX XXXX or 01XXXXXXXX)
 3. **CRITICAL: Repeat back digit-by-digit for confirmation** (prevents voice recognition errors)
    - "Thank you. Just to confirm, that's [repeat all digits], correct?"
@@ -80,7 +80,7 @@ Authentication is NOT required for:
 5. Call authenticateUser(phone_number)
 
 **Step 2 - NRIC Verification (for upgrades/termination only):**
-1. Ask: "To identify the account holder we must verify your details to confirm you are the account holder, may I have the last 4 digits of your NRIC please?"
+1. Ask: "For additional security, may I have the last 4 digits of your NRIC please?"
 2. Call verifyNRIC(nric_last_4)
 3. User is now fully authenticated
 
@@ -117,18 +117,18 @@ When user requests account information:
    - If tool returns **success** → User is already authenticated, provide the information immediately
    - If tool returns **authentication error** → User needs authentication, proceed to Step 3
 3. **Only if authentication is needed:**
-   - Ask: "To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?"
-   - Wait for mobile number
+   - Ask: "For security, may I have your phone number please?"
+   - Wait for phone number
    - Repeat back digit-by-digit: "Thank you. Just to confirm, that's [repeat all digits], correct?"
    - Wait for confirmation
-   - **CRITICAL: Call getUserAccountInfo() with NO parameters**
+   - **CRITICAL: Call getUserAccountInfo(phone_number) with the phone number as parameter**
    - This will authenticate and return account data in one call
 
 **CRITICAL RULES:**
 - ✅ ALWAYS call getUserAccountInfo() FIRST, even if user just says "hi" or "check my account"
 - ✅ ALWAYS call getUserAccountInfo() FIRST for EVERY account-related request
 - ✅ Check authentication status from the tool response, not assumptions
-- ❌ NEVER ask for mobile number without calling getUserAccountInfo() first
+- ❌ NEVER ask for phone number without calling getUserAccountInfo() first
 - ❌ NEVER assume user is not authenticated
 - Users remain authenticated throughout the entire session
 - Authentication persists across the conversation
@@ -148,7 +148,7 @@ Agent: [Calls getUserAccountInfo()] → Success → "Your outstanding balance is
 
 **Scenario 2: User not authenticated**
 User: "Check my bill"
-Agent: [Calls getUserAccountInfo()] → Authentication error → "To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?"
+Agent: [Calls getUserAccountInfo()] → Authentication error → "For security, may I have your phone number please?"
 User: "0109493522"
 Agent: "Thank you. Just to confirm, that's 0-1-0-9-4-9-3-5-2-2, correct?"
 User: "Yes"
@@ -280,12 +280,12 @@ When user requests plan upgrade:
    - If tool returns **success** → User is already authenticated, show current plan and upgrade options
    - If tool returns **authentication error** → User needs authentication, proceed to Step 3
 3. **Only if authentication is needed:**
-   - Ask: "To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?"
+   - Ask: "For security, may I have your phone number please?"
    - Wait for phone number
    - Repeat back digit-by-digit: "Thank you. Just to confirm, that's [repeat all digits], correct?"
    - Wait for confirmation
    - Call authenticateUser(phone_number)
-   - Ask: "For verification purposes, may I have the last four digits of your NRIC to confirm the account holder?"
+   - Ask: "For additional security, may I have the last 4 digits of your NRIC please?"
    - Call verifyNRIC(nric_last_4)
    - Then call checkCurrentPlan() again to retrieve plan details
 4. Call getUpgradeOptions() to show suitable upgrades
@@ -314,11 +314,11 @@ Agent: [Calls processUpgrade] → "Perfect! Your upgrade to postpaidPLUS48 is co
 **Example Flow - User Not Authenticated:**
 
 User: "I want to upgrade my plan"
-Agent: [Calls checkCurrentPlan()] → Authentication error → "I can help with that. To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?"
+Agent: [Calls checkCurrentPlan()] → Authentication error → "I can help with that. For security, may I have your phone number please?"
 User: "0109493522"
 Agent: "Thank you. Just to confirm, that's 0-1-0-9-4-9-3-5-2-2, correct?"
 User: "Yes"
-Agent: [Calls authenticateUser] → "For verification purposes, may I have the last four digits of your NRIC to confirm the account holder?"
+Agent: [Calls authenticateUser] → "For additional security, may I have the last 4 digits of your NRIC please?"
 User: "5678"
 Agent: [Calls verifyNRIC] → [Calls checkCurrentPlan] → "I see you're on AMAZING38 at 38 MYR per month with 180GB data. What would you like more of—data, international calls, or other features?"
 
@@ -346,12 +346,12 @@ When user requests service termination:
    - If tool returns **success** → User is already authenticated, show termination details
    - If tool returns **authentication error** → User needs authentication, proceed to Step 3
 3. **Only if authentication is needed:**
-   - Ask: "To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?"
+   - Ask: "For security, may I have your phone number please?"
    - Wait for phone number
    - Repeat back digit-by-digit: "Thank you. Just to confirm, that's [repeat all digits], correct?"
    - Wait for confirmation
    - Call authenticateUser(phone_number)
-   - Ask: "For verification purposes, may I have the last four digits of your NRIC to confirm the account holder?"
+   - Ask: "For additional security, may I have the last 4 digits of your NRIC please?"
    - Call verifyNRIC(nric_last_4)
    - Then call checkTerminationEligibility() again to retrieve contract details
 4. Explain contract end date and early termination fees (if applicable)
@@ -378,11 +378,11 @@ Agent: [Calls processTermination] → "Your termination request has been process
 **Example Flow - User Not Authenticated:**
 
 User: "I want to cancel my service"
-Agent: [Calls checkTerminationEligibility()] → Authentication error → "I understand. To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?"
+Agent: [Calls checkTerminationEligibility()] → Authentication error → "I understand. For security, may I have your phone number please?"
 User: "0109493522"
 Agent: "Thank you. Just to confirm, that's 0-1-0-9-4-9-3-5-2-2, correct?"
 User: "Yes"
-Agent: [Calls authenticateUser] → "For verification purposes, may I have the last four digits of your NRIC to confirm the account holder?"
+Agent: [Calls authenticateUser] → "For additional security, may I have the last 4 digits of your NRIC please?"
 User: "5678"
 Agent: [Calls verifyNRIC] → [Calls checkTerminationEligibility] → "I see your contract ends on December 31st, 2025. If you terminate now, there's an early termination fee of 500 MYR. Would you still like to proceed?"
 
@@ -808,9 +808,8 @@ function getToolResponse(fName: string, args: any, sessionId?: string) {
       if (!session.isPhoneVerified) {
         return {
           success: false,
-          error: 'Mobile number must be verified first',
-          message: 'To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?',
-          needsPhoneVerification: true,
+          error: 'Phone number must be verified first',
+          message: 'Please verify your phone number before NRIC verification.'
         };
       }
       
@@ -836,7 +835,7 @@ function getToolResponse(fName: string, args: any, sessionId?: string) {
             success: true,
             nricVerified: true,
             fullyAuthenticated: true,
-            message: 'Thank you for verification. You can now proceed with termination inquiry.',
+            message: 'NRIC verified successfully. You are now fully authenticated.',
           };
         } else {
           return {
@@ -867,7 +866,7 @@ function getToolResponse(fName: string, args: any, sessionId?: string) {
               error: 'Authentication required',
               code: 'AUTH_REQUIRED',
               needs_authentication: true,
-              message: 'To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?'
+              message: 'For security, may I have your phone number please?'
             };
           }
         } else {
@@ -876,7 +875,7 @@ function getToolResponse(fName: string, args: any, sessionId?: string) {
             error: 'Authentication required',
             code: 'AUTH_REQUIRED',
             needs_authentication: true,
-            message: 'To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?'
+            message: 'For security, may I have your phone number please?'
           };
         }
       }
@@ -918,7 +917,7 @@ function getToolResponse(fName: string, args: any, sessionId?: string) {
           error: 'Authentication required',
           code: 'AUTH_REQUIRED',
           needs_authentication: true,
-          message: 'To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?'
+          message: 'For security, may I have your phone number please?'
         };
       }
       
@@ -1001,7 +1000,7 @@ function getToolResponse(fName: string, args: any, sessionId?: string) {
           error: 'Authentication required',
           code: 'AUTH_REQUIRED',
           needs_authentication: true,
-          message: 'To identify the account holder we must verify your details to confirm you are the account holder, may I have your mobile number please?'
+          message: 'For security, may I have your phone number please?'
         };
       }
       

@@ -144,7 +144,7 @@ You are a professional customer service agent for redONE Mobile Service, special
                 properties: {
                     phone_number: {
                         type: 'string',
-                        description: 'User\'s mobile number',
+                        description: 'User\'s phone number',
                     },
                 },
                 required: ['phone_number'],
@@ -285,7 +285,7 @@ You are a professional customer service agent for redONE Mobile Service, special
                 properties: {
                     phone_number: {
                         type: 'string',
-                        description: 'User\'s mobile number',
+                        description: 'User\'s phone number',
                     },
                     termination_date: {
                         type: 'string',

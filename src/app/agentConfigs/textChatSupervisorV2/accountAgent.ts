@@ -24,7 +24,7 @@ export const accountAgent = new RealtimeAgent({
     name: 'account_agent',
     voice: 'sage',
     handoffDescription:
-        'Handles account-specific queries like billing, plan details, usage, and contract information. Requires user authentication via mobile number and NRIC verification. Optimized for text chat with HTML formatting.',
+        'Handles account-specific queries like billing, plan details, usage, and contract information. Requires user authentication via phone number and NRIC verification. Optimized for text chat with HTML formatting.',
 
     instructions: `
 # Identity
@@ -127,7 +127,7 @@ You are a professional customer service agent for redONE Mobile Service, special
                 properties: {
                     phone_number: {
                         type: 'string',
-                        description: 'User\'s mobile number',
+                        description: 'User\'s phone number',
                     },
                 },
                 required: ['phone_number'],
